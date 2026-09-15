@@ -24,6 +24,22 @@ const meta: Meta<typeof Button> = {
       },
     },
   },
+  // Explicit control types so the Controls panel gives real knobs --
+  // dropdowns for the Figma variant axes, toggles for the icon slots --
+  // instead of react-docgen's default guesses (which render leftIcon /
+  // rightIcon as raw object editors, not useful for a ReactNode).
+  argTypes: {
+    variant: { control: 'select', options: ["Primary","Secondary","Tertiary"] },
+    size: { control: 'select', options: ["S","M","L"] },
+    state: { control: 'select', options: ["Default","Pressed","Disabled","Loading"] },
+    cta: { control: 'text' },
+    showLeftIcon: { control: 'boolean' },
+    showRightIcon: { control: 'boolean' },
+    leftIcon: { table: { disable: true } },
+    rightIcon: { table: { disable: true } },
+    onClick: { table: { disable: true } },
+    className: { table: { disable: true } },
+  },
   args: {
     cta: '1/2 words',
   },
@@ -34,150 +50,150 @@ type Story = StoryObj<typeof Button>;
 
 // Primary
 export const PrimarySDefault: Story = {
-  name: 'Primary \u00b7 S \u00b7 Default',
+  name: 'Primary · S · Default',
   args: { variant: 'Primary', size: 'S', state: 'Default', showLeftIcon: true, showRightIcon: true, leftIcon: <DemoIcon />, rightIcon: <DemoIcon /> },
 };
 export const PrimarySPressed: Story = {
-  name: 'Primary \u00b7 S \u00b7 Pressed',
+  name: 'Primary · S · Pressed',
   args: { variant: 'Primary', size: 'S', state: 'Pressed' },
 };
 export const PrimarySDisabled: Story = {
-  name: 'Primary \u00b7 S \u00b7 Disabled',
+  name: 'Primary · S · Disabled',
   args: { variant: 'Primary', size: 'S', state: 'Disabled' },
 };
 export const PrimarySLoading: Story = {
-  name: 'Primary \u00b7 S \u00b7 Loading',
+  name: 'Primary · S · Loading',
   args: { variant: 'Primary', size: 'S', state: 'Loading' },
 };
 export const PrimaryMDefault: Story = {
-  name: 'Primary \u00b7 M \u00b7 Default',
+  name: 'Primary · M · Default',
   args: { variant: 'Primary', size: 'M', state: 'Default', showLeftIcon: true, showRightIcon: true, leftIcon: <DemoIcon />, rightIcon: <DemoIcon /> },
 };
 export const PrimaryMPressed: Story = {
-  name: 'Primary \u00b7 M \u00b7 Pressed',
+  name: 'Primary · M · Pressed',
   args: { variant: 'Primary', size: 'M', state: 'Pressed' },
 };
 export const PrimaryMDisabled: Story = {
-  name: 'Primary \u00b7 M \u00b7 Disabled',
+  name: 'Primary · M · Disabled',
   args: { variant: 'Primary', size: 'M', state: 'Disabled' },
 };
 export const PrimaryMLoading: Story = {
-  name: 'Primary \u00b7 M \u00b7 Loading',
+  name: 'Primary · M · Loading',
   args: { variant: 'Primary', size: 'M', state: 'Loading' },
 };
 export const PrimaryLDefault: Story = {
-  name: 'Primary \u00b7 L \u00b7 Default',
+  name: 'Primary · L · Default',
   args: { variant: 'Primary', size: 'L', state: 'Default', showLeftIcon: true, showRightIcon: true, leftIcon: <DemoIcon />, rightIcon: <DemoIcon /> },
 };
 export const PrimaryLPressed: Story = {
-  name: 'Primary \u00b7 L \u00b7 Pressed',
+  name: 'Primary · L · Pressed',
   args: { variant: 'Primary', size: 'L', state: 'Pressed' },
 };
 export const PrimaryLDisabled: Story = {
-  name: 'Primary \u00b7 L \u00b7 Disabled',
+  name: 'Primary · L · Disabled',
   args: { variant: 'Primary', size: 'L', state: 'Disabled' },
 };
 export const PrimaryLLoading: Story = {
-  name: 'Primary \u00b7 L \u00b7 Loading',
+  name: 'Primary · L · Loading',
   args: { variant: 'Primary', size: 'L', state: 'Loading' },
 };
 
 // Secondary
 export const SecondarySDefault: Story = {
-  name: 'Secondary \u00b7 S \u00b7 Default',
+  name: 'Secondary · S · Default',
   args: { variant: 'Secondary', size: 'S', state: 'Default', showLeftIcon: true, showRightIcon: true, leftIcon: <DemoIcon />, rightIcon: <DemoIcon /> },
 };
 export const SecondarySPressed: Story = {
-  name: 'Secondary \u00b7 S \u00b7 Pressed',
+  name: 'Secondary · S · Pressed',
   args: { variant: 'Secondary', size: 'S', state: 'Pressed' },
 };
 export const SecondarySDisabled: Story = {
-  name: 'Secondary \u00b7 S \u00b7 Disabled',
+  name: 'Secondary · S · Disabled',
   args: { variant: 'Secondary', size: 'S', state: 'Disabled' },
 };
 export const SecondarySLoading: Story = {
-  name: 'Secondary \u00b7 S \u00b7 Loading',
+  name: 'Secondary · S · Loading',
   args: { variant: 'Secondary', size: 'S', state: 'Loading' },
 };
 export const SecondaryMDefault: Story = {
-  name: 'Secondary \u00b7 M \u00b7 Default',
+  name: 'Secondary · M · Default',
   args: { variant: 'Secondary', size: 'M', state: 'Default', showLeftIcon: true, showRightIcon: true, leftIcon: <DemoIcon />, rightIcon: <DemoIcon /> },
 };
 export const SecondaryMPressed: Story = {
-  name: 'Secondary \u00b7 M \u00b7 Pressed',
+  name: 'Secondary · M · Pressed',
   args: { variant: 'Secondary', size: 'M', state: 'Pressed' },
 };
 export const SecondaryMDisabled: Story = {
-  name: 'Secondary \u00b7 M \u00b7 Disabled',
+  name: 'Secondary · M · Disabled',
   args: { variant: 'Secondary', size: 'M', state: 'Disabled' },
 };
 export const SecondaryMLoading: Story = {
-  name: 'Secondary \u00b7 M \u00b7 Loading',
+  name: 'Secondary · M · Loading',
   args: { variant: 'Secondary', size: 'M', state: 'Loading' },
 };
 export const SecondaryLDefault: Story = {
-  name: 'Secondary \u00b7 L \u00b7 Default',
+  name: 'Secondary · L · Default',
   args: { variant: 'Secondary', size: 'L', state: 'Default', showLeftIcon: true, showRightIcon: true, leftIcon: <DemoIcon />, rightIcon: <DemoIcon /> },
 };
 export const SecondaryLPressed: Story = {
-  name: 'Secondary \u00b7 L \u00b7 Pressed',
+  name: 'Secondary · L · Pressed',
   args: { variant: 'Secondary', size: 'L', state: 'Pressed' },
 };
 export const SecondaryLDisabled: Story = {
-  name: 'Secondary \u00b7 L \u00b7 Disabled',
+  name: 'Secondary · L · Disabled',
   args: { variant: 'Secondary', size: 'L', state: 'Disabled' },
 };
 export const SecondaryLLoading: Story = {
-  name: 'Secondary \u00b7 L \u00b7 Loading',
+  name: 'Secondary · L · Loading',
   args: { variant: 'Secondary', size: 'L', state: 'Loading' },
 };
 
 // Tertiary
 export const TertiarySDefault: Story = {
-  name: 'Tertiary \u00b7 S \u00b7 Default',
+  name: 'Tertiary · S · Default',
   args: { variant: 'Tertiary', size: 'S', state: 'Default', showLeftIcon: true, showRightIcon: true, leftIcon: <DemoIcon />, rightIcon: <DemoIcon /> },
 };
 export const TertiarySPressed: Story = {
-  name: 'Tertiary \u00b7 S \u00b7 Pressed',
+  name: 'Tertiary · S · Pressed',
   args: { variant: 'Tertiary', size: 'S', state: 'Pressed' },
 };
 export const TertiarySDisabled: Story = {
-  name: 'Tertiary \u00b7 S \u00b7 Disabled',
+  name: 'Tertiary · S · Disabled',
   args: { variant: 'Tertiary', size: 'S', state: 'Disabled' },
 };
 export const TertiarySLoading: Story = {
-  name: 'Tertiary \u00b7 S \u00b7 Loading',
+  name: 'Tertiary · S · Loading',
   args: { variant: 'Tertiary', size: 'S', state: 'Loading' },
 };
 export const TertiaryMDefault: Story = {
-  name: 'Tertiary \u00b7 M \u00b7 Default',
+  name: 'Tertiary · M · Default',
   args: { variant: 'Tertiary', size: 'M', state: 'Default', showLeftIcon: true, showRightIcon: true, leftIcon: <DemoIcon />, rightIcon: <DemoIcon /> },
 };
 export const TertiaryMPressed: Story = {
-  name: 'Tertiary \u00b7 M \u00b7 Pressed',
+  name: 'Tertiary · M · Pressed',
   args: { variant: 'Tertiary', size: 'M', state: 'Pressed' },
 };
 export const TertiaryMDisabled: Story = {
-  name: 'Tertiary \u00b7 M \u00b7 Disabled',
+  name: 'Tertiary · M · Disabled',
   args: { variant: 'Tertiary', size: 'M', state: 'Disabled' },
 };
 export const TertiaryMLoading: Story = {
-  name: 'Tertiary \u00b7 M \u00b7 Loading',
+  name: 'Tertiary · M · Loading',
   args: { variant: 'Tertiary', size: 'M', state: 'Loading' },
 };
 export const TertiaryLDefault: Story = {
-  name: 'Tertiary \u00b7 L \u00b7 Default',
+  name: 'Tertiary · L · Default',
   args: { variant: 'Tertiary', size: 'L', state: 'Default', showLeftIcon: true, showRightIcon: true, leftIcon: <DemoIcon />, rightIcon: <DemoIcon /> },
 };
 export const TertiaryLPressed: Story = {
-  name: 'Tertiary \u00b7 L \u00b7 Pressed',
+  name: 'Tertiary · L · Pressed',
   args: { variant: 'Tertiary', size: 'L', state: 'Pressed' },
 };
 export const TertiaryLDisabled: Story = {
-  name: 'Tertiary \u00b7 L \u00b7 Disabled',
+  name: 'Tertiary · L · Disabled',
   args: { variant: 'Tertiary', size: 'L', state: 'Disabled' },
 };
 export const TertiaryLLoading: Story = {
-  name: 'Tertiary \u00b7 L \u00b7 Loading',
+  name: 'Tertiary · L · Loading',
   args: { variant: 'Tertiary', size: 'L', state: 'Loading' },
 };
