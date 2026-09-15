@@ -18,7 +18,11 @@
 /out/
 
 # production
-/build
+/build/*
+# except the generated design tokens, which must be tracked so the
+# project builds on a fresh clone without a token build step
+!/build/css/
+!/build/css/tokens.css
 
 # misc
 .DS_Store

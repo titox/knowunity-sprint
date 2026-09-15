@@ -1,0 +1,214 @@
+/**
+ * Do not edit directly, this file was auto-generated.
+ */
+
+:root {
+  --color-homie-inkwell: #9178e6;
+  --color-homie-eyes: #0a0a0a;
+  --color-color-navy-800: #22242f;
+  --color-color-navy-900: #1a1c26;
+  --color-color-navy-950: #090c18;
+  --color-color-neutral-0: #ffffff;
+  --color-color-neutral-950: #0a0a0a;
+  --color-color-violet-50: #f4f2ff;
+  --color-color-violet-100: #e4e0ff;
+  --color-color-violet-200: #d2ccfa;
+  --color-color-violet-300: #a78bfa;
+  --color-color-violet-400: #7b65e0;
+  --color-color-violet-500: #9178e6;
+  --color-color-violet-800: #1e1745;
+  --color-color-violet-900: #15103a;
+  --color-color-violet-950: #0e0a18;
+  --color-color-green-300: #4ae5b0;
+  --color-color-green-500: #00c386;
+  --color-color-green-900: #0a2e22;
+  --color-color-green-950: #0a1f18;
+  --color-color-red-200: #fca5a5;
+  --color-color-red-300: #ff8585;
+  --color-color-red-400: #ff6b6b;
+  --color-color-red-500: #e85555;
+  --color-color-red-900: #532831;
+  --color-color-red-950: #2a0808;
+  --color-color-coral-200: #ffb59b;
+  --color-color-coral-400: #fb7e5b;
+  --color-color-coral-900: #512e2c;
+  --color-color-coral-950: #2e0f06;
+  --color-color-blue-300: #7ba8f2;
+  --color-color-blue-400: #5fa0fc;
+  --color-color-blue-900: #0a1635;
+  --color-color-blue-950: #06173b;
+  --color-color-magenta-200: #f7b5de;
+  --color-color-magenta-400: #e879c0;
+  --color-color-magenta-900: #380d29;
+  --color-color-magenta-950: #2c0a20;
+  --color-color-gold-300: #fcd34d;
+  --color-color-gold-400: #f5b53d;
+  --color-color-gold-900: #3a2d0b;
+  --color-color-gold-950: #2a1d04;
+  --color-color-alpha-light-10: rgba(255, 255, 255, 0.102);
+  --color-color-alpha-light-18: rgba(255, 255, 255, 0.1804);
+  --color-color-alpha-light-24: rgba(255, 255, 255, 0.2392);
+  --color-color-alpha-light-25: rgba(255, 255, 255, 0.251);
+  --color-color-alpha-light-40: rgba(255, 255, 255, 0.4);
+  --color-color-alpha-light-48: rgba(245, 243, 255, 0.4784);
+  --color-color-alpha-light-68: rgba(245, 243, 255, 0.6784);
+  --color-color-alpha-dark-10: rgba(10, 10, 10, 0.102);
+  --color-color-alpha-dark-50: rgba(10, 10, 10, 0.502);
+  --color-color-alpha-glass-60: rgba(61, 61, 61, 0.6);
+  --font-family-typography-display-l-font-family: 'Greed Standard-TRIAL'; /** Display L family. */
+  --font-weight-typography-display-l-font-weight: 900; /** Display L weight (Heavy). */
+  --dimension-typography-display-l-font-size: 103px; /** Display L size. */
+  --dimension-typography-display-l-line-height: 104px; /** Display L line height. */
+  --font-family-typography-display-m-font-family: 'Greed Standard-TRIAL'; /** Display M family. */
+  --font-weight-typography-display-m-font-weight: 700; /** Display M weight (Bold). */
+  --dimension-typography-display-m-font-size: 76px; /** Display M size. */
+  --dimension-typography-display-m-line-height: 76px; /** Display M line height. */
+  --font-family-typography-display-s-font-family: 'Greed Standard-TRIAL'; /** Display S family. */
+  --font-weight-typography-display-s-font-weight: 700; /** Display S weight (Bold). */
+  --dimension-typography-display-s-font-size: 59px; /** Display S size. */
+  --dimension-typography-display-s-line-height: 60px; /** Display S line height. */
+  --font-family-typography-headline-xl-font-family: 'Greed Standard-TRIAL'; /** Headline XL family. */
+  --font-weight-typography-headline-xl-font-weight: 700; /** Headline XL weight (Bold). */
+  --dimension-typography-headline-xl-font-size: 44px; /** Headline XL size. */
+  --dimension-typography-headline-xl-line-height: 44px; /** Headline XL line height. */
+  --font-family-typography-headline-l-font-family: 'Greed Standard-TRIAL'; /** Headline L family. */
+  --font-weight-typography-headline-l-font-weight: 700; /** Headline L weight (Bold). */
+  --dimension-typography-headline-l-font-size: 33px; /** Headline L size. */
+  --dimension-typography-headline-l-line-height: 36px; /** Headline L line height. */
+  --font-family-typography-headline-m-font-family: 'Greed Standard-TRIAL'; /** Headline M family. */
+  --font-weight-typography-headline-m-font-weight: 700; /** Headline M weight (Bold). */
+  --dimension-typography-headline-m-font-size: 28px; /** Headline M size. */
+  --dimension-typography-headline-m-line-height: 28px; /** Headline M line height. */
+  --font-family-typography-headline-s-font-family: 'Greed Standard-TRIAL'; /** Headline S family. */
+  --font-weight-typography-headline-s-font-weight: 700; /** Headline S weight (Bold). */
+  --dimension-typography-headline-s-font-size: 21px; /** Headline S size. */
+  --dimension-typography-headline-s-line-height: 24px; /** Headline S line height. */
+  --font-family-typography-headline-xs-bold-font-family: 'Greed Standard-TRIAL'; /** Headline XS Bold family. */
+  --font-weight-typography-headline-xs-bold-font-weight: 600; /** Headline XS Bold weight (SemiBold). */
+  --dimension-typography-headline-xs-bold-font-size: 18px; /** Headline XS Bold size. */
+  --dimension-typography-headline-xs-bold-line-height: 20px; /** Headline XS Bold line height. */
+  --font-family-typography-headline-xs-regular-font-family: 'Greed Standard-TRIAL'; /** Headline XS Regular family. */
+  --font-weight-typography-headline-xs-regular-font-weight: 400; /** Headline XS Regular weight (Regular). */
+  --dimension-typography-headline-xs-regular-font-size: 18px; /** Headline XS Regular size. */
+  --dimension-typography-headline-xs-regular-line-height: 20px; /** Headline XS Regular line height. */
+  --font-family-typography-headline-xxs-bold-font-family: 'Greed Standard-TRIAL'; /** Headline XXS Bold family. */
+  --font-weight-typography-headline-xxs-bold-font-weight: 600; /** Headline XXS Bold weight (SemiBold). */
+  --dimension-typography-headline-xxs-bold-font-size: 15px; /** Headline XXS Bold size. */
+  --dimension-typography-headline-xxs-bold-line-height: 16px; /** Headline XXS Bold line height. */
+  --font-family-typography-headline-xxs-regular-font-family: 'Greed Standard-TRIAL'; /** Headline XXS Regular family. */
+  --font-weight-typography-headline-xxs-regular-font-weight: 400; /** Headline XXS Regular weight (Regular). */
+  --dimension-typography-headline-xxs-regular-font-size: 15px; /** Headline XXS Regular size. */
+  --dimension-typography-headline-xxs-regular-line-height: 16px; /** Headline XXS Regular line height. */
+  --font-family-typography-body-m-bold-font-family: 'Greed Standard-TRIAL'; /** Body M Bold family. */
+  --font-weight-typography-body-m-bold-font-weight: 600; /** Body M Bold weight (SemiBold). */
+  --dimension-typography-body-m-bold-font-size: 18px; /** Body M Bold size. */
+  --dimension-typography-body-m-bold-line-height: 24px; /** Body M Bold line height. */
+  --font-family-typography-body-m-regular-font-family: 'Greed Standard-TRIAL'; /** Body M Regular family. */
+  --font-weight-typography-body-m-regular-font-weight: 400; /** Body M Regular weight (Regular). */
+  --dimension-typography-body-m-regular-font-size: 18px; /** Body M Regular size. */
+  --dimension-typography-body-m-regular-line-height: 24px; /** Body M Regular line height. */
+  --font-family-typography-body-s-bold-font-family: 'Greed Standard-TRIAL'; /** Body S Bold family. */
+  --font-weight-typography-body-s-bold-font-weight: 600; /** Body S Bold weight (SemiBold). */
+  --dimension-typography-body-s-bold-font-size: 15px; /** Body S Bold size. */
+  --dimension-typography-body-s-bold-line-height: 20px; /** Body S Bold line height. */
+  --font-family-typography-body-s-regular-font-family: 'Greed Standard-TRIAL'; /** Body S Regular family. */
+  --font-weight-typography-body-s-regular-font-weight: 400; /** Body S Regular weight (Regular). */
+  --dimension-typography-body-s-regular-font-size: 15px; /** Body S Regular size. */
+  --dimension-typography-body-s-regular-line-height: 20px; /** Body S Regular line height. */
+  --font-family-typography-caption-m-bold-font-family: 'Greed Standard-TRIAL'; /** Caption M Bold family. */
+  --font-weight-typography-caption-m-bold-font-weight: 600; /** Caption M Bold weight (SemiBold). */
+  --dimension-typography-caption-m-bold-font-size: 12px; /** Caption M Bold size. */
+  --dimension-typography-caption-m-bold-line-height: 16px; /** Caption M Bold line height. */
+  --font-family-typography-caption-m-regular-font-family: 'Greed Standard-TRIAL'; /** Caption M Regular family. */
+  --font-weight-typography-caption-m-regular-font-weight: 400; /** Caption M Regular weight (Regular). */
+  --dimension-typography-caption-m-regular-font-size: 12px; /** Caption M Regular size. */
+  --dimension-typography-caption-m-regular-line-height: 16px; /** Caption M Regular line height. */
+  --font-family-typography-caption-s-bold-font-family: 'Greed Standard-TRIAL'; /** Caption S Bold family. */
+  --font-weight-typography-caption-s-bold-font-weight: 600; /** Caption S Bold weight (SemiBold). */
+  --dimension-typography-caption-s-bold-font-size: 9px; /** Caption S Bold size. */
+  --dimension-typography-caption-s-bold-line-height: 12px; /** Caption S Bold line height. */
+  --font-family-typography-caption-s-regular-font-family: 'Greed Standard-TRIAL'; /** Caption S Regular family. */
+  --font-weight-typography-caption-s-regular-font-weight: 400; /** Caption S Regular weight (Regular). */
+  --dimension-typography-caption-s-regular-font-size: 9px; /** Caption S Regular size. */
+  --dimension-typography-caption-s-regular-line-height: 12px; /** Caption S Regular line height. */
+  --color-background-page: var(--color-color-navy-950); /** Root screen canvas. */
+  --color-background-surface: var(--color-color-navy-800); /** Elevated container fill. */
+  --color-background-inverse: var(--color-color-violet-50); /** Dark block on a light screen. */
+  --color-background-scrim: var(--color-color-alpha-dark-50); /** Semi-transparent overlay dimming content behind a modal. */
+  --color-background-floating: var(--color-color-alpha-glass-60); /** Elevated floating surface with translucency. */
+  --color-background-stacking: var(--color-color-alpha-light-10); /** Additive white layer for stacking elevation on dark surfaces. */
+  --color-background-input: var(--color-color-navy-900); /** Fill of an editable field. */
+  --color-interactive-primary: var(--color-color-violet-50); /** Main call-to-action fill. */
+  --color-interactive-secondary: var(--color-color-alpha-light-10); /** Supporting action fill. */
+  --color-interactive-destructive: var(--color-color-red-400); /** Irreversible harmful action fill. */
+  --color-interactive-disabled: var(--color-color-alpha-light-10); /** Non-interactive control fill signaling 'unavailable.' USE: Disabled buttons, toggles, sliders. */
+  --color-interactive-on-primary: var(--color-color-navy-950); /** Text and icons on interactive/primary fills. */
+  --color-interactive-on-secondary: var(--color-color-violet-50); /** Text and icons on interactive/secondary fills. */
+  --color-interactive-pressed: var(--color-color-alpha-light-10); /** Press overlay for light or vivid surfaces. */
+  --color-interactive-pressed-inverse: var(--color-color-alpha-dark-10); /** Press overlay for dark surfaces. */
+  --color-interactive-primary-hover: var(--color-color-violet-100); /** Hover state of interactive/primary. */
+  --color-interactive-primary-active: var(--color-color-violet-200); /** Pressed state of interactive/primary. */
+  --color-interactive-secondary-hover: var(--color-color-alpha-light-18); /** Hover state of interactive/secondary. */
+  --color-interactive-secondary-active: var(--color-color-alpha-light-24); /** Pressed state of interactive/secondary. */
+  --color-interactive-destructive-hover: var(--color-color-red-300); /** Hover state of interactive/destructive. */
+  --color-interactive-destructive-active: var(--color-color-red-500); /** Pressed state of interactive/destructive. */
+  --color-interactive-on-destructive: var(--color-color-red-950); /** Text and icons on interactive/destructive fills. */
+  --color-text-primary: var(--color-color-violet-50); /** Highest contrast text for maximum readability. */
+  --color-text-secondary: var(--color-color-alpha-light-68); /** Reduced emphasis text for supporting content. */
+  --color-text-inverse: var(--color-color-navy-950); /** Dark text on light or vivid surfaces. */
+  --color-text-link: var(--color-color-violet-500); /** Inline hyperlink text only. */
+  --color-text-disabled: var(--color-color-alpha-light-40); /** Low-contrast text signaling 'unavailable' or 'not yet filled.' USE: Text on disabled controls, placeholder text in empty input fields. */
+  --color-text-tertiary: var(--color-color-alpha-light-48); /** Lowest emphasis readable text. */
+  --color-text-link-hover: var(--color-color-violet-300); /** Hover state of text/link. */
+  --color-text-success: var(--color-color-green-300); /** Confirmation text. */
+  --color-text-error: var(--color-color-red-200); /** Validation message text. */
+  --color-text-warning: var(--color-color-gold-300); /** Caution text. */
+  --color-text-on-accent: var(--color-color-violet-950); /** Text on any accent.*.bold fill. */
+  --color-text-link-active: var(--color-color-violet-200); /** Pressed state for a text link, one step beyond hover. */
+  --color-mascot-primary: var(--color-color-violet-500); /** Mascot signature violet, a character color rather than a UI one. */
+  --color-mascot-eyes: var(--color-color-neutral-0); /** Homie eye whites. */
+  --color-mascot-pupils: var(--color-color-neutral-950); /** Homie pupils. */
+  --color-border-default: var(--color-color-alpha-light-10); /** Standard container edge. */
+  --color-border-strong: var(--color-color-alpha-light-25); /** Higher contrast container edge. */
+  --color-border-focus: var(--color-color-violet-300); /** Keyboard focus ring. */
+  --color-border-error: var(--color-color-red-400); /** Invalid input edge. */
+  --color-border-success: var(--color-color-green-500); /** Validated input edge. */
+  --color-border-selected: var(--color-color-violet-500); /** Edge of a chosen element. */
+  --color-accent-green-bold: var(--color-color-green-500); /** Solid green accent fill. */
+  --color-accent-green-on-bold: var(--color-color-green-950); /** Text and icons on accent/green/bold. */
+  --color-accent-green-subtle: var(--color-color-green-900); /** Low emphasis green fill. */
+  --color-accent-green-on-subtle: var(--color-color-green-300); /** Text and icons on accent/green/subtle. */
+  --color-accent-coral-bold: var(--color-color-coral-400); /** Solid coral accent fill. */
+  --color-accent-coral-on-bold: var(--color-color-coral-950); /** Text and icons on accent/coral/bold. */
+  --color-accent-coral-subtle: var(--color-color-coral-900); /** Low emphasis coral fill. */
+  --color-accent-coral-on-subtle: var(--color-color-coral-200); /** Text and icons on accent/coral/subtle. */
+  --color-accent-blue-bold: var(--color-color-blue-400); /** Solid blue accent fill. */
+  --color-accent-blue-on-bold: var(--color-color-blue-950); /** Text and icons on accent/blue/bold. */
+  --color-accent-blue-subtle: var(--color-color-blue-900); /** Low emphasis blue fill. */
+  --color-accent-blue-on-subtle: var(--color-color-blue-300); /** Text and icons on accent/blue/subtle. */
+  --color-accent-magenta-bold: var(--color-color-magenta-400); /** Solid magenta accent fill. */
+  --color-accent-magenta-on-bold: var(--color-color-magenta-950); /** Text and icons on accent/magenta/bold. */
+  --color-accent-magenta-subtle: var(--color-color-magenta-900); /** Low emphasis magenta fill. */
+  --color-accent-magenta-on-subtle: var(--color-color-magenta-200); /** Text and icons on accent/magenta/subtle. */
+  --color-accent-brand-bold: var(--color-color-violet-500); /** Solid brand violet fill. */
+  --color-accent-brand-on-bold: var(--color-color-violet-950); /** Text and icons on accent/brand/bold. */
+  --color-accent-brand-subtle: var(--color-color-violet-900); /** Low emphasis brand fill. */
+  --color-accent-brand-on-subtle: var(--color-color-violet-400); /** Text and icons on accent/brand/subtle. */
+  --color-pro-bold: var(--color-color-gold-400); /** Solid PRO fill. */
+  --color-pro-on-bold: var(--color-color-gold-950); /** Text and icons on pro/bold. */
+  --color-pro-subtle: var(--color-color-gold-900); /** Low emphasis PRO fill. */
+  --color-pro-on-subtle: var(--color-color-gold-300); /** Text and icons on pro/subtle. */
+  --color-pro-accent: var(--color-color-gold-400); /** Alias of pro/bold kept for the name used across older descriptions. */
+  --color-pro-bold-hover: var(--color-color-gold-300); /** Hover state for the gold Pro upsell button. */
+  --color-feedback-success-bold: var(--color-color-green-500); /** Solid success fill. */
+  --color-feedback-success-on-bold: var(--color-color-green-950); /** Text and icons on feedback/success/bold. */
+  --color-feedback-success-subtle: var(--color-color-green-900); /** Tinted success background. */
+  --color-feedback-success-on-subtle: var(--color-color-green-300); /** Text and icons on feedback/success/subtle. */
+  --color-feedback-error-bold: var(--color-color-red-400); /** Solid error fill. */
+  --color-feedback-error-on-bold: var(--color-color-red-950); /** Text and icons on feedback/error/bold. */
+  --color-feedback-error-subtle: var(--color-color-red-900); /** Tinted error background. */
+  --color-feedback-error-on-subtle: var(--color-color-red-200); /** Text and icons on feedback/error/subtle. */
+  --color-highlight-surface: var(--color-color-violet-900); /** Fill of a chosen element. */
+  --color-highlight-border: var(--color-color-violet-400); /** Edge of a chosen element on a highlight/surface fill. */
+  --color-highlight-surface-hover: var(--color-color-violet-800); /** Hover state for a selectable highlighted card surface. */
+}
