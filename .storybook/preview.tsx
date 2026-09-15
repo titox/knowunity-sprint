@@ -50,6 +50,10 @@ const preview: Preview = {
 
   initialGlobals: {
     viewport: { value: 'mobile390', isRotated: false },
+    // `parameters.backgrounds.default` alone doesn't apply a background in
+    // this Storybook version -- like viewport, it needs an explicit
+    // initial global value.
+    backgrounds: { value: 'dark' },
   },
 };
 

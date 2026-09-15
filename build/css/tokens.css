@@ -74,6 +74,12 @@
   --dimension-space-negative-200: -8px;
   --dimension-space-negative-100: -4px;
   --dimension-space-050: 2px;
+  --dimension-icon-100: 8px;
+  --dimension-icon-150: 12px;
+  --dimension-icon-200: 16px;
+  --dimension-icon-250: 20px;
+  --dimension-icon-300: 24px;
+  --dimension-icon-400: 32px;
   --dimension-radius-100: 4px;
   --dimension-radius-150: 6px;
   --dimension-radius-200: 8px;
