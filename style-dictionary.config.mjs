@@ -9,7 +9,10 @@ StyleDictionary.registerTransform({
   name: 'name/type-path-kebab',
   type: 'name',
   transform: (token) => {
-    const parts = [token.$type, ...token.path];
+    // Skip the type prefix when the path already starts with it
+    // (e.g. color.navy.800), so we don't end up with "color-color-navy-800".
+    const parts =
+      token.path[0] === token.$type ? token.path : [token.$type, ...token.path];
     return parts
       .join(' ')
       .replace(/([a-z0-9])([A-Z])/g, '$1 $2')

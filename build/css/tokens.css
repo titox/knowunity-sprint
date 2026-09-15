@@ -5,56 +5,56 @@
 :root {
   --color-homie-inkwell: #9178e6;
   --color-homie-eyes: #0a0a0a;
-  --color-color-navy-800: #22242f;
-  --color-color-navy-900: #1a1c26;
-  --color-color-navy-950: #090c18;
-  --color-color-neutral-0: #ffffff;
-  --color-color-neutral-950: #0a0a0a;
-  --color-color-violet-50: #f4f2ff;
-  --color-color-violet-100: #e4e0ff;
-  --color-color-violet-200: #d2ccfa;
-  --color-color-violet-300: #a78bfa;
-  --color-color-violet-400: #7b65e0;
-  --color-color-violet-500: #9178e6;
-  --color-color-violet-800: #1e1745;
-  --color-color-violet-900: #15103a;
-  --color-color-violet-950: #0e0a18;
-  --color-color-green-300: #4ae5b0;
-  --color-color-green-500: #00c386;
-  --color-color-green-900: #0a2e22;
-  --color-color-green-950: #0a1f18;
-  --color-color-red-200: #fca5a5;
-  --color-color-red-300: #ff8585;
-  --color-color-red-400: #ff6b6b;
-  --color-color-red-500: #e85555;
-  --color-color-red-900: #532831;
-  --color-color-red-950: #2a0808;
-  --color-color-coral-200: #ffb59b;
-  --color-color-coral-400: #fb7e5b;
-  --color-color-coral-900: #512e2c;
-  --color-color-coral-950: #2e0f06;
-  --color-color-blue-300: #7ba8f2;
-  --color-color-blue-400: #5fa0fc;
-  --color-color-blue-900: #0a1635;
-  --color-color-blue-950: #06173b;
-  --color-color-magenta-200: #f7b5de;
-  --color-color-magenta-400: #e879c0;
-  --color-color-magenta-900: #380d29;
-  --color-color-magenta-950: #2c0a20;
-  --color-color-gold-300: #fcd34d;
-  --color-color-gold-400: #f5b53d;
-  --color-color-gold-900: #3a2d0b;
-  --color-color-gold-950: #2a1d04;
-  --color-color-alpha-light-10: rgba(255, 255, 255, 0.102);
-  --color-color-alpha-light-18: rgba(255, 255, 255, 0.1804);
-  --color-color-alpha-light-24: rgba(255, 255, 255, 0.2392);
-  --color-color-alpha-light-25: rgba(255, 255, 255, 0.251);
-  --color-color-alpha-light-40: rgba(255, 255, 255, 0.4);
-  --color-color-alpha-light-48: rgba(245, 243, 255, 0.4784);
-  --color-color-alpha-light-68: rgba(245, 243, 255, 0.6784);
-  --color-color-alpha-dark-10: rgba(10, 10, 10, 0.102);
-  --color-color-alpha-dark-50: rgba(10, 10, 10, 0.502);
-  --color-color-alpha-glass-60: rgba(61, 61, 61, 0.6);
+  --color-navy-800: #22242f;
+  --color-navy-900: #1a1c26;
+  --color-navy-950: #090c18;
+  --color-neutral-0: #ffffff;
+  --color-neutral-950: #0a0a0a;
+  --color-violet-50: #f4f2ff;
+  --color-violet-100: #e4e0ff;
+  --color-violet-200: #d2ccfa;
+  --color-violet-300: #a78bfa;
+  --color-violet-400: #7b65e0;
+  --color-violet-500: #9178e6;
+  --color-violet-800: #1e1745;
+  --color-violet-900: #15103a;
+  --color-violet-950: #0e0a18;
+  --color-green-300: #4ae5b0;
+  --color-green-500: #00c386;
+  --color-green-900: #0a2e22;
+  --color-green-950: #0a1f18;
+  --color-red-200: #fca5a5;
+  --color-red-300: #ff8585;
+  --color-red-400: #ff6b6b;
+  --color-red-500: #e85555;
+  --color-red-900: #532831;
+  --color-red-950: #2a0808;
+  --color-coral-200: #ffb59b;
+  --color-coral-400: #fb7e5b;
+  --color-coral-900: #512e2c;
+  --color-coral-950: #2e0f06;
+  --color-blue-300: #7ba8f2;
+  --color-blue-400: #5fa0fc;
+  --color-blue-900: #0a1635;
+  --color-blue-950: #06173b;
+  --color-magenta-200: #f7b5de;
+  --color-magenta-400: #e879c0;
+  --color-magenta-900: #380d29;
+  --color-magenta-950: #2c0a20;
+  --color-gold-300: #fcd34d;
+  --color-gold-400: #f5b53d;
+  --color-gold-900: #3a2d0b;
+  --color-gold-950: #2a1d04;
+  --color-alpha-light-10: rgba(255, 255, 255, 0.102);
+  --color-alpha-light-18: rgba(255, 255, 255, 0.1804);
+  --color-alpha-light-24: rgba(255, 255, 255, 0.2392);
+  --color-alpha-light-25: rgba(255, 255, 255, 0.251);
+  --color-alpha-light-40: rgba(255, 255, 255, 0.4);
+  --color-alpha-light-48: rgba(245, 243, 255, 0.4784);
+  --color-alpha-light-68: rgba(245, 243, 255, 0.6784);
+  --color-alpha-dark-10: rgba(10, 10, 10, 0.102);
+  --color-alpha-dark-50: rgba(10, 10, 10, 0.502);
+  --color-alpha-glass-60: rgba(61, 61, 61, 0.6);
   --font-family-typography-display-l-font-family: 'Greed Standard-TRIAL'; /** Display L family. */
   --font-weight-typography-display-l-font-weight: 900; /** Display L weight (Heavy). */
   --dimension-typography-display-l-font-size: 103px; /** Display L size. */
@@ -131,84 +131,84 @@
   --font-weight-typography-caption-s-regular-font-weight: 400; /** Caption S Regular weight (Regular). */
   --dimension-typography-caption-s-regular-font-size: 9px; /** Caption S Regular size. */
   --dimension-typography-caption-s-regular-line-height: 12px; /** Caption S Regular line height. */
-  --color-background-page: var(--color-color-navy-950); /** Root screen canvas. */
-  --color-background-surface: var(--color-color-navy-800); /** Elevated container fill. */
-  --color-background-inverse: var(--color-color-violet-50); /** Dark block on a light screen. */
-  --color-background-scrim: var(--color-color-alpha-dark-50); /** Semi-transparent overlay dimming content behind a modal. */
-  --color-background-floating: var(--color-color-alpha-glass-60); /** Elevated floating surface with translucency. */
-  --color-background-stacking: var(--color-color-alpha-light-10); /** Additive white layer for stacking elevation on dark surfaces. */
-  --color-background-input: var(--color-color-navy-900); /** Fill of an editable field. */
-  --color-interactive-primary: var(--color-color-violet-50); /** Main call-to-action fill. */
-  --color-interactive-secondary: var(--color-color-alpha-light-10); /** Supporting action fill. */
-  --color-interactive-destructive: var(--color-color-red-400); /** Irreversible harmful action fill. */
-  --color-interactive-disabled: var(--color-color-alpha-light-10); /** Non-interactive control fill signaling 'unavailable.' USE: Disabled buttons, toggles, sliders. */
-  --color-interactive-on-primary: var(--color-color-navy-950); /** Text and icons on interactive/primary fills. */
-  --color-interactive-on-secondary: var(--color-color-violet-50); /** Text and icons on interactive/secondary fills. */
-  --color-interactive-pressed: var(--color-color-alpha-light-10); /** Press overlay for light or vivid surfaces. */
-  --color-interactive-pressed-inverse: var(--color-color-alpha-dark-10); /** Press overlay for dark surfaces. */
-  --color-interactive-primary-hover: var(--color-color-violet-100); /** Hover state of interactive/primary. */
-  --color-interactive-primary-active: var(--color-color-violet-200); /** Pressed state of interactive/primary. */
-  --color-interactive-secondary-hover: var(--color-color-alpha-light-18); /** Hover state of interactive/secondary. */
-  --color-interactive-secondary-active: var(--color-color-alpha-light-24); /** Pressed state of interactive/secondary. */
-  --color-interactive-destructive-hover: var(--color-color-red-300); /** Hover state of interactive/destructive. */
-  --color-interactive-destructive-active: var(--color-color-red-500); /** Pressed state of interactive/destructive. */
-  --color-interactive-on-destructive: var(--color-color-red-950); /** Text and icons on interactive/destructive fills. */
-  --color-text-primary: var(--color-color-violet-50); /** Highest contrast text for maximum readability. */
-  --color-text-secondary: var(--color-color-alpha-light-68); /** Reduced emphasis text for supporting content. */
-  --color-text-inverse: var(--color-color-navy-950); /** Dark text on light or vivid surfaces. */
-  --color-text-link: var(--color-color-violet-500); /** Inline hyperlink text only. */
-  --color-text-disabled: var(--color-color-alpha-light-40); /** Low-contrast text signaling 'unavailable' or 'not yet filled.' USE: Text on disabled controls, placeholder text in empty input fields. */
-  --color-text-tertiary: var(--color-color-alpha-light-48); /** Lowest emphasis readable text. */
-  --color-text-link-hover: var(--color-color-violet-300); /** Hover state of text/link. */
-  --color-text-success: var(--color-color-green-300); /** Confirmation text. */
-  --color-text-error: var(--color-color-red-200); /** Validation message text. */
-  --color-text-warning: var(--color-color-gold-300); /** Caution text. */
-  --color-text-on-accent: var(--color-color-violet-950); /** Text on any accent.*.bold fill. */
-  --color-text-link-active: var(--color-color-violet-200); /** Pressed state for a text link, one step beyond hover. */
-  --color-mascot-primary: var(--color-color-violet-500); /** Mascot signature violet, a character color rather than a UI one. */
-  --color-mascot-eyes: var(--color-color-neutral-0); /** Homie eye whites. */
-  --color-mascot-pupils: var(--color-color-neutral-950); /** Homie pupils. */
-  --color-border-default: var(--color-color-alpha-light-10); /** Standard container edge. */
-  --color-border-strong: var(--color-color-alpha-light-25); /** Higher contrast container edge. */
-  --color-border-focus: var(--color-color-violet-300); /** Keyboard focus ring. */
-  --color-border-error: var(--color-color-red-400); /** Invalid input edge. */
-  --color-border-success: var(--color-color-green-500); /** Validated input edge. */
-  --color-border-selected: var(--color-color-violet-500); /** Edge of a chosen element. */
-  --color-accent-green-bold: var(--color-color-green-500); /** Solid green accent fill. */
-  --color-accent-green-on-bold: var(--color-color-green-950); /** Text and icons on accent/green/bold. */
-  --color-accent-green-subtle: var(--color-color-green-900); /** Low emphasis green fill. */
-  --color-accent-green-on-subtle: var(--color-color-green-300); /** Text and icons on accent/green/subtle. */
-  --color-accent-coral-bold: var(--color-color-coral-400); /** Solid coral accent fill. */
-  --color-accent-coral-on-bold: var(--color-color-coral-950); /** Text and icons on accent/coral/bold. */
-  --color-accent-coral-subtle: var(--color-color-coral-900); /** Low emphasis coral fill. */
-  --color-accent-coral-on-subtle: var(--color-color-coral-200); /** Text and icons on accent/coral/subtle. */
-  --color-accent-blue-bold: var(--color-color-blue-400); /** Solid blue accent fill. */
-  --color-accent-blue-on-bold: var(--color-color-blue-950); /** Text and icons on accent/blue/bold. */
-  --color-accent-blue-subtle: var(--color-color-blue-900); /** Low emphasis blue fill. */
-  --color-accent-blue-on-subtle: var(--color-color-blue-300); /** Text and icons on accent/blue/subtle. */
-  --color-accent-magenta-bold: var(--color-color-magenta-400); /** Solid magenta accent fill. */
-  --color-accent-magenta-on-bold: var(--color-color-magenta-950); /** Text and icons on accent/magenta/bold. */
-  --color-accent-magenta-subtle: var(--color-color-magenta-900); /** Low emphasis magenta fill. */
-  --color-accent-magenta-on-subtle: var(--color-color-magenta-200); /** Text and icons on accent/magenta/subtle. */
-  --color-accent-brand-bold: var(--color-color-violet-500); /** Solid brand violet fill. */
-  --color-accent-brand-on-bold: var(--color-color-violet-950); /** Text and icons on accent/brand/bold. */
-  --color-accent-brand-subtle: var(--color-color-violet-900); /** Low emphasis brand fill. */
-  --color-accent-brand-on-subtle: var(--color-color-violet-400); /** Text and icons on accent/brand/subtle. */
-  --color-pro-bold: var(--color-color-gold-400); /** Solid PRO fill. */
-  --color-pro-on-bold: var(--color-color-gold-950); /** Text and icons on pro/bold. */
-  --color-pro-subtle: var(--color-color-gold-900); /** Low emphasis PRO fill. */
-  --color-pro-on-subtle: var(--color-color-gold-300); /** Text and icons on pro/subtle. */
-  --color-pro-accent: var(--color-color-gold-400); /** Alias of pro/bold kept for the name used across older descriptions. */
-  --color-pro-bold-hover: var(--color-color-gold-300); /** Hover state for the gold Pro upsell button. */
-  --color-feedback-success-bold: var(--color-color-green-500); /** Solid success fill. */
-  --color-feedback-success-on-bold: var(--color-color-green-950); /** Text and icons on feedback/success/bold. */
-  --color-feedback-success-subtle: var(--color-color-green-900); /** Tinted success background. */
-  --color-feedback-success-on-subtle: var(--color-color-green-300); /** Text and icons on feedback/success/subtle. */
-  --color-feedback-error-bold: var(--color-color-red-400); /** Solid error fill. */
-  --color-feedback-error-on-bold: var(--color-color-red-950); /** Text and icons on feedback/error/bold. */
-  --color-feedback-error-subtle: var(--color-color-red-900); /** Tinted error background. */
-  --color-feedback-error-on-subtle: var(--color-color-red-200); /** Text and icons on feedback/error/subtle. */
-  --color-highlight-surface: var(--color-color-violet-900); /** Fill of a chosen element. */
-  --color-highlight-border: var(--color-color-violet-400); /** Edge of a chosen element on a highlight/surface fill. */
-  --color-highlight-surface-hover: var(--color-color-violet-800); /** Hover state for a selectable highlighted card surface. */
+  --color-background-page: var(--color-navy-950); /** Root screen canvas. */
+  --color-background-surface: var(--color-navy-800); /** Elevated container fill. */
+  --color-background-inverse: var(--color-violet-50); /** Dark block on a light screen. */
+  --color-background-scrim: var(--color-alpha-dark-50); /** Semi-transparent overlay dimming content behind a modal. */
+  --color-background-floating: var(--color-alpha-glass-60); /** Elevated floating surface with translucency. */
+  --color-background-stacking: var(--color-alpha-light-10); /** Additive white layer for stacking elevation on dark surfaces. */
+  --color-background-input: var(--color-navy-900); /** Fill of an editable field. */
+  --color-interactive-primary: var(--color-violet-50); /** Main call-to-action fill. */
+  --color-interactive-secondary: var(--color-alpha-light-10); /** Supporting action fill. */
+  --color-interactive-destructive: var(--color-red-400); /** Irreversible harmful action fill. */
+  --color-interactive-disabled: var(--color-alpha-light-10); /** Non-interactive control fill signaling 'unavailable.' USE: Disabled buttons, toggles, sliders. */
+  --color-interactive-on-primary: var(--color-navy-950); /** Text and icons on interactive/primary fills. */
+  --color-interactive-on-secondary: var(--color-violet-50); /** Text and icons on interactive/secondary fills. */
+  --color-interactive-pressed: var(--color-alpha-light-10); /** Press overlay for light or vivid surfaces. */
+  --color-interactive-pressed-inverse: var(--color-alpha-dark-10); /** Press overlay for dark surfaces. */
+  --color-interactive-primary-hover: var(--color-violet-100); /** Hover state of interactive/primary. */
+  --color-interactive-primary-active: var(--color-violet-200); /** Pressed state of interactive/primary. */
+  --color-interactive-secondary-hover: var(--color-alpha-light-18); /** Hover state of interactive/secondary. */
+  --color-interactive-secondary-active: var(--color-alpha-light-24); /** Pressed state of interactive/secondary. */
+  --color-interactive-destructive-hover: var(--color-red-300); /** Hover state of interactive/destructive. */
+  --color-interactive-destructive-active: var(--color-red-500); /** Pressed state of interactive/destructive. */
+  --color-interactive-on-destructive: var(--color-red-950); /** Text and icons on interactive/destructive fills. */
+  --color-text-primary: var(--color-violet-50); /** Highest contrast text for maximum readability. */
+  --color-text-secondary: var(--color-alpha-light-68); /** Reduced emphasis text for supporting content. */
+  --color-text-inverse: var(--color-navy-950); /** Dark text on light or vivid surfaces. */
+  --color-text-link: var(--color-violet-500); /** Inline hyperlink text only. */
+  --color-text-disabled: var(--color-alpha-light-40); /** Low-contrast text signaling 'unavailable' or 'not yet filled.' USE: Text on disabled controls, placeholder text in empty input fields. */
+  --color-text-tertiary: var(--color-alpha-light-48); /** Lowest emphasis readable text. */
+  --color-text-link-hover: var(--color-violet-300); /** Hover state of text/link. */
+  --color-text-success: var(--color-green-300); /** Confirmation text. */
+  --color-text-error: var(--color-red-200); /** Validation message text. */
+  --color-text-warning: var(--color-gold-300); /** Caution text. */
+  --color-text-on-accent: var(--color-violet-950); /** Text on any accent.*.bold fill. */
+  --color-text-link-active: var(--color-violet-200); /** Pressed state for a text link, one step beyond hover. */
+  --color-mascot-primary: var(--color-violet-500); /** Mascot signature violet, a character color rather than a UI one. */
+  --color-mascot-eyes: var(--color-neutral-0); /** Homie eye whites. */
+  --color-mascot-pupils: var(--color-neutral-950); /** Homie pupils. */
+  --color-border-default: var(--color-alpha-light-10); /** Standard container edge. */
+  --color-border-strong: var(--color-alpha-light-25); /** Higher contrast container edge. */
+  --color-border-focus: var(--color-violet-300); /** Keyboard focus ring. */
+  --color-border-error: var(--color-red-400); /** Invalid input edge. */
+  --color-border-success: var(--color-green-500); /** Validated input edge. */
+  --color-border-selected: var(--color-violet-500); /** Edge of a chosen element. */
+  --color-accent-green-bold: var(--color-green-500); /** Solid green accent fill. */
+  --color-accent-green-on-bold: var(--color-green-950); /** Text and icons on accent/green/bold. */
+  --color-accent-green-subtle: var(--color-green-900); /** Low emphasis green fill. */
+  --color-accent-green-on-subtle: var(--color-green-300); /** Text and icons on accent/green/subtle. */
+  --color-accent-coral-bold: var(--color-coral-400); /** Solid coral accent fill. */
+  --color-accent-coral-on-bold: var(--color-coral-950); /** Text and icons on accent/coral/bold. */
+  --color-accent-coral-subtle: var(--color-coral-900); /** Low emphasis coral fill. */
+  --color-accent-coral-on-subtle: var(--color-coral-200); /** Text and icons on accent/coral/subtle. */
+  --color-accent-blue-bold: var(--color-blue-400); /** Solid blue accent fill. */
+  --color-accent-blue-on-bold: var(--color-blue-950); /** Text and icons on accent/blue/bold. */
+  --color-accent-blue-subtle: var(--color-blue-900); /** Low emphasis blue fill. */
+  --color-accent-blue-on-subtle: var(--color-blue-300); /** Text and icons on accent/blue/subtle. */
+  --color-accent-magenta-bold: var(--color-magenta-400); /** Solid magenta accent fill. */
+  --color-accent-magenta-on-bold: var(--color-magenta-950); /** Text and icons on accent/magenta/bold. */
+  --color-accent-magenta-subtle: var(--color-magenta-900); /** Low emphasis magenta fill. */
+  --color-accent-magenta-on-subtle: var(--color-magenta-200); /** Text and icons on accent/magenta/subtle. */
+  --color-accent-brand-bold: var(--color-violet-500); /** Solid brand violet fill. */
+  --color-accent-brand-on-bold: var(--color-violet-950); /** Text and icons on accent/brand/bold. */
+  --color-accent-brand-subtle: var(--color-violet-900); /** Low emphasis brand fill. */
+  --color-accent-brand-on-subtle: var(--color-violet-400); /** Text and icons on accent/brand/subtle. */
+  --color-pro-bold: var(--color-gold-400); /** Solid PRO fill. */
+  --color-pro-on-bold: var(--color-gold-950); /** Text and icons on pro/bold. */
+  --color-pro-subtle: var(--color-gold-900); /** Low emphasis PRO fill. */
+  --color-pro-on-subtle: var(--color-gold-300); /** Text and icons on pro/subtle. */
+  --color-pro-accent: var(--color-gold-400); /** Alias of pro/bold kept for the name used across older descriptions. */
+  --color-pro-bold-hover: var(--color-gold-300); /** Hover state for the gold Pro upsell button. */
+  --color-feedback-success-bold: var(--color-green-500); /** Solid success fill. */
+  --color-feedback-success-on-bold: var(--color-green-950); /** Text and icons on feedback/success/bold. */
+  --color-feedback-success-subtle: var(--color-green-900); /** Tinted success background. */
+  --color-feedback-success-on-subtle: var(--color-green-300); /** Text and icons on feedback/success/subtle. */
+  --color-feedback-error-bold: var(--color-red-400); /** Solid error fill. */
+  --color-feedback-error-on-bold: var(--color-red-950); /** Text and icons on feedback/error/bold. */
+  --color-feedback-error-subtle: var(--color-red-900); /** Tinted error background. */
+  --color-feedback-error-on-subtle: var(--color-red-200); /** Text and icons on feedback/error/subtle. */
+  --color-highlight-surface: var(--color-violet-900); /** Fill of a chosen element. */
+  --color-highlight-border: var(--color-violet-400); /** Edge of a chosen element on a highlight/surface fill. */
+  --color-highlight-surface-hover: var(--color-violet-800); /** Hover state for a selectable highlighted card surface. */
 }
