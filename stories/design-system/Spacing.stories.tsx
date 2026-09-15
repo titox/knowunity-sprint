@@ -25,6 +25,12 @@ const meta: Meta<typeof SpacingScale> = {
   tags: ['autodocs'],
   parameters: {
     layout: 'fullscreen',
+    docs: {
+      description: {
+        component:
+          "Gaps and padding in auto layout. The ramp is 4px-based with a 2px half-step, plus negative steps for deliberate overlap.\n\nNegative steps are for pulling elements together, such as overlapping avatars. They are not padding.\n\n(Source: Figma page \"Spacing & Sizing\", section \"Space\", node 15596:2192, Yummy__Knowie Design System.)",
+      },
+    },
   },
 };
 export default meta;

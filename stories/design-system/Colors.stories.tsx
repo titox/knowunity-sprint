@@ -42,6 +42,12 @@ const meta: Meta<typeof ColorPalette> = {
   tags: ['autodocs'],
   parameters: {
     layout: 'fullscreen',
+    docs: {
+      description: {
+        component:
+          "The semantic colour layer. Every swatch is one token, its fill bound to the live variable rather than a pasted hex, so the sheet tracks the system.\n\nGroups, as documented on the source page: background — page, surface and overlay fills. text — foreground colours for copy, links and their states. interactive — control fills across rest, hover, active, disabled and their on-colours. border — strokes for dividers, focus, selection and status. accent — decorative hue families: bold and subtle, each with its on-colour. pro — the gold Pro upsell family. feedback — success and error pairs for status messaging. highlight — selected surfaces and their hover. mascot — Knowie's fixed brand colours.\n\n(Source: Figma page \"Semantic Colour Tokens\", node 15592:1137, Yummy__Knowie Design System.)",
+      },
+    },
   },
 };
 export default meta;

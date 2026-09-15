@@ -30,6 +30,12 @@ const meta: Meta<typeof TypeScale> = {
   tags: ['autodocs'],
   parameters: {
     layout: 'fullscreen',
+    docs: {
+      description: {
+        component:
+          "The type scale. Every specimen is one of the file's text styles, shown at its real size in the production typeface.\n\nGroups, as documented on the source page: Display — oversized moments, hero numbers and splash screens, not running text. Headline — screen and section titles, bold throughout with regular cuts where a lighter title is needed. Body — reading text for questions, answers and explanations, in regular and bold. Caption — small print: labels, metadata, counts and limits.\n\n(Source: Figma page \"Type Scale\", node 15594:1577, Yummy__Knowie Design System.)",
+      },
+    },
   },
 };
 export default meta;
