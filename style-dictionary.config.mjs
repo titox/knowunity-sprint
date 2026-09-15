@@ -1,4 +1,5 @@
 import StyleDictionary from 'style-dictionary';
+import { cssVarName } from './tokens/css-var-name.mjs';
 
 // A "transform" tells Style Dictionary how to turn one token into one piece
 // of output. This one builds the CSS variable's name: it takes the token's
@@ -8,18 +9,7 @@ import StyleDictionary from 'style-dictionary';
 StyleDictionary.registerTransform({
   name: 'name/type-path-kebab',
   type: 'name',
-  transform: (token) => {
-    // Skip the type prefix when the path already starts with it
-    // (e.g. color.navy.800), so we don't end up with "color-color-navy-800".
-    const parts =
-      token.path[0] === token.$type ? token.path : [token.$type, ...token.path];
-    return parts
-      .join(' ')
-      .replace(/([a-z0-9])([A-Z])/g, '$1 $2')
-      .toLowerCase()
-      .replace(/[^a-z0-9]+/g, '-')
-      .replace(/^-+|-+$/g, '');
-  },
+  transform: (token) => cssVarName(token.$type, token.path),
 });
 
 export default {
