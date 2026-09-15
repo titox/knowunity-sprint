@@ -42,6 +42,7 @@ See `sprint-context.md` "What this is".
 - `app/layout.tsx` — root layout, fonts, HTML shell. Read before changing global page structure.
 - `app/page.tsx`, `app/page.module.css` — current home page (still the create-next-app starter). Read before editing the entry screen.
 - `app/globals.css` — global CSS resets and light/dark variables (stock, not yet aligned to `tokens/tokens.json`). Read before touching global styles.
+- `build/css/tokens.css` — generated, never edit it directly. Edit `tokens/tokens.json` and run `npm run tokens` instead.
 - `app/favicon.ico` — site icon.
 - `public/*.svg`, `public/*.png` — mascot (Knowie) expression assets and stock Next.js starter icons. Read/check before adding a new mascot state.
 - `public/images/` — empty, unused.
