@@ -128,3 +128,36 @@ export function getTypeScale(): TypeStyle[] {
 
   return entries.sort((a, b) => b.fontSizePx - a.fontSizePx);
 }
+
+export interface DimensionToken {
+  name: string;
+  varName: string;
+  valuePx: number;
+  description: string | null;
+}
+
+// Shared by getSpaceScale and getRadiusScale: both are flat groups of
+// dimension tokens with no semantic layer above them (see the "How to
+// read this sheet" note on the Figma Spacing & Sizing page), so neither
+// has a per-token $description -- same convention as the color.* primitives.
+function getDimensionGroup(groupName: string): DimensionToken[] {
+  const leaves = walk((tokens as unknown as TokenNode)[groupName], [groupName]).filter(
+    (t) => t.$type === 'dimension',
+  );
+  return leaves
+    .map((t) => ({
+      name: t.path.join('.'),
+      varName: varOf(t),
+      valuePx: (t.$value as { value: number }).value,
+      description: t.$description ?? null,
+    }))
+    .sort((a, b) => a.valuePx - b.valuePx);
+}
+
+export function getSpaceScale(): DimensionToken[] {
+  return getDimensionGroup('space');
+}
+
+export function getRadiusScale(): DimensionToken[] {
+  return getDimensionGroup('radius');
+}

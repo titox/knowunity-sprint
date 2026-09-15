@@ -55,6 +55,33 @@
   --color-alpha-dark-10: rgba(10, 10, 10, 0.102);
   --color-alpha-dark-50: rgba(10, 10, 10, 0.502);
   --color-alpha-glass-60: rgba(61, 61, 61, 0.6);
+  --dimension-space-0: 0px;
+  --dimension-space-100: 4px;
+  --dimension-space-150: 6px;
+  --dimension-space-200: 8px;
+  --dimension-space-300: 12px;
+  --dimension-space-400: 16px;
+  --dimension-space-600: 24px;
+  --dimension-space-700: 28px;
+  --dimension-space-800: 32px;
+  --dimension-space-1200: 48px;
+  --dimension-space-1600: 64px;
+  --dimension-space-2400: 96px;
+  --dimension-space-4000: 160px;
+  --dimension-space-negative-600: -24px;
+  --dimension-space-negative-400: -16px;
+  --dimension-space-negative-300: -12px;
+  --dimension-space-negative-200: -8px;
+  --dimension-space-negative-100: -4px;
+  --dimension-space-050: 2px;
+  --dimension-radius-100: 4px;
+  --dimension-radius-150: 6px;
+  --dimension-radius-200: 8px;
+  --dimension-radius-400: 16px;
+  --dimension-radius-600: 24px;
+  --dimension-radius-800: 32px;
+  --dimension-radius-900: 36px;
+  --dimension-radius-full: 9999px;
   --font-family-typography-display-l-font-family: 'Greed Standard-TRIAL'; /** Display L family. */
   --font-weight-typography-display-l-font-weight: 900; /** Display L weight (Heavy). */
   --dimension-typography-display-l-font-size: 103px; /** Display L size. */
