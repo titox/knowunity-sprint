@@ -1,15 +1,31 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import localFont from "next/font/local";
 import "./globals.css";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
-});
-
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
+// The product's real typeface. It's a *variable* font -- one file that
+// covers a whole range of weights (300 through 900 here, confirmed from
+// the font's own axis data) instead of shipping a separate file per
+// weight. `variable` below is a CSS custom property (like the ones in
+// tokens.css), not the font's variable-weight axis -- Next.js uses that
+// name to expose the font's family name to the rest of the app.
+// `weight: "300 900"` tells the browser which weight range to actually
+// render, matching what the file supports.
+const greedVF = localFont({
+  src: "./GreedCollectionVF-TRIAL.ttf",
+  variable: "--font-greed",
+  weight: "300 900",
+  // Shown in place of Greed the instant the page loads, before the font
+  // file has finished downloading, so text is never invisible while
+  // waiting -- the browser swaps to Greed the moment it's ready.
+  fallback: [
+    "-apple-system",
+    "BlinkMacSystemFont",
+    "Segoe UI",
+    "Roboto",
+    "Helvetica Neue",
+    "Arial",
+    "sans-serif",
+  ],
 });
 
 export const metadata: Metadata = {
@@ -19,7 +35,7 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
-    <html lang="en" className={`${geistSans.variable} ${geistMono.variable}`}>
+    <html lang="en" className={greedVF.variable}>
       <body>{children}</body>
     </html>
   );
