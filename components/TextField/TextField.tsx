@@ -99,22 +99,9 @@ export function TextField({
           }}
         >
           {showLeadingIcon && (
-            // Not from Figma -- same addition as ChoiceRow's leading icon,
-            // per direction: dark mode only, so the icon sits on a white
-            // circle for contrast. background.inverse/text.inverse are
-            // the existing semantic pairing for this, no new token needed.
-            <span
-              style={{
-                display: 'inline-flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                padding: 'var(--dimension-space-200)',
-                borderRadius: 'var(--dimension-radius-full)',
-                background: 'var(--color-background-inverse)',
-                color: 'var(--color-text-inverse)',
-                flexShrink: 0,
-              }}
-            >
+            // No circle here (unlike ChoiceRow) -- just the icon stroke
+            // in text.primary, per direction.
+            <span style={{ display: 'inline-flex', flexShrink: 0, color: 'var(--color-text-primary)' }}>
               <IconSlot size="300">{leadingIcon}</IconSlot>
             </span>
           )}
