@@ -23,9 +23,28 @@ const meta: Meta<typeof Cover> = {
       // its own H1 and is meant to fill the screen, so both are redundant
       // here -- this override replaces the whole page with just the
       // component itself, no header, no frame, no padding.
+      //
+      // Storybook's own docs chrome wraps everything in two more
+      // containers that survive the Unstyled block: .sbdocs-wrapper
+      // (white background, 64px/40px padding) and .sbdocs-content
+      // (centered, 1000px max-width) inside it. A negative margin can't
+      // reach the wrapper's white background -- only `position: fixed`
+      // pulls this out of that flow entirely and paints over it with the
+      // real page background, filling the iframe edge-to-edge.
       page: () => (
         <Unstyled>
-          <Cover />
+          <div
+            style={{
+              position: 'fixed',
+              inset: 0,
+              overflow: 'auto',
+              background: 'var(--color-background-page)',
+            }}
+          >
+            <div style={{ paddingTop: 150 }}>
+              <Cover />
+            </div>
+          </div>
         </Unstyled>
       ),
     },
