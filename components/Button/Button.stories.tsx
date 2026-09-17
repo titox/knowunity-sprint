@@ -16,6 +16,10 @@ function DemoIcon() {
 const meta: Meta<typeof Button> = {
   title: 'Components/Button',
   component: Button,
+  // Without this, Storybook never builds a Docs page for Button at all --
+  // the component description below would exist in source but be
+  // unreachable from the UI. Colors/Type/Spacing/Radius already have this.
+  tags: ['autodocs'],
   parameters: {
     docs: {
       description: {
