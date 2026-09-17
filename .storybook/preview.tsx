@@ -30,12 +30,15 @@ const preview: Preview = {
     },
 
     // "Backgrounds" is the addon that paints the canvas behind a story.
-    // The product is dark mode only (see design-system.md rule 10), so
-    // there is one option, not a light/dark picker.
+    // The product itself is dark mode only (see design-system.md rule
+    // 10) -- "white" here is not a light-mode product token, it's a
+    // plain inspection aid so a component (e.g. an icon-only button)
+    // can be eyeballed against a white canvas. Default stays dark.
     backgrounds: {
       default: 'dark',
       options: {
         dark: { name: 'dark', value: 'var(--color-background-page)' },
+        white: { name: 'white', value: '#ffffff' },
       },
     },
 
