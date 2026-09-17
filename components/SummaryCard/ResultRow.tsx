@@ -1,8 +1,9 @@
 import { IconSlot } from '../IconSlot/IconSlot';
 import { CheckIcon } from '../ChoiceRow/CheckIcon';
 import { XCloseIcon } from './XCloseIcon';
+import { PartialIcon } from './PartialIcon';
 
-export type ResultRowState = 'Success' | 'Error';
+export type ResultRowState = 'Success' | 'Error' | 'Partial';
 export type ResultRowPosition = 'Top' | 'Middle' | 'Bottom';
 
 export interface ResultRowProps {
@@ -29,7 +30,12 @@ const RADIUS: Record<ResultRowPosition, string> = {
 export function ResultRow({ label = 'Result row label', state = 'Success', position = 'Top', className }: ResultRowProps) {
   // feedback.success.bold, not accent.green.bold -- same hex (#00c386),
   // but that's the token Figma actually binds here. Caught on audit.
-  const iconColor = state === 'Success' ? 'var(--color-feedback-success-bold)' : 'var(--color-feedback-error-bold)';
+  const iconColor =
+    state === 'Success'
+      ? 'var(--color-feedback-success-bold)'
+      : state === 'Error'
+        ? 'var(--color-feedback-error-bold)'
+        : 'var(--color-feedback-partial-bold)';
   return (
     <div
       className={className}
@@ -48,7 +54,9 @@ export function ResultRow({ label = 'Result row label', state = 'Success', posit
         color: iconColor,
       }}
     >
-      <IconSlot size="300">{state === 'Success' ? <CheckIcon /> : <XCloseIcon />}</IconSlot>
+      <IconSlot size="300">
+        {state === 'Success' ? <CheckIcon /> : state === 'Error' ? <XCloseIcon /> : <PartialIcon />}
+      </IconSlot>
       <span
         style={{
           fontFamily: 'var(--font-family-typography-body-s-regular-font-family)',

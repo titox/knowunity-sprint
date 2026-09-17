@@ -246,6 +246,10 @@
   --color-feedback-error-on-bold: var(--color-red-950); /** Text and icons on feedback/error/bold. */
   --color-feedback-error-subtle: var(--color-red-900); /** Tinted error background. */
   --color-feedback-error-on-subtle: var(--color-red-200); /** Text and icons on feedback/error/subtle. */
+  --color-feedback-partial-bold: var(--color-magenta-400); /** Solid partial-credit fill. Magenta was chosen to avoid colliding with existing meanings: green=success, red=error, coral=revealed, blue=hinted. */
+  --color-feedback-partial-on-bold: var(--color-magenta-950); /** Text and icons on feedback/partial/bold. */
+  --color-feedback-partial-subtle: var(--color-magenta-900); /** Tinted partial-credit background. */
+  --color-feedback-partial-on-subtle: var(--color-magenta-200); /** Text and icons on feedback/partial/subtle. */
   --color-highlight-surface: var(--color-violet-900); /** Fill of a chosen element. */
   --color-highlight-border: var(--color-violet-400); /** Edge of a chosen element on a highlight/surface fill. */
   --color-highlight-surface-hover: var(--color-violet-800); /** Hover state for a selectable highlighted card surface. */

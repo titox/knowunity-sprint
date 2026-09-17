@@ -37,3 +37,13 @@ export const MixedStates: Story = {
     ],
   },
 };
+
+export const WithPartial: Story = {
+  args: {
+    rows: [
+      { label: 'La figura de Jaime I', state: 'Success' },
+      { label: 'El Cantar de Mio Cid', state: 'Partial' },
+      { label: 'La Reconquista', state: 'Error' },
+    ],
+  },
+};
