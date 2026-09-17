@@ -1,32 +1,14 @@
 import type { Metadata } from "next";
-import localFont from "next/font/local";
 import "./globals.css";
 
-// The product's real typeface. It's a *variable* font -- one file that
-// covers a whole range of weights (300 through 900 here, confirmed from
-// the font's own axis data) instead of shipping a separate file per
-// weight. `variable` below is a CSS custom property (like the ones in
-// tokens.css), not the font's variable-weight axis -- Next.js uses that
-// name to expose the font's family name to the rest of the app.
-// `weight: "300 900"` tells the browser which weight range to actually
-// render, matching what the file supports.
-const greedVF = localFont({
-  src: "./GreedCollectionVF-TRIAL.ttf",
-  variable: "--font-greed",
-  weight: "300 900",
-  // Shown in place of Greed the instant the page loads, before the font
-  // file has finished downloading, so text is never invisible while
-  // waiting -- the browser swaps to Greed the moment it's ready.
-  fallback: [
-    "-apple-system",
-    "BlinkMacSystemFont",
-    "Segoe UI",
-    "Roboto",
-    "Helvetica Neue",
-    "Arial",
-    "sans-serif",
-  ],
-});
+// The Greed font itself is loaded via a plain @font-face in globals.css,
+// not next/font/local -- every component's font-family comes from a
+// design token (the literal string 'Greed Standard-TRIAL'), and
+// next/font/local generates its own different family name that those
+// tokens have no way to reference. A plain @font-face targeting that
+// exact literal name is what actually makes the tokens resolve, and
+// works in both the real app and Storybook (which doesn't run through
+// Next's font pipeline at all).
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -35,7 +17,7 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
-    <html lang="en" className={greedVF.variable}>
+    <html lang="en">
       <body>{children}</body>
     </html>
   );

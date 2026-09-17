@@ -25,7 +25,7 @@ See `sprint-context.md` "What this is".
 - Never free-scale the mascot or resize an `iconSlot` directly — rules 7–8.
 - Never fake a component state (dim a button by hand, overlay a spinner) — rule 9.
 - Never build anything on the `sprint-context.md` "Not building" list.
-- The UI font is Greed VF, loaded via `next/font/local` in the root layout (`app/layout.tsx`). Never treat it as an installed system font.
+- The UI font is Greed VF, loaded via a plain `@font-face` in `app/globals.css` (file lives at `public/fonts/GreedCollectionVF-TRIAL.ttf`), not `next/font/local` -- every component's font-family comes from a design token (the literal string `'Greed Standard-TRIAL'`), and only a same-named `@font-face` makes that resolve, in both the app and Storybook. Never treat it as an installed system font.
 
 ## Storybook
 
