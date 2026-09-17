@@ -1,21 +1,5 @@
 @import "../build/css/tokens.css";
-
-/* Every token's font-family value (see tokens.css) is the literal string
-   'Greed Standard-TRIAL', copied straight from Figma -- not a name
-   Next.js's font loader generates. This @font-face is what actually
-   makes that name resolve to the real font file. Without it, every
-   component's font-family: var(--font-family-typography-...) falls back
-   silently to the browser's default sans-serif, which is why Greed
-   wasn't rendering in most component stories -- Storybook doesn't run
-   through next/font at all, and even in the real app, only this file's
-   own body rule (below) had ever been wired to the font Next.js loaded
-   under its own generated name. One @font-face here fixes both. */
-@font-face {
-  font-family: "Greed Standard-TRIAL";
-  src: url("/fonts/GreedCollectionVF-TRIAL.ttf") format("truetype-variations");
-  font-weight: 300 900;
-  font-display: swap;
-}
+@import "../styles/fonts.css";
 
 :root {
   --background: #ffffff;

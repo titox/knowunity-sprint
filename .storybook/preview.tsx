@@ -6,6 +6,13 @@ import type { Preview } from '@storybook/nextjs-vite'
 // app/globals.css makes them available inside the real app.
 import '../build/css/tokens.css'
 
+// The tokens above reference the font by name ('Greed Standard-TRIAL'),
+// but that name only resolves to the real font file if an @font-face
+// declares it. app/globals.css does that for the real app, but Storybook
+// never loads globals.css, so this needs its own import here -- without
+// it every story's text silently falls back to the browser default.
+import '../styles/fonts.css'
+
 const preview: Preview = {
   parameters: {
     controls: {

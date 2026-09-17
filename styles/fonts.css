@@ -1,0 +1,13 @@
+/* Every token's font-family value (see build/css/tokens.css) is the
+   literal string 'Greed Standard-TRIAL', copied straight from Figma --
+   not a name Next.js's font loader would generate. This @font-face is
+   what makes that literal name actually resolve to the real font file.
+   Imported separately by both app/globals.css (the real app) and
+   .storybook/preview.tsx (Storybook, which never loads globals.css at
+   all) so neither context is silently missing it. */
+@font-face {
+  font-family: "Greed Standard-TRIAL";
+  src: url("/fonts/GreedCollectionVF-TRIAL.ttf") format("truetype-variations");
+  font-weight: 300 900;
+  font-display: swap;
+}
