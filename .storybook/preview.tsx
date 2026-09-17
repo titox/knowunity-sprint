@@ -15,6 +15,15 @@ import '../styles/fonts.css'
 
 const preview: Preview = {
   parameters: {
+    // Sidebar order: the Cover page lands first (it's the intended entry
+    // point), then Design System (foundations), then Components. Every
+    // group not listed here keeps its default alphabetical order.
+    options: {
+      storySort: {
+        order: ['Cover', 'Design System', 'Components'],
+      },
+    },
+
     controls: {
       matchers: {
        color: /(background|color)$/i,
