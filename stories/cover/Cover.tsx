@@ -322,7 +322,7 @@ export function Cover() {
                   display: 'flex',
                   alignItems: 'center',
                   justifyContent: 'center',
-                  minHeight: 96,
+                  height: 122,
                   padding: 'var(--dimension-space-200)',
                   background: 'var(--color-background-page)',
                   borderRadius: 'var(--dimension-radius-200)',
