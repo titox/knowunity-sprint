@@ -27,7 +27,9 @@ const RADIUS: Record<ResultRowPosition, string> = {
 };
 
 export function ResultRow({ label = 'Result row label', state = 'Success', position = 'Top', className }: ResultRowProps) {
-  const iconColor = state === 'Success' ? 'var(--color-accent-green-bold)' : 'var(--color-feedback-error-bold)';
+  // feedback.success.bold, not accent.green.bold -- same hex (#00c386),
+  // but that's the token Figma actually binds here. Caught on audit.
+  const iconColor = state === 'Success' ? 'var(--color-feedback-success-bold)' : 'var(--color-feedback-error-bold)';
   return (
     <div
       className={className}

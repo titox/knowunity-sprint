@@ -67,6 +67,11 @@ export function MascotSlot({ size = 'XL', expression = 'standby', className }: M
         height: `var(${v})`,
         position: 'relative',
         flexShrink: 0,
+        // The real Figma component insets its artwork by space-300 (12px)
+        // inside a ".mascotSlotBase" wrapper -- the image doesn't fill the
+        // box edge-to-edge. Missed on the first pass, caught on audit.
+        padding: 'var(--dimension-space-300)',
+        boxSizing: 'border-box',
       }}
     >
       <Image
