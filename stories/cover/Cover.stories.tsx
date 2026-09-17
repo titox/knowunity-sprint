@@ -1,4 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/nextjs-vite';
+import { Unstyled } from '@storybook/addon-docs/blocks';
 import { Cover } from './Cover';
 
 const meta: Meta<typeof Cover> = {
@@ -16,10 +17,17 @@ const meta: Meta<typeof Cover> = {
   parameters: {
     layout: 'fullscreen',
     docs: {
-      description: {
-        component:
-          'The landing page for this Storybook. One card per component (not per story/variant) -- each card is a live, real rendering of that component, not a static screenshot, so it can never drift out of sync. Click a card to open that component\'s Docs page.',
-      },
+      // The default autodocs page renders a Title/Subtitle/Description
+      // header, then the story wrapped in a padded, bordered Canvas frame
+      // (built for inspecting a component in isolation). Cover already has
+      // its own H1 and is meant to fill the screen, so both are redundant
+      // here -- this override replaces the whole page with just the
+      // component itself, no header, no frame, no padding.
+      page: () => (
+        <Unstyled>
+          <Cover />
+        </Unstyled>
+      ),
     },
   },
 };
