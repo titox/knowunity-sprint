@@ -46,7 +46,29 @@ export function ChoiceRow({ title = 'Speak', caption = 'Explain it loud', icon, 
           }}
         />
       )}
-      <IconSlot size="400">{icon}</IconSlot>
+      {/*
+        Not from Figma -- neither choiceRow nor textField has an icon
+        background chip there, just a bare icon on the row's own
+        background. Added per direction: since the product is dark mode
+        only, the leading icon sits on a white circle for contrast.
+        background.inverse/text.inverse are the existing semantic pairing
+        for "dark content on a light surface" (design-system.md), so no
+        new token was needed.
+      */}
+      <span
+        style={{
+          display: 'inline-flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          padding: 'var(--dimension-space-200)',
+          borderRadius: 'var(--dimension-radius-full)',
+          background: 'var(--color-background-inverse)',
+          color: 'var(--color-text-inverse)',
+          flexShrink: 0,
+        }}
+      >
+        <IconSlot size="400">{icon}</IconSlot>
+      </span>
       <div style={{ flex: 1, minWidth: 0 }}>
         <TextBlock variant="M" title={title} caption={caption} showCaption />
       </div>
