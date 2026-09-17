@@ -63,6 +63,28 @@ export interface ColorGroup {
   tokens: ColorToken[];
 }
 
+// The primitive color layer -- raw hue/step values with no meaning
+// attached. Reading this directly is fine for a reference sheet; binding a
+// *component* straight to one of these is what design-system.md rule 5
+// forbids. "Homie" is excluded: it's a leftover raw-value duplicate, not a
+// real hue ramp (see the semantic-groups comment below).
+export function getColorPrimitives(): ColorGroup[] {
+  const leaves = walk((tokens as unknown as TokenNode).color, ['color']).filter(
+    (t) => t.$type === 'color',
+  );
+  const hues = Array.from(new Set(leaves.map((t) => t.path[1])));
+  return hues.map((hue) => ({
+    name: hue,
+    tokens: leaves
+      .filter((t) => t.path[1] === hue)
+      .map((t) => ({
+        name: t.path.join('.'),
+        varName: varOf(t),
+        description: t.$description ?? null,
+      })),
+  }));
+}
+
 export function getColorGroups(): ColorGroup[] {
   return SEMANTIC_COLOR_GROUPS.map((groupName) => {
     const leaves = walk(

@@ -1,9 +1,8 @@
 import type { Meta, StoryObj } from '@storybook/nextjs-vite';
-import { getColorGroups } from './read-tokens';
+import { getColorGroups, getColorPrimitives, type ColorGroup } from './read-tokens';
 import { ColorSwatch } from './ColorSwatch';
 
-function ColorPalette() {
-  const groups = getColorGroups();
+function ColorPalette({ groups }: { groups: ColorGroup[] }) {
   return (
     <div
       style={{
@@ -42,18 +41,34 @@ const meta: Meta<typeof ColorPalette> = {
   tags: ['autodocs'],
   parameters: {
     layout: 'fullscreen',
-    docs: {
-      description: {
-        component:
-          "The semantic colour layer. Every swatch is one token, its fill bound to the live variable rather than a pasted hex, so the sheet tracks the system.\n\nGroups, as documented on the source page: background — page, surface and overlay fills. text — foreground colours for copy, links and their states. interactive — control fills across rest, hover, active, disabled and their on-colours. border — strokes for dividers, focus, selection and status. accent — decorative hue families: bold and subtle, each with its on-colour. pro — the gold Pro upsell family. feedback — success and error pairs for status messaging. highlight — selected surfaces and their hover. mascot — Knowie's fixed brand colours.\n\n(Source: Figma page \"Semantic Colour Tokens\", node 15592:1137, Yummy__Knowie Design System.)",
-      },
-    },
   },
 };
 export default meta;
 
 type Story = StoryObj<typeof ColorPalette>;
 
-export const AllColors: Story = {
-  render: () => <ColorPalette />,
+export const Semantic: Story = {
+  args: { groups: getColorGroups() },
+  render: (args) => <ColorPalette {...args} />,
+  parameters: {
+    docs: {
+      description: {
+        story:
+          "The semantic colour layer. Every swatch is one token, its fill bound to the live variable rather than a pasted hex, so the sheet tracks the system.\n\nGroups, as documented on the source page: background — page, surface and overlay fills. text — foreground colours for copy, links and their states. interactive — control fills across rest, hover, active, disabled and their on-colours. border — strokes for dividers, focus, selection and status. accent — decorative hue families: bold and subtle, each with its on-colour. pro — the gold Pro upsell family. feedback — success and error pairs for status messaging. highlight — selected surfaces and their hover. mascot — Knowie's fixed brand colours.\n\n(Source: Figma page \"Semantic Colour Tokens\", node 15592:1137, Yummy__Knowie Design System.)\n\ndesign-system.md rule 5: components must consume this layer, never the primitives below it directly.",
+      },
+    },
+  },
+};
+
+export const Primitives: Story = {
+  args: { groups: getColorPrimitives() },
+  render: (args) => <ColorPalette {...args} />,
+  parameters: {
+    docs: {
+      description: {
+        story:
+          'The primitive colour layer -- raw hue/step values (navy, neutral, violet, green, red, coral, blue, magenta, gold, and the alpha ramp) with no meaning attached. This is the ramp every Semantic token above resolves to.\n\nThere is no dedicated Figma page for this layer -- it comes straight from the `color` group in tokens.json, same convention as the Space/Radius scales (no per-token description, since these are raw numbers/hex with no semantic layer above them).\n\ndesign-system.md rule 5: reference only. Never bind a component straight to one of these -- go through the matching Semantic token instead.',
+      },
+    },
+  },
 };
