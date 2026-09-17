@@ -41,7 +41,7 @@ const meta: Meta<typeof Cover> = {
               background: 'var(--color-background-page)',
             }}
           >
-            <div style={{ paddingTop: 100 }}>
+            <div style={{ paddingTop: 75 }}>
               <Cover />
             </div>
           </div>
