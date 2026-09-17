@@ -80,6 +80,11 @@
   --dimension-icon-250: 20px;
   --dimension-icon-300: 24px;
   --dimension-icon-400: 32px;
+  --dimension-illustration-500: 40px;
+  --dimension-illustration-800: 64px;
+  --dimension-illustration-1500: 120px;
+  --dimension-illustration-2500: 200px;
+  --dimension-illustration-4000: 320px;
   --dimension-radius-100: 4px;
   --dimension-radius-150: 6px;
   --dimension-radius-200: 8px;

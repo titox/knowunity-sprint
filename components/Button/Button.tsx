@@ -26,6 +26,8 @@ export interface ButtonProps {
   rightIcon?: ReactNode;
   onClick?: () => void;
   className?: string;
+  /** Layout-only escape hatch for a composing parent (e.g. ButtonGroup stretching this to full width or flex:1). Never used to override a token-driven visual value. */
+  style?: CSSProperties;
 }
 
 // Icon container size per button size, from the icon.* token scale.
@@ -119,6 +121,7 @@ export function Button({
   rightIcon,
   onClick,
   className,
+  style: styleOverride,
 }: ButtonProps) {
   const isDisabled = state === 'Disabled';
   const isLoading = state === 'Loading';
@@ -186,7 +189,7 @@ export function Button({
     <button
       type="button"
       className={className}
-      style={style}
+      style={styleOverride ? { ...style, ...styleOverride } : style}
       disabled={isDisabled || isLoading}
       aria-busy={isLoading || undefined}
       onClick={onClick}
