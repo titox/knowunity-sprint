@@ -16,6 +16,9 @@ const meta: Meta<typeof MicButton> = {
   argTypes: {
     state: { control: 'select', options: ['Default', 'Pressed', 'Disabled', 'Loading', 'Listening'] },
   },
+  args: {
+    'aria-label': 'Speak',
+  },
 };
 export default meta;
 
@@ -24,5 +27,5 @@ type Story = StoryObj<typeof MicButton>;
 export const Default: Story = { args: { state: 'Default' } };
 export const Pressed: Story = { args: { state: 'Pressed' } };
 export const Disabled: Story = { args: { state: 'Disabled' } };
-export const Loading: Story = { args: { state: 'Loading' } };
-export const Listening: Story = { args: { state: 'Listening' } };
+export const Loading: Story = { args: { state: 'Loading', 'aria-label': 'Listening to your answer' } };
+export const Listening: Story = { args: { state: 'Listening', 'aria-label': 'Stop speaking' } };

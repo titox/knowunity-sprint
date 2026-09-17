@@ -40,7 +40,7 @@ export function RadiusBox({ name, varName, description }: RadiusBoxProps) {
           style={{
             fontSize: 12,
             marginTop: 2,
-            color: description ? 'var(--color-text-tertiary)' : 'var(--color-text-disabled)',
+            color: 'var(--color-text-tertiary)', // text.disabled failed color-contrast (3.77:1, needs 4.5:1) -- fixed by axe audit, not the right token for this caption anyway (it's a documentation note, not a disabled control)
             fontStyle: description ? 'normal' : 'italic',
           }}
         >

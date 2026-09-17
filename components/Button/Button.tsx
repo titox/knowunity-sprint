@@ -192,6 +192,11 @@ export function Button({
       style={styleOverride ? { ...style, ...styleOverride } : style}
       disabled={isDisabled || isLoading}
       aria-busy={isLoading || undefined}
+      // Loading replaces the visible label with a spinner, which left the
+      // button with no accessible name at all (axe: button-name, critical).
+      // The label is still the right name for what the button does, so it
+      // stays as the accessible name even while its text is hidden.
+      aria-label={isLoading ? cta : undefined}
       onClick={onClick}
     >
       {isLoading ? (

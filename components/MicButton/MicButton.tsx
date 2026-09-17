@@ -10,6 +10,13 @@ export interface MicButtonProps {
    * not a real :active/:hover pseudo-class (design-system.md rule 9).
    */
   state?: MicButtonState;
+  /**
+   * Required, not optional: this button carries no visible label at any
+   * state, so without it the control has no accessible name at all
+   * (axe: button-name, critical -- failed on every state before this).
+   * Same requirement as ButtonIcon's aria-label.
+   */
+  'aria-label': string;
   onClick?: () => void;
   className?: string;
 }
@@ -31,7 +38,7 @@ const RING_OPACITY = 0.25;
 const PRESSED_OVERLAY: CSSProperties['backgroundImage'] =
   'linear-gradient(var(--color-interactive-pressed), var(--color-interactive-pressed))';
 
-export function MicButton({ state = 'Default', onClick, className }: MicButtonProps) {
+export function MicButton({ state = 'Default', onClick, className, ...rest }: MicButtonProps) {
   const isDisabled = state === 'Disabled';
   const isLoading = state === 'Loading';
   const isPressed = state === 'Pressed';
@@ -68,7 +75,15 @@ export function MicButton({ state = 'Default', onClick, className }: MicButtonPr
   };
 
   return (
-    <button type="button" className={className} style={style} disabled={isDisabled} aria-busy={isLoading || undefined} onClick={onClick}>
+    <button
+      type="button"
+      className={className}
+      style={style}
+      disabled={isDisabled}
+      aria-busy={isLoading || undefined}
+      onClick={onClick}
+      {...rest}
+    >
       {isListening && (
         <span
           aria-hidden="true"
