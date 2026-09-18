@@ -22,15 +22,17 @@ State shared across all of these lives in one session-level store (a reducer/con
 - **Leads to:** Result, automatically, once the mock verdict for this attempt resolves.
 - **Figma:** node `15686:7712`, "3 Working, never blank."
 
-### 2. Mic permission primer — `app/recall/permission/page.tsx`
+### 2. Mic permission primer (also this loop's first-run intro) — `app/recall/permission/page.tsx`
 *Built second: same low component count as Processing, but adds the first real branching (two buttons, two destinations) and a real Figma source, so it's the cheapest place to test routing between two pages.*
+
+**This screen does double duty as the brief's F5 "first encounter" intro.** `voice-ux.md` says so explicitly, twice: "that screen *is* your primer" (Principle 3) and again in "How this connects back to the brief" ("F5 (first-encounter intro): that screen *is* your permission primer"). An earlier draft of this file listed Intro as its own separate screen before Choice — that was wrong per voice-ux.md's own wording and has been merged in here instead. The screen's copy now explains *why* speaking out loud helps ("Saying an answer out loud helps it stick better than just reading it back") alongside the mic ask itself, not just the mechanic.
 - **States:** single static state.
 - **Components:** `MascotSlot`, plain title/caption text, `ButtonGroup` (variant=Vertical, size=L) with a Primary "Allow microphone" and Tertiary "Not now".
 - **What the student can do:** tap Allow (triggers the real browser permission prompt) or Not now.
 - **Leads to:**
   - Allow + granted → Choice (speak or write), pre-selected toward voice.
   - Allow + denied, or Not now → Permission denied.
-- **Figma:** node `15740:10202`, "12 Mic permission primer" (drafted this session, plain-text version after the Pro-card fix — see Out of scope note on the `pro` card below).
+- **Figma:** node `15740:10202`, "12 Mic permission primer" (drafted this session, plain-text version after the Pro-card fix — see Out of scope note on the `pro` card below; copy updated again to fold in the intro/why-it-works content).
 
 ### 3. Permission denied → text — `app/recall/permission/denied/page.tsx`
 *Same shape and component set as screen 2 — building it right after means you're reusing a pattern you just proved works, not inventing a new one.*
@@ -40,15 +42,7 @@ State shared across all of these lives in one session-level store (a reducer/con
 - **Leads to:** Choice (speak or write), pre-selected toward text — since denied routes into typing per `sprint-context.md`, the choice step still runs so the student sees committed state, not silently skipped.
 - **Figma:** node `15740:10221`, "13 Permission denied to text."
 
-### 4. Intro — `app/recall/intro/page.tsx`
-*Built next, not first: it's small (`MascotSlot` + text + one `Button`), but it has no Figma source, so any problem here could be "the content isn't decided yet" rather than "the components don't fit" — cheaper to discover that ambiguity after 3 real screens already prove the pattern works.*
-- **States:** single static state, no variants.
-- **Components:** `MascotSlot`, plain title/caption text (same no-card pattern as screens 2–3), `Button` (Primary).
-- **What the student can do:** read the explanation, tap the single CTA.
-- **Leads to:** Permission primer.
-- **Note:** no Figma source exists for this screen yet (see Open). Content/copy is a placeholder until designed.
-
-### 5. Choice: speak or write — `app/recall/choice/page.tsx`
+### 4. Choice: speak or write — `app/recall/choice/page.tsx`
 *First screen with real selection state (`ChoiceRow`'s Default/Selected), still small and fully Figma-backed.*
 - **States:** single static state (Default / Selected per `ChoiceRow`'s own two states).
 - **Components:** `MascotSlot`, `TextBlock` (title + caption for the term-1 prompt), `ChoiceRow` ×2 (Speak / Write), `Button` (Tertiary, "Skip for now").
@@ -56,7 +50,7 @@ State shared across all of these lives in one session-level store (a reducer/con
 - **Leads to:** Answer (in the chosen mode) for term 1, or Result (Skipped) if skipped.
 - **Figma:** node `15686:7611`, "1 Two equal ways: speak or type."
 
-### 6. Answer — text mode — `app/recall/answer/page.tsx`
+### 5. Answer — text mode — `app/recall/answer/page.tsx`
 *Built before voice mode on purpose: `TextField` has no external dependency, unlike voice's Web Speech API question (see Open). Get the screen's shell, skip logic, and submit-to-Processing flow working on the simpler mode first.*
 - **States:** `Default` → focused/typing (`TextField`'s own Focused/Filled) → submit.
 - **Components:** `TextField` (Default/Focused/Filled), `Chips` (term counter), `MascotSlot`, `Button` (Tertiary, "Skip for now"), a "switch to speaking" text link (per `sprint-context.md`'s locked mid-loop label).
@@ -64,23 +58,23 @@ State shared across all of these lives in one session-level store (a reducer/con
 - **Leads to:** Processing (on send), Answer — voice mode (on switch), Result (Skipped) (on skip).
 - **Figma:** node `15686:7972`, "10 Switch to typing any time."
 
-### 7. Answer — voice mode — same route, `Listening` state
-*Same route as screen 6, added once the shell is proven. This is where the Web Speech API spike result (Open) actually gets consumed — build this after the spike, not before.*
+### 6. Answer — voice mode — same route, `Listening` state
+*Same route as screen 5, added once the shell is proven. This is where the Web Speech API spike result (Open) actually gets consumed — build this after the spike, not before.*
 - **States:** `Default` (idle, mic ready) → `Listening` → submit.
 - **Components:** `RecordingControls` (components/MicButton/RecordingControls.tsx — pairs `MicButton` with a Tertiary `ButtonIcon` cancel action), `Chips`, `MascotSlot`, `Button` (Tertiary, "Skip for now"), "switch to typing" link.
 - **What the student can do:** record and send; cancel and re-record (free — doesn't consume a hint-ladder attempt, per this session's decision); switch to text mode; skip the term.
 - **Leads to:** Processing (on send), Answer — text mode (on switch), Result (Skipped) (on skip).
 - **Figma:** nodes `15686:7676` ("2 Answers by voice or text") and `15686:7936` ("9 Say it back..." reuses the same pattern).
 
-### 8. Say it back — `app/recall/say-it-back/page.tsx`
-*Same components as screen 7 (it's the same recording pattern with a different exit condition), so it's cheap once 7 exists — but it depends on Result existing to be reachable, hence built after.*
+### 7. Say it back — `app/recall/say-it-back/page.tsx`
+*Same components as screen 6 (it's the same recording pattern with a different exit condition), so it's cheap once 6 exists — but it depends on Result existing to be reachable, hence built after.*
 - **States:** same shape as Answer's voice mode (`Default` → `Listening` → submit), offered only after a hinted pass or a Revealed result.
 - **Components:** `RecordingControls`, `MascotSlot`, plain title/caption text for the "repeat it and it becomes a pass" locked copy.
 - **What the student can do:** record an unaided repeat, or decline and move on.
 - **Leads to:** Result, either upgraded to unaided (on a clean repeat) or unchanged (on a miss — per this session's decision, a miss here doesn't re-loop, the prior result just stands).
 - **Figma:** node `15686:7936`, "9 Say it back to upgrade a miss."
 
-### 9. Result & recovery — `app/recall/result/page.tsx`
+### 8. Result & recovery — `app/recall/result/page.tsx`
 *Built second-to-last: the most states (5) and the most branching of any screen, so it's cheapest to build once every screen it can lead to or receive from (Answer, Say it back, Processing) already exists and works.*
 - **States:** `Pass`, `Partial`, `Fail` (first miss → hint 1), `Fail` (second miss → hint 2), `Revealed`. One route, state driven by the term's position in the session store — same pattern as any Storybook component with multiple states (e.g. `MicButton`).
 - **Components:** `ResultRow` (components/SummaryCard/ResultRow.tsx, including the `Partial` state added this session), `Chips`, `Button` (Primary "Continue"/"Next", Secondary "Say it back" where offered, Tertiary "Skip"), transcript display (real text for both voice and text input, per this session's decision — voice transcript depends on the Web Speech API spike, see Open).
@@ -93,7 +87,7 @@ State shared across all of these lives in one session-level store (a reducer/con
 - **Leads to:** Answer (same term, re-attempt), Say it back, Answer for the next term, or Summary.
 - **Figma:** nodes `15686:7740` (4 pass), `15686:7769` (5 pass 2nd round), `15686:7800` (6 partial), `15686:7842` (7 Fail), `15686:7906` (8 reveal).
 
-### 10. Session summary — `app/recall/summary/page.tsx`
+### 9. Session summary — `app/recall/summary/page.tsx`
 *Built last: it needs the full 3-term history to have anything real to show, so there's nothing to build against until every other screen produces that history correctly.*
 - **States:** single state, content driven by the full 3-term result history.
 - **Components:** `SummaryCard` (components/SummaryCard/SummaryCard.tsx), `ResultRowGroup`, `StatusRow` (per-term chips: Green Unaided / Blue Hinted / Coral Revealed / Neutral Skipped), `ButtonGroup` (Vertical, L: Primary "Continue", Secondary "Try again").
@@ -129,9 +123,9 @@ State shared across all of these lives in one session-level store (a reducer/con
 
 ## Open (undecided — not picked here)
 
-- **Web Speech API on iOS Safari**: unverified. The plan is to spike it before building screen 7 (Answer — voice mode); if it doesn't work, transcript falls back to a placeholder-per-term instead of the student's real words. Blocks finalizing screens 7, 8, and the transcript display in screen 9.
+- **Web Speech API on iOS Safari**: unverified. The plan is to spike it before building screen 6 (Answer — voice mode); if it doesn't work, transcript falls back to a placeholder-per-term instead of the student's real words. Blocks finalizing screens 6, 7, and the transcript display in screen 8.
 - **Permission model**: whether microphone access (`getUserMedia`) and speech-recognition access are actually gated by the same browser permission prompt, or two separate ones, is unconfirmed on the target platform. This could change screens 2–3's logic (single gate vs. two).
-- **Intro screen design**: no Figma source exists for it yet — screen 4's content and layout above are placeholders, not a designed screen.
+- ~~**Intro screen design**: no Figma source exists for it yet~~ — resolved: Intro was never its own screen per `voice-ux.md` (see screen 2's note). Closed, not open.
 - **Progress indicator mapping**: decided to track term-level progress only (0/33/66/100 via the existing 5-step `ProgressIndicator`), but this means the bar won't move during a term's hint/retry cycle — not revisited since first raised.
 
 ## Verification: how to check this is done and correct, end to end

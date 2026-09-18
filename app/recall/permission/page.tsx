@@ -4,6 +4,10 @@ import { useRouter } from 'next/navigation';
 import { MascotSlot } from '@/components/MascotSlot/MascotSlot';
 import { ButtonGroup } from '@/components/ButtonGroup/ButtonGroup';
 
+// This screen also serves as the brief's F5 "first-encounter intro" --
+// voice-ux.md says so explicitly ("that screen IS your primer"), so
+// there's no separate Intro route. The copy below covers both the why
+// (retrieval practice) and the what (the mic ask) in one screen.
 export default function MicPermissionPrimerPage() {
   const router = useRouter();
 
@@ -76,7 +80,8 @@ export default function MicPermissionPrimerPage() {
               color: 'var(--color-text-primary)',
             }}
           >
-            Say your answer out loud and we&apos;ll listen. You can switch to typing any time.
+            Saying an answer out loud helps it stick better than just reading it back. Say your answer and
+            we&apos;ll listen. You can switch to typing any time.
           </p>
         </div>
       </div>
