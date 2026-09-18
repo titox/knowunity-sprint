@@ -1,22 +1,32 @@
 'use client';
 
-import { Suspense, useState } from 'react';
+import { Suspense, useRef, useState } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { MascotSlot } from '@/components/MascotSlot/MascotSlot';
 import { TextField } from '@/components/TextField/TextField';
 import { ButtonGroup } from '@/components/ButtonGroup/ButtonGroup';
 import { Button } from '@/components/Button/Button';
+import { RecordingControls } from '@/components/MicButton/RecordingControls';
+import { SCREEN_MAX_WIDTH } from '../layout-constants';
 
-// Same content shown on this state in Figma ("10 Switch to typing any
-// time") -- a different moment in the loop than Choice's term-1
-// prompt, not an inconsistency. Real per-term mock scripts are still
-// an open content decision (SPEC.md verification step 6).
-const PROMPT = 'Both ended in new kingdoms, each under its own fueros.';
+// Text mode's prompt (Figma "10 Switch to typing any time"). Voice
+// mode's own Figma source ("2 Answers by voice or text") actually
+// shows a later-term moment -- a "Correct" acknowledgment chip for the
+// PREVIOUS term glued onto the NEXT term's prompt. That chip is
+// Result's job, not Answer's (SPEC.md doesn't give Answer any
+// acknowledgment content, and Answer can't know the previous verdict
+// in isolation) -- dropped here, kept only the actual next-prompt text.
+// Real per-term mock scripts are still an open content decision
+// (SPEC.md verification step 6).
+const TEXT_PROMPT = 'Both ended in new kingdoms, each under its own fueros.';
+const VOICE_PROMPT = 'Now go one step deeper. What did the campaigns in Mallorca (1229) and Valencia (1238) have in common?';
 
-// Voice mode (SPEC.md screen 6) gets added to this same route later,
-// keyed off ?mode=voice -- per SPEC.md's own plan for this screen
-// ("Same route as screen 5, added once the shell is proven"). Only
-// text mode exists so far, so mode isn't branched on yet.
+// Fallback used when the Web Speech API is unavailable or errors --
+// per this project's own decision ("test it first... if it's broken/
+// absent, fall back to a per-term placeholder transcript"). Real
+// content, not finalized (same open item as the prompts above).
+const PLACEHOLDER_TRANSCRIPT = 'They were both campaigns that ended in new territory for the crown.';
+
 export default function AnswerPage() {
   return (
     <Suspense fallback={null}>
@@ -26,25 +36,85 @@ export default function AnswerPage() {
 }
 
 function AnswerPageContent() {
-  const router = useRouter();
   const searchParams = useSearchParams();
-  void searchParams; // read once voice mode exists on this route
+  const mode = searchParams.get('mode') === 'voice' ? 'voice' : 'text';
 
+  if (mode === 'voice') return <VoiceAnswer />;
+  return <TextAnswer />;
+}
+
+function shellStyle(): React.CSSProperties {
+  return {
+    minHeight: '100vh',
+    width: '100%',
+    maxWidth: SCREEN_MAX_WIDTH,
+    margin: '0 auto',
+    background: 'var(--color-background-page)',
+    colorScheme: 'dark',
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
+    gap: 'var(--dimension-space-300)',
+    paddingInline: 'var(--dimension-space-400)',
+    paddingTop: 'var(--dimension-space-600)',
+    boxSizing: 'border-box',
+  };
+}
+
+function promptCardStyle(): React.CSSProperties {
+  return {
+    width: '100%',
+    background: 'var(--color-background-surface)',
+    borderRadius: 'var(--dimension-radius-400)',
+    padding: 'var(--dimension-space-400)',
+    boxSizing: 'border-box',
+  };
+}
+
+function promptTextStyle(): React.CSSProperties {
+  return {
+    margin: 0,
+    fontFamily: 'var(--font-family-typography-body-m-regular-font-family)',
+    fontWeight: 'var(--font-weight-typography-body-m-regular-font-weight)',
+    fontSize: 'var(--dimension-typography-body-m-regular-font-size)',
+    lineHeight: 'var(--dimension-typography-body-m-regular-line-height)',
+    color: 'var(--color-text-primary)',
+  };
+}
+
+function bottomAreaStyle(): React.CSSProperties {
+  return {
+    flex: 1,
+    minHeight: 0,
+    display: 'flex',
+    flexDirection: 'column',
+    justifyContent: 'flex-end',
+    alignItems: 'center',
+    gap: 'var(--dimension-space-300)',
+    paddingTop: 'var(--dimension-space-400)',
+    paddingBottom: 'var(--dimension-space-1200)',
+    width: '100%',
+  };
+}
+
+function TextAnswer() {
+  const router = useRouter();
   const [value, setValue] = useState('');
-  const [focused, setFocused] = useState(false);
 
-  const variant = value ? 'Filled' : focused ? 'Focused' : 'Default';
+  // TextField exposes no onFocus/onBlur -- its "Focused" variant can't
+  // be driven by a real focus event here, only by whether there's text.
+  // Not something to fake by hand (design-system.md rule 9); flagged in
+  // the closing report as a real component gap, not silently worked around.
+  const variant = value ? 'Filled' : 'Default';
 
   const handleSend = () => {
     if (!value.trim()) return; // ButtonGroup exposes no per-button
     // Disabled state (see closing report) -- guard in the handler
     // instead of faking a disabled look by hand (design-system.md rule 9).
-    router.push('/recall/processing');
+    router.push(`/recall/processing?transcript=${encodeURIComponent(value)}`);
   };
 
-  const handleBackToVoice = () => {
-    // Answer's voice mode (screen 6) isn't built yet -- 404s until it
-    // is, per SPEC.md's cheapest-first build order.
+  const handleSwitchToSpeaking = () => {
     router.push('/recall/answer?mode=voice');
   };
 
@@ -53,54 +123,13 @@ function AnswerPageContent() {
   };
 
   return (
-    <div
-      style={{
-        minHeight: '100vh',
-        width: '100%',
-        maxWidth: 390,
-        margin: '0 auto',
-        background: 'var(--color-background-page)',
-        colorScheme: 'dark',
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'center',
-        gap: 'var(--dimension-space-300)',
-        paddingInline: 'var(--dimension-space-400)',
-        paddingTop: 'var(--dimension-space-600)',
-        boxSizing: 'border-box',
-      }}
-    >
+    <div style={shellStyle()}>
       <div
-        style={{
-          display: 'flex',
-          flexDirection: 'column',
-          alignItems: 'center',
-          gap: 'var(--dimension-space-400)',
-          width: '100%',
-        }}
+        style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 'var(--dimension-space-400)', width: '100%' }}
       >
         <MascotSlot size="XL" expression="standby" />
-        <div
-          style={{
-            width: '100%',
-            background: 'var(--color-background-surface)',
-            borderRadius: 'var(--dimension-radius-400)',
-            padding: 'var(--dimension-space-400)',
-            boxSizing: 'border-box',
-          }}
-        >
-          <p
-            style={{
-              margin: 0,
-              fontFamily: 'var(--font-family-typography-body-m-regular-font-family)',
-              fontWeight: 'var(--font-weight-typography-body-m-regular-font-weight)',
-              fontSize: 'var(--dimension-typography-body-m-regular-font-size)',
-              lineHeight: 'var(--dimension-typography-body-m-regular-line-height)',
-              color: 'var(--color-text-primary)',
-            }}
-          >
-            {PROMPT}
-          </p>
+        <div style={promptCardStyle()}>
+          <p style={promptTextStyle()}>{TEXT_PROMPT}</p>
         </div>
 
         {/*
@@ -121,20 +150,7 @@ function AnswerPageContent() {
         />
       </div>
 
-      <div
-        style={{
-          flex: 1,
-          minHeight: 0,
-          display: 'flex',
-          flexDirection: 'column',
-          justifyContent: 'flex-end',
-          alignItems: 'center',
-          gap: 'var(--dimension-space-300)',
-          paddingTop: 'var(--dimension-space-400)',
-          paddingBottom: 'var(--dimension-space-1200)',
-          width: '100%',
-        }}
-      >
+      <div style={bottomAreaStyle()}>
         {/*
           sprint-context.md: "Skip available at every term, because no
           required action may trap the student" -- a locked, must-have
@@ -147,12 +163,151 @@ function AnswerPageContent() {
           variant="Vertical"
           size="L"
           primaryCta="Send"
-          // Figma's literal label is "Back to Vocie" (a typo) -- corrected
-          // to sentence case per design-system.md rule 3, not copied verbatim.
+          // sprint-context.md locks the mid-loop label as "switch to
+          // typing" -- the reverse direction (voice) has no matching
+          // locked phrase, so "Back to voice" (correcting Figma's own
+          // "Back to Vocie" typo) is a reasonable, non-contradicting choice.
           secondaryCta="Back to voice"
           onPrimaryClick={handleSend}
-          onSecondaryClick={handleBackToVoice}
+          onSecondaryClick={handleSwitchToSpeaking}
         />
+      </div>
+    </div>
+  );
+}
+
+type SpeechRecognitionLike = {
+  lang: string;
+  continuous: boolean;
+  interimResults: boolean;
+  onresult: ((event: { results: ArrayLike<ArrayLike<{ transcript: string }>> }) => void) | null;
+  onerror: (() => void) | null;
+  onend: (() => void) | null;
+  start: () => void;
+  stop: () => void;
+};
+
+function getSpeechRecognitionCtor(): (new () => SpeechRecognitionLike) | null {
+  if (typeof window === 'undefined') return null;
+  const w = window as unknown as {
+    SpeechRecognition?: new () => SpeechRecognitionLike;
+    webkitSpeechRecognition?: new () => SpeechRecognitionLike;
+  };
+  return w.SpeechRecognition ?? w.webkitSpeechRecognition ?? null;
+}
+
+function VoiceAnswer() {
+  const router = useRouter();
+  const [micState, setMicState] = useState<'Default' | 'Listening'>('Default');
+  const [transcript, setTranscript] = useState('');
+  const recognitionRef = useRef<SpeechRecognitionLike | null>(null);
+
+  const startListening = () => {
+    setMicState('Listening');
+    setTranscript('');
+    const Ctor = getSpeechRecognitionCtor();
+    // Real transcript when the browser actually supports it; the
+    // per-term placeholder otherwise -- per this project's own decision
+    // (SPEC.md Open: "spike it first... if it doesn't work, transcript
+    // falls back to a placeholder-per-term"). Not verified against real
+    // iOS Safari from this environment -- no device/simulator available
+    // here, so this is the defensive path, not a confirmed-working one.
+    if (!Ctor) return;
+    const recognition = new Ctor();
+    recognition.lang = 'en-US';
+    recognition.continuous = true;
+    recognition.interimResults = true;
+    recognition.onresult = (event) => {
+      let finalText = '';
+      for (let i = 0; i < event.results.length; i++) {
+        finalText += event.results[i][0].transcript;
+      }
+      setTranscript(finalText);
+    };
+    recognition.onerror = () => {
+      recognitionRef.current = null;
+    };
+    recognition.onend = () => {
+      recognitionRef.current = null;
+    };
+    recognition.start();
+    recognitionRef.current = recognition;
+  };
+
+  const stopAndSend = () => {
+    recognitionRef.current?.stop();
+    recognitionRef.current = null;
+    const finalTranscript = transcript.trim() || PLACEHOLDER_TRANSCRIPT;
+    router.push(`/recall/processing?transcript=${encodeURIComponent(finalTranscript)}`);
+  };
+
+  const handleMicClick = () => {
+    if (micState === 'Default') startListening();
+    else stopAndSend();
+  };
+
+  const handleCancel = () => {
+    recognitionRef.current?.stop();
+    recognitionRef.current = null;
+    setTranscript('');
+    setMicState('Default');
+  };
+
+  const handleSwitchToTyping = () => {
+    recognitionRef.current?.stop();
+    recognitionRef.current = null;
+    router.push('/recall/answer?mode=text');
+  };
+
+  const handleSkip = () => {
+    recognitionRef.current?.stop();
+    router.push('/recall/result?state=skipped');
+  };
+
+  return (
+    <div style={shellStyle()}>
+      <div
+        style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 'var(--dimension-space-400)', width: '100%' }}
+      >
+        <MascotSlot size="XL" expression="standby" />
+        <div style={promptCardStyle()}>
+          <p style={promptTextStyle()}>{VOICE_PROMPT}</p>
+        </div>
+      </div>
+
+      <div style={bottomAreaStyle()}>
+        <RecordingControls
+          state={micState}
+          aria-label={micState === 'Listening' ? 'Stop speaking' : 'Speak'}
+          cancelAriaLabel="Cancel and re-record"
+          onClick={handleMicClick}
+          onCancel={handleCancel}
+        />
+        <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--dimension-space-400)', alignItems: 'center' }}>
+          {/*
+            Figma's literal label here is "Type instead" -- overridden
+            by sprint-context.md's locked mid-loop copy, "switch to
+            typing", which takes precedence over one frame's wording.
+          */}
+          <button
+            type="button"
+            onClick={handleSwitchToTyping}
+            style={{
+              background: 'none',
+              border: 'none',
+              padding: 0,
+              cursor: 'pointer',
+              fontFamily: 'var(--font-family-typography-body-m-bold-font-family)',
+              fontWeight: 'var(--font-weight-typography-body-m-bold-font-weight)',
+              fontSize: 'var(--dimension-typography-body-m-bold-font-size)',
+              lineHeight: 'var(--dimension-typography-body-m-bold-line-height)',
+              color: 'var(--color-text-link)',
+            }}
+          >
+            Switch to typing
+          </button>
+          <Button variant="Tertiary" size="L" cta="Skip for now" onClick={handleSkip} />
+        </div>
       </div>
     </div>
   );
