@@ -51,5 +51,6 @@ When working on UI, use the storybook tools to read the component library before
 - `app/favicon.ico` — site icon.
 - `public/*.svg`, `public/*.png` — mascot (Knowie) expression assets and stock Next.js starter icons. Read/check before adding a new mascot state.
 - `public/images/` — empty, unused.
-- `.claude/skills/` — ui-designer, ux-designer, ux-motion, Prototyping v5 skills. Invoke via the Skill tool for design/motion work, don't read directly.
+- `.claude/skills/` — ui-designer, ux-designer, ux-motion, Prototyping v5, build-screen skills. Invoke via the Skill tool for design/motion/screen work, don't read directly.
+- `component-gaps.md` — running list of things built inline during a screen build instead of as a real Storybook component. Read before building a new screen.
 - `hello.html` — scratch test file, unrelated to the app.
