@@ -4,9 +4,13 @@ import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { MascotSlot } from '@/components/MascotSlot/MascotSlot';
 import { ButtonGroup } from '@/components/ButtonGroup/ButtonGroup';
+import { TopBar } from '@/components/TopBar/TopBar';
+import { useSession } from '../../session-context';
+import { SCREEN_MAX_WIDTH } from '../../layout-constants';
 
 export default function PermissionDeniedPage() {
   const router = useRouter();
+  const { termIndex, totalTerms, streak } = useSession();
   // No standard web API opens iOS Settings from Safari -- per the
   // approved plan, this is a no-op that reveals inline instructions
   // instead of faking a working deep link.
@@ -23,7 +27,7 @@ export default function PermissionDeniedPage() {
       style={{
         minHeight: '100vh',
         width: '100%',
-        maxWidth: 390,
+        maxWidth: SCREEN_MAX_WIDTH,
         margin: '0 auto',
         background: 'var(--color-background-page)',
         colorScheme: 'dark',
@@ -31,11 +35,10 @@ export default function PermissionDeniedPage() {
         flexDirection: 'column',
         alignItems: 'center',
         gap: 'var(--dimension-space-300)',
-        paddingInline: 'var(--dimension-space-400)',
-        paddingTop: 'var(--dimension-space-600)',
         boxSizing: 'border-box',
       }}
     >
+      <TopBar termIndex={termIndex} totalTerms={totalTerms} streak={streak} />
       <div
         style={{
           display: 'flex',
@@ -43,6 +46,9 @@ export default function PermissionDeniedPage() {
           alignItems: 'center',
           gap: 'var(--dimension-space-400)',
           width: '100%',
+          paddingInline: 'var(--dimension-space-400)',
+          paddingTop: 'var(--dimension-space-600)',
+          boxSizing: 'border-box',
         }}
       >
         <MascotSlot size="XL" expression="determined" />
@@ -84,8 +90,10 @@ export default function PermissionDeniedPage() {
           justifyContent: 'flex-end',
           alignItems: 'center',
           gap: 'var(--dimension-space-300)',
+          paddingInline: 'var(--dimension-space-400)',
           paddingTop: 'var(--dimension-space-400)',
           paddingBottom: 'var(--dimension-space-1200)',
+          boxSizing: 'border-box',
           width: '100%',
         }}
       >

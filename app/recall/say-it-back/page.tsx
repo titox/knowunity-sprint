@@ -5,6 +5,8 @@ import { useRouter } from 'next/navigation';
 import { MascotSlot } from '@/components/MascotSlot/MascotSlot';
 import { Button } from '@/components/Button/Button';
 import { RecordingControls } from '@/components/MicButton/RecordingControls';
+import { TopBar } from '@/components/TopBar/TopBar';
+import { useSession } from '../session-context';
 import { SCREEN_MAX_WIDTH } from '../layout-constants';
 
 // Same term-result content as Answer's frames -- real per-term mock
@@ -44,6 +46,7 @@ function getSpeechRecognitionCtor(): (new () => SpeechRecognitionLike) | null {
 
 export default function SayItBackPage() {
   const router = useRouter();
+  const { termIndex, totalTerms, streak } = useSession();
   const [micState, setMicState] = useState<'Default' | 'Listening'>('Default');
   const [transcript, setTranscript] = useState('');
   const recognitionRef = useRef<SpeechRecognitionLike | null>(null);
@@ -121,11 +124,22 @@ export default function SayItBackPage() {
         flexDirection: 'column',
         alignItems: 'center',
         gap: 'var(--dimension-space-300)',
-        paddingInline: 'var(--dimension-space-400)',
-        paddingTop: 'var(--dimension-space-600)',
         boxSizing: 'border-box',
       }}
     >
+      <TopBar termIndex={termIndex} totalTerms={totalTerms} streak={streak} />
+      <div
+        style={{
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+          gap: 'var(--dimension-space-300)',
+          width: '100%',
+          paddingInline: 'var(--dimension-space-400)',
+          paddingTop: 'var(--dimension-space-600)',
+          boxSizing: 'border-box',
+        }}
+      >
       <div
         style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 'var(--dimension-space-400)', width: '100%' }}
       >
@@ -178,8 +192,10 @@ export default function SayItBackPage() {
           justifyContent: 'flex-end',
           alignItems: 'center',
           gap: 'var(--dimension-space-300)',
+          paddingInline: 'var(--dimension-space-400)',
           paddingTop: 'var(--dimension-space-400)',
           paddingBottom: 'var(--dimension-space-1200)',
+          boxSizing: 'border-box',
           width: '100%',
         }}
       >
@@ -191,6 +207,7 @@ export default function SayItBackPage() {
           onCancel={handleCancel}
         />
         <Button variant="Tertiary" size="L" cta="Skip for now" onClick={handleDecline} />
+      </div>
       </div>
     </div>
   );

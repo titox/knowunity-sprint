@@ -4,6 +4,9 @@ import { useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { MascotSlot } from '@/components/MascotSlot/MascotSlot';
 import { SkeletonLines } from '@/components/SkeletonLines/SkeletonLines';
+import { TopBar } from '@/components/TopBar/TopBar';
+import { useSession } from '../session-context';
+import { SCREEN_MAX_WIDTH } from '../layout-constants';
 
 // Fixed delay, not randomized or tied to input length -- per this
 // prototype's mocked-recall decision (SPEC.md "How the mocked recall
@@ -13,6 +16,7 @@ const PROCESSING_DELAY_MS = 1750;
 
 export default function ProcessingPage() {
   const router = useRouter();
+  const { termIndex, totalTerms, streak } = useSession();
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -28,7 +32,7 @@ export default function ProcessingPage() {
       style={{
         minHeight: '100vh',
         width: '100%',
-        maxWidth: 390,
+        maxWidth: SCREEN_MAX_WIDTH,
         margin: '0 auto',
         background: 'var(--color-background-page)',
         colorScheme: 'dark',
@@ -36,11 +40,10 @@ export default function ProcessingPage() {
         flexDirection: 'column',
         alignItems: 'center',
         gap: 'var(--dimension-space-300)',
-        paddingInline: 'var(--dimension-space-400)',
-        paddingTop: 'var(--dimension-space-600)',
         boxSizing: 'border-box',
       }}
     >
+      <TopBar termIndex={termIndex} totalTerms={totalTerms} streak={streak} />
       <div
         style={{
           display: 'flex',
@@ -48,6 +51,9 @@ export default function ProcessingPage() {
           alignItems: 'center',
           gap: 'var(--dimension-space-400)',
           width: '100%',
+          paddingInline: 'var(--dimension-space-400)',
+          paddingTop: 'var(--dimension-space-600)',
+          boxSizing: 'border-box',
         }}
       >
         <MascotSlot size="XL" expression="thinking" />
@@ -76,8 +82,10 @@ export default function ProcessingPage() {
           flexDirection: 'column',
           justifyContent: 'flex-end',
           alignItems: 'center',
+          paddingInline: 'var(--dimension-space-400)',
           paddingTop: 'var(--dimension-space-400)',
           paddingBottom: 'var(--dimension-space-1200)',
+          boxSizing: 'border-box',
           width: '100%',
         }}
       >

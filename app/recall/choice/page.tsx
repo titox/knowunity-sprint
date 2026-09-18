@@ -7,6 +7,9 @@ import { ChoiceRow } from '@/components/ChoiceRow/ChoiceRow';
 import { Button } from '@/components/Button/Button';
 import { SpeakIcon } from '@/components/ChoiceRow/SpeakIcon';
 import { WriteIcon } from '@/components/ChoiceRow/WriteIcon';
+import { TopBar } from '@/components/TopBar/TopBar';
+import { useSession } from '../session-context';
+import { SCREEN_MAX_WIDTH } from '../layout-constants';
 
 type Mode = 'voice' | 'text';
 
@@ -19,6 +22,7 @@ const TERM_PROMPT = 'You just revised the Crown of Aragon. Explain it back in yo
 
 export default function ChoicePage() {
   const router = useRouter();
+  const { termIndex, totalTerms, streak } = useSession();
   const [selected, setSelected] = useState<Mode | null>(null);
 
   const handleChoose = (mode: Mode) => {
@@ -43,7 +47,7 @@ export default function ChoicePage() {
       style={{
         minHeight: '100vh',
         width: '100%',
-        maxWidth: 390,
+        maxWidth: SCREEN_MAX_WIDTH,
         margin: '0 auto',
         background: 'var(--color-background-page)',
         colorScheme: 'dark',
@@ -51,11 +55,22 @@ export default function ChoicePage() {
         flexDirection: 'column',
         alignItems: 'center',
         gap: 'var(--dimension-space-300)',
-        paddingInline: 'var(--dimension-space-400)',
-        paddingTop: 'var(--dimension-space-600)',
         boxSizing: 'border-box',
       }}
     >
+      <TopBar termIndex={termIndex} totalTerms={totalTerms} streak={streak} />
+      <div
+        style={{
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+          gap: 'var(--dimension-space-300)',
+          width: '100%',
+          paddingInline: 'var(--dimension-space-400)',
+          paddingTop: 'var(--dimension-space-600)',
+          boxSizing: 'border-box',
+        }}
+      >
       <div
         style={{
           display: 'flex',
@@ -136,6 +151,7 @@ export default function ChoicePage() {
         }}
       >
         <Button variant="Tertiary" size="L" cta="Skip for now" onClick={handleSkip} style={{ width: '100%' }} />
+      </div>
       </div>
     </div>
   );

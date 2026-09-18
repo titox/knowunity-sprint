@@ -7,6 +7,8 @@ import { TextField } from '@/components/TextField/TextField';
 import { ButtonGroup } from '@/components/ButtonGroup/ButtonGroup';
 import { Button } from '@/components/Button/Button';
 import { RecordingControls } from '@/components/MicButton/RecordingControls';
+import { TopBar } from '@/components/TopBar/TopBar';
+import { useSession } from '../session-context';
 import { SCREEN_MAX_WIDTH } from '../layout-constants';
 
 // Text mode's prompt (Figma "10 Switch to typing any time"). Voice
@@ -55,6 +57,17 @@ function shellStyle(): React.CSSProperties {
     flexDirection: 'column',
     alignItems: 'center',
     gap: 'var(--dimension-space-300)',
+    boxSizing: 'border-box',
+  };
+}
+
+function contentTopStyle(): React.CSSProperties {
+  return {
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
+    gap: 'var(--dimension-space-400)',
+    width: '100%',
     paddingInline: 'var(--dimension-space-400)',
     paddingTop: 'var(--dimension-space-600)',
     boxSizing: 'border-box',
@@ -91,14 +104,17 @@ function bottomAreaStyle(): React.CSSProperties {
     justifyContent: 'flex-end',
     alignItems: 'center',
     gap: 'var(--dimension-space-300)',
+    paddingInline: 'var(--dimension-space-400)',
     paddingTop: 'var(--dimension-space-400)',
     paddingBottom: 'var(--dimension-space-1200)',
+    boxSizing: 'border-box',
     width: '100%',
   };
 }
 
 function TextAnswer() {
   const router = useRouter();
+  const { termIndex, totalTerms, streak } = useSession();
   const [value, setValue] = useState('');
 
   // TextField exposes no onFocus/onBlur -- its "Focused" variant can't
@@ -124,9 +140,8 @@ function TextAnswer() {
 
   return (
     <div style={shellStyle()}>
-      <div
-        style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 'var(--dimension-space-400)', width: '100%' }}
-      >
+      <TopBar termIndex={termIndex} totalTerms={totalTerms} streak={streak} />
+      <div style={contentTopStyle()}>
         <MascotSlot size="XL" expression="standby" />
         <div style={promptCardStyle()}>
           <p style={promptTextStyle()}>{TEXT_PROMPT}</p>
@@ -198,6 +213,7 @@ function getSpeechRecognitionCtor(): (new () => SpeechRecognitionLike) | null {
 
 function VoiceAnswer() {
   const router = useRouter();
+  const { termIndex, totalTerms, streak } = useSession();
   const [micState, setMicState] = useState<'Default' | 'Listening'>('Default');
   const [transcript, setTranscript] = useState('');
   const recognitionRef = useRef<SpeechRecognitionLike | null>(null);
@@ -266,9 +282,8 @@ function VoiceAnswer() {
 
   return (
     <div style={shellStyle()}>
-      <div
-        style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 'var(--dimension-space-400)', width: '100%' }}
-      >
+      <TopBar termIndex={termIndex} totalTerms={totalTerms} streak={streak} />
+      <div style={contentTopStyle()}>
         <MascotSlot size="XL" expression="standby" />
         <div style={promptCardStyle()}>
           <p style={promptTextStyle()}>{VOICE_PROMPT}</p>

@@ -3,6 +3,9 @@
 import { useRouter } from 'next/navigation';
 import { MascotSlot } from '@/components/MascotSlot/MascotSlot';
 import { ButtonGroup } from '@/components/ButtonGroup/ButtonGroup';
+import { TopBar } from '@/components/TopBar/TopBar';
+import { useSession } from '../session-context';
+import { SCREEN_MAX_WIDTH } from '../layout-constants';
 
 // This screen also serves as the brief's F5 "first-encounter intro" --
 // voice-ux.md says so explicitly ("that screen IS your primer"), so
@@ -10,6 +13,7 @@ import { ButtonGroup } from '@/components/ButtonGroup/ButtonGroup';
 // (retrieval practice) and the what (the mic ask) in one screen.
 export default function MicPermissionPrimerPage() {
   const router = useRouter();
+  const { termIndex, totalTerms, streak } = useSession();
 
   const handleAllow = async () => {
     // getUserMedia only, not SpeechRecognition's own permission path --
@@ -34,7 +38,7 @@ export default function MicPermissionPrimerPage() {
       style={{
         minHeight: '100vh',
         width: '100%',
-        maxWidth: 390,
+        maxWidth: SCREEN_MAX_WIDTH,
         margin: '0 auto',
         background: 'var(--color-background-page)',
         colorScheme: 'dark',
@@ -42,11 +46,10 @@ export default function MicPermissionPrimerPage() {
         flexDirection: 'column',
         alignItems: 'center',
         gap: 'var(--dimension-space-300)',
-        paddingInline: 'var(--dimension-space-400)',
-        paddingTop: 'var(--dimension-space-600)',
         boxSizing: 'border-box',
       }}
     >
+      <TopBar termIndex={termIndex} totalTerms={totalTerms} streak={streak} />
       <div
         style={{
           display: 'flex',
@@ -54,6 +57,9 @@ export default function MicPermissionPrimerPage() {
           alignItems: 'center',
           gap: 'var(--dimension-space-400)',
           width: '100%',
+          paddingInline: 'var(--dimension-space-400)',
+          paddingTop: 'var(--dimension-space-600)',
+          boxSizing: 'border-box',
         }}
       >
         <MascotSlot size="XL" expression="excited" />
@@ -94,8 +100,10 @@ export default function MicPermissionPrimerPage() {
           flexDirection: 'column',
           justifyContent: 'flex-end',
           alignItems: 'center',
+          paddingInline: 'var(--dimension-space-400)',
           paddingTop: 'var(--dimension-space-400)',
           paddingBottom: 'var(--dimension-space-1200)',
+          boxSizing: 'border-box',
           width: '100%',
         }}
       >
