@@ -225,9 +225,14 @@ function VoiceAnswer() {
     // Real transcript when the browser actually supports it; the
     // per-term placeholder otherwise -- per this project's own decision
     // (SPEC.md Open: "spike it first... if it doesn't work, transcript
-    // falls back to a placeholder-per-term"). Not verified against real
-    // iOS Safari from this environment -- no device/simulator available
-    // here, so this is the defensive path, not a confirmed-working one.
+    // falls back to a placeholder-per-term"). Checked against Playwright's
+    // WebKit build with an iOS Safari UA (no real device/simulator here):
+    // webkitSpeechRecognition genuinely exists and .start() doesn't
+    // throw, but produced zero events in that headless, mic-less
+    // sandbox -- inconclusive, not a confirmed pass or fail on a real
+    // device. Doesn't matter functionally either way: this only ever
+    // reads whatever transcript exists when the student taps to stop,
+    // so silence from the API already falls through to the placeholder.
     if (!Ctor) return;
     const recognition = new Ctor();
     recognition.lang = 'en-US';

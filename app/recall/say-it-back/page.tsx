@@ -56,8 +56,9 @@ export default function SayItBackPage() {
     setTranscript('');
     const Ctor = getSpeechRecognitionCtor();
     // Same defensive real/placeholder split as Answer's voice mode --
-    // not verified against real iOS Safari (no device/simulator
-    // available here); SPEC.md's spike is still outstanding.
+    // checked against Playwright's WebKit build (see SPEC.md's Open
+    // section): the API exists but real-device behavior is still
+    // unconfirmed. Doesn't matter functionally -- same fallback path.
     if (!Ctor) return;
     const recognition = new Ctor();
     recognition.lang = 'en-US';
