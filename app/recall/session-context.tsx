@@ -17,6 +17,8 @@ interface SessionState {
   streak: number;
   advanceTerm: () => void;
   addStreak: (amount: number) => void;
+  /** Used by Summary's "Try again" -- starts a fresh session. */
+  resetSession: () => void;
 }
 
 const SessionContext = createContext<SessionState | null>(null);
@@ -31,6 +33,10 @@ export function SessionProvider({ children }: { children: ReactNode }) {
     streak,
     advanceTerm: () => setTermIndex((t) => Math.min(t + 1, TOTAL_TERMS)),
     addStreak: (amount) => setStreak((s) => s + amount),
+    resetSession: () => {
+      setTermIndex(1);
+      setStreak(0);
+    },
   };
 
   return <SessionContext.Provider value={value}>{children}</SessionContext.Provider>;
