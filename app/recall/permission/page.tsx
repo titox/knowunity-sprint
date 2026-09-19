@@ -74,7 +74,7 @@ export default function MicPermissionPrimerPage() {
               color: 'var(--color-text-primary)',
             }}
           >
-            Practice speaking?
+            Say what you know
           </p>
           <p
             style={{
