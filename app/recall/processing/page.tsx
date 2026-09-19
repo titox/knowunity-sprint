@@ -1,11 +1,12 @@
 'use client';
 
-import { useEffect } from 'react';
-import { useRouter } from 'next/navigation';
+import { Suspense, useEffect } from 'react';
+import { useRouter, useSearchParams } from 'next/navigation';
 import { MascotSlot } from '@/components/MascotSlot/MascotSlot';
 import { SkeletonLines } from '@/components/SkeletonLines/SkeletonLines';
 import { TopBar } from '@/components/TopBar/TopBar';
 import { useSession } from '../session-context';
+import { verdictForAttempt } from '../terms';
 import { SCREEN_MAX_WIDTH } from '../layout-constants';
 
 // Fixed delay, not randomized or tied to input length -- per this
@@ -15,17 +16,37 @@ import { SCREEN_MAX_WIDTH } from '../layout-constants';
 const PROCESSING_DELAY_MS = 1750;
 
 export default function ProcessingPage() {
+  return (
+    <Suspense fallback={null}>
+      <ProcessingPageContent />
+    </Suspense>
+  );
+}
+
+function ProcessingPageContent() {
   const router = useRouter();
-  const { termIndex, totalTerms, streak } = useSession();
+  const searchParams = useSearchParams();
+  const transcript = searchParams.get('transcript');
+  const { termIndex, totalTerms, streak, attemptIndex, recordAttempt } = useSession();
 
   useEffect(() => {
     const timer = setTimeout(() => {
-      // Result doesn't exist yet (not built in this batch) -- this route
-      // 404s until it is, per SPEC.md's cheapest-first build order.
-      router.push('/recall/result');
+      // Real verdict, read from this term's pre-scripted sequence
+      // (app/recall/terms.ts) -- closes the gap the spec-reviewer found:
+      // this route used to send nothing, so Partial/Fail/Revealed were
+      // only reachable by hand-editing the URL, never through real play.
+      const verdict = verdictForAttempt(termIndex, attemptIndex);
+      recordAttempt();
+      const transcriptParam = transcript ? `&transcript=${encodeURIComponent(transcript)}` : '';
+      router.push(`/recall/result?state=${verdict}${transcriptParam}`);
     }, PROCESSING_DELAY_MS);
     return () => clearTimeout(timer);
-  }, [router]);
+    // Intentionally mount-once: snapshots termIndex/attemptIndex/transcript
+    // at load time and navigates away, so re-running on their (stable,
+    // one-time) values isn't needed and including the whole session
+    // object would risk re-arming the timer on unrelated re-renders.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   return (
     <div
