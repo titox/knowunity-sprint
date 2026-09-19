@@ -15,6 +15,7 @@ See `sprint-context.md` "What this is".
 - Product constraints from Knowunity: `01_Design_Brief_5946279147098382bcf481e214d50609.md` "Hard constraints".
 - Voice-UX principles (system status, push-to-talk, permissions, generous judging, non-voice fallback, latency): `03_Voice_UX_Reference_4fe62791470982779c32813df9bbf0c5.md`.
 - Existing Knowunity app screens (for context on where this feature sits): `app-inventory.md`, screenshots in `reference/`.
+- `npm run check:tokens` catches raw hex colors in `app/`/`components/`/`stories/` — run it after building or editing anything, every time, so this never gets forgotten.
 
 ## Never
 
