@@ -9,16 +9,18 @@ import { CheckIcon } from '@/components/ChoiceRow/CheckIcon';
 import { ThumbsDownIcon, ThumbsUpIcon } from '@/components/Result/ThumbsIcons';
 import { TopBar } from '@/components/TopBar/TopBar';
 import { useSession } from '../session-context';
+import { TERMS, type TermOutcome } from '../terms';
 import { SCREEN_MAX_WIDTH } from '../layout-constants';
 
-type ResultState = 'pass' | 'partial' | 'fail' | 'revealed' | 'skipped';
+// SPEC.md names 5 states: Pass, Partial, Fail (1st miss -> hint 1),
+// Fail (2nd miss -> hint 2), Revealed -- fail1/fail2 were previously
+// collapsed into one 'fail' bucket with identical content and two
+// buttons that called the same handler (a real gap the spec-reviewer
+// found). Now genuinely distinct.
+type ResultState = 'pass' | 'partial' | 'fail1' | 'fail2' | 'revealed' | 'skipped';
 
 function parseState(raw: string | null): ResultState {
-  // Processing currently sends no ?state= at all (no real judge or
-  // per-term mock script exists yet -- SPEC.md verification step 6,
-  // still open). Defaulting to 'pass' here is a placeholder, not a
-  // real verdict.
-  if (raw === 'partial' || raw === 'fail' || raw === 'revealed' || raw === 'skipped') return raw;
+  if (raw === 'partial' || raw === 'fail1' || raw === 'fail2' || raw === 'revealed' || raw === 'skipped') return raw;
   // Say-it-back's own guessed contract (?state=upgraded|unchanged,
   // flagged there as a guess) maps onto the two states closest to what
   // it actually means: a clean repeat reads as a pass, a still-missed
@@ -27,21 +29,6 @@ function parseState(raw: string | null): ResultState {
   if (raw === 'upgraded') return 'pass';
   if (raw === 'unchanged') return 'revealed';
   return 'pass';
-}
-
-// Same term-result content used on Answer/Say-it-back's frames for
-// this term -- real per-term mock scripts are still an open content
-// decision (SPEC.md verification step 6).
-const REVEAL_ANSWER = 'Both were sea campaigns that ended in new kingdoms, each organised under its own fueros.';
-const HINT_TEXT = "You had the timeline. You didn't say why the two conquests were connected.";
-const PASS_FEEDBACK = "That's the one. Both were staged conquests, each locked in with its own fueros.";
-
-export default function ResultPage() {
-  return (
-    <Suspense fallback={null}>
-      <ResultPageContent />
-    </Suspense>
-  );
 }
 
 function shellStyle(): React.CSSProperties {
@@ -101,7 +88,10 @@ function bodyTextStyle(): React.CSSProperties {
 // "✓ Correct" badge, bound directly to feedback.success.bold -- Chips'
 // own Green/active color binds accent.green.bold instead (same hex,
 // different semantic token; same distinction ResultRow already
-// special-cased). Logged in component-gaps.md.
+// special-cased). Logged in component-gaps.md. Height uses
+// dimension-space-800 (32px) -- a real token, not the bare `32`
+// literal this had before (caught by spec-reviewer: SPEC.md's own
+// grep check for raw px only matches string literals, not JS numbers).
 function PassBadge() {
   return (
     <div
@@ -110,7 +100,7 @@ function PassBadge() {
         alignItems: 'center',
         gap: 'var(--dimension-space-100)',
         alignSelf: 'flex-start',
-        height: 32,
+        height: 'var(--dimension-space-800)',
         paddingInline: 'var(--dimension-space-300)',
         borderRadius: 'var(--dimension-radius-full)',
         background: 'var(--color-feedback-success-bold)',
@@ -135,14 +125,15 @@ function PassBadge() {
   );
 }
 
-// Bottom sheet used by Partial and Fail -- no Storybook component
-// existed for this (component-gaps.md). Figma's Partial frame used the
-// gold pro.onBold/pro.accent card here, a rule-12 violation caught
-// once already this session for the permission screens; not
-// reproduced -- both tiers use plain background.surface/text.primary
-// instead, with the heading color distinguishing them (feedback.partial
-// for the first miss, feedback.error for the second, both real tokens
-// already in this project).
+// Bottom sheet used by Partial, Fail (hint 1), and Fail (hint 2) -- no
+// Storybook component existed for this (component-gaps.md). Figma's
+// Partial frame used the gold pro.onBold/pro.accent card here, a
+// rule-12 violation caught once already this session for the
+// permission screens; not reproduced -- all three tiers use plain
+// background.surface/text.primary instead, with the heading color
+// distinguishing them (feedback.partial for the softer tier,
+// feedback.error for both fail tiers, both real tokens already in
+// this project).
 function HintSheet({
   heading,
   headingColor,
@@ -200,20 +191,34 @@ function HintSheet({
   );
 }
 
+export default function ResultPage() {
+  return (
+    <Suspense fallback={null}>
+      <ResultPageContent />
+    </Suspense>
+  );
+}
+
 function ResultPageContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
-  const state = parseState(searchParams.get('state'));
+  const rawState = searchParams.get('state');
+  const state = parseState(rawState);
   const transcript = searchParams.get('transcript');
-  const { termIndex, totalTerms, streak, advanceTerm, addStreak } = useSession();
+  const { termIndex, totalTerms, streak, attemptIndex, advanceTerm, addStreak, recordOutcome } = useSession();
 
+  const term = TERMS[termIndex - 1];
   const isLastTerm = termIndex >= totalTerms;
+  // A pass reached after at least one real attempt was hinted, not
+  // unaided -- unless it got here via Say-it-back's own upgrade
+  // (rawState === 'upgraded'), which SPEC.md says should count as
+  // unaided ("repeat it and it becomes a pass"). Closes the "missing
+  // hinted-pass -> offer Say it back" gap the spec-reviewer found.
+  const isHintedPass = state === 'pass' && attemptIndex > 0 && rawState !== 'upgraded';
 
-  const goToNextTermOrSummary = () => {
-    // Flat XP per term attempted, per this project's decided XP model
-    // -- unaided/hinted bonus tiers depend on per-term history tracking
-    // that doesn't exist yet (SPEC.md verification step 4).
-    addStreak(1);
+  const finishTerm = (outcome: TermOutcome, xp: number) => {
+    recordOutcome(termIndex, outcome);
+    addStreak(xp);
     if (isLastTerm) {
       router.push('/recall/summary');
     } else {
@@ -222,8 +227,31 @@ function ResultPageContent() {
     }
   };
 
+  const goToNextTermOrSummary = () => {
+    // Flat XP per term attempted, plus a bonus for a clean unaided
+    // pass, per this project's decided XP model.
+    if (state === 'pass') finishTerm(isHintedPass ? 'hinted' : 'unaided', isHintedPass ? 1 : 2);
+    else if (state === 'partial') finishTerm('hinted', 1);
+    else finishTerm('revealed', 1); // reached from 'revealed'
+  };
+
   const handleSkip = () => {
     // Skip earns zero XP, per this project's decided XP model.
+    recordOutcome(termIndex, 'skipped');
+    if (isLastTerm) {
+      router.push('/recall/summary');
+    } else {
+      advanceTerm();
+      router.push('/recall/answer');
+    }
+  };
+
+  // Choice/Answer's own Skip action routes straight here with
+  // ?state=skipped (bypassing Processing entirely), so this state's
+  // own "Next" has to record the outcome itself -- same 0-XP handling
+  // as handleSkip above, just reached a different way.
+  const handleContinueFromSkipped = () => {
+    recordOutcome(termIndex, 'skipped');
     if (isLastTerm) {
       router.push('/recall/summary');
     } else {
@@ -236,8 +264,14 @@ function ResultPageContent() {
     router.push('/recall/answer?mode=voice');
   };
 
+  const handleShowSecondHint = () => {
+    const transcriptParam = transcript ? `&transcript=${encodeURIComponent(transcript)}` : '';
+    router.push(`/recall/result?state=fail2${transcriptParam}`);
+  };
+
   const handleReveal = () => {
-    router.push('/recall/result?state=revealed');
+    const transcriptParam = transcript ? `&transcript=${encodeURIComponent(transcript)}` : '';
+    router.push(`/recall/result?state=revealed${transcriptParam}`);
   };
 
   const handleSayItBack = () => {
@@ -253,38 +287,78 @@ function ResultPageContent() {
             <MascotSlot size="XL" expression="excited" />
             <div style={cardStyle()}>
               <PassBadge />
-              <p style={bodyTextStyle()}>{PASS_FEEDBACK}</p>
+              <p style={bodyTextStyle()}>{term.correctAnswer}</p>
             </div>
             <div style={{ flex: 1 }} />
             <Button variant="Tertiary" size="M" cta="Skip for now" onClick={handleSkip} />
-            <Button variant="Primary" size="L" cta="Next" onClick={goToNextTermOrSummary} style={{ width: '100%' }} />
+            {isHintedPass ? (
+              <ButtonGroup
+                variant="Vertical"
+                size="L"
+                primaryCta="Next"
+                secondaryCta="Say it back"
+                onPrimaryClick={goToNextTermOrSummary}
+                onSecondaryClick={handleSayItBack}
+              />
+            ) : (
+              <Button variant="Primary" size="L" cta="Next" onClick={goToNextTermOrSummary} style={{ width: '100%' }} />
+            )}
           </>
         )}
 
-        {(state === 'partial' || state === 'fail') && (
+        {state === 'partial' && (
           <>
             <div style={cardStyle()}>
-              <p style={bodyTextStyle()}>{transcript ?? 'Mallorca and Valencia'}</p>
+              <p style={bodyTextStyle()}>{transcript ?? term.prompt}</p>
             </div>
             <div style={{ flex: 1 }} />
-            {state === 'partial' ? (
-              <HintSheet heading="Almost there" headingColor="var(--color-feedback-partial-bold)" body={HINT_TEXT}>
+            <HintSheet heading="Almost there" headingColor="var(--color-feedback-partial-bold)" body={term.hint1}>
+              <div style={{ display: 'flex', gap: 'var(--dimension-space-100)', width: '100%' }}>
+                <Button variant="Secondary" size="L" cta="Try again" onClick={handleReRecord} />
+                <Button variant="Primary" size="L" cta="Continue" onClick={goToNextTermOrSummary} style={{ flex: 1 }} />
+              </div>
+            </HintSheet>
+          </>
+        )}
+
+        {state === 'fail1' && (
+          <>
+            <div style={cardStyle()}>
+              <p style={bodyTextStyle()}>{transcript ?? term.prompt}</p>
+            </div>
+            <div style={{ flex: 1 }} />
+            <HintSheet heading="Not quite" headingColor="var(--color-feedback-error-bold)" body={term.hint1}>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--dimension-space-400)', width: '100%' }}>
                 <div style={{ display: 'flex', gap: 'var(--dimension-space-100)', width: '100%' }}>
-                  <Button variant="Secondary" size="L" cta="Try again" onClick={handleReRecord} />
-                  <Button variant="Primary" size="L" cta="Continue" onClick={goToNextTermOrSummary} style={{ flex: 1 }} />
+                  {/* "Hint" reveals the second, stronger hint tier;
+                      "Got it" means the student is ready to retry --
+                      these were previously the same handler, a real
+                      bug the spec-reviewer found. */}
+                  <Button variant="Secondary" size="L" cta="Hint" onClick={handleShowSecondHint} />
+                  <Button variant="Primary" size="L" cta="Got it" onClick={handleReRecord} style={{ flex: 1 }} />
                 </div>
-              </HintSheet>
-            ) : (
-              <HintSheet heading="Not quite" headingColor="var(--color-feedback-error-bold)" body={HINT_TEXT}>
-                <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--dimension-space-400)', width: '100%' }}>
-                  <div style={{ display: 'flex', gap: 'var(--dimension-space-100)', width: '100%' }}>
-                    <Button variant="Secondary" size="L" cta="Hint" onClick={handleReRecord} />
-                    <Button variant="Primary" size="L" cta="Got it" onClick={handleReRecord} style={{ flex: 1 }} />
-                  </div>
-                  <Button variant="Tertiary" size="M" cta="Reveal the answer" onClick={handleReveal} style={{ width: '100%' }} />
-                </div>
-              </HintSheet>
-            )}
+                <Button variant="Tertiary" size="M" cta="Reveal the answer" onClick={handleReveal} style={{ width: '100%' }} />
+              </div>
+            </HintSheet>
+          </>
+        )}
+
+        {state === 'fail2' && (
+          <>
+            {/* No Figma frame covers a second hint tier -- Figma only
+                gave us one "Fail" frame. Built from the same pattern as
+                fail1, one tier harder: no more "Hint" button (already
+                at max hint depth), just retry or reveal. */}
+            <div style={cardStyle()}>
+              <p style={bodyTextStyle()}>{transcript ?? term.prompt}</p>
+            </div>
+            <div style={{ flex: 1 }} />
+            <HintSheet heading="Still not quite" headingColor="var(--color-feedback-error-bold)" body={term.hint2}>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--dimension-space-400)', width: '100%' }}>
+                <Button variant="Primary" size="L" cta="Got it" onClick={handleReRecord} style={{ width: '100%' }} />
+                <Button variant="Tertiary" size="M" cta="Reveal the answer" onClick={handleReveal} style={{ width: '100%' }} />
+              </div>
+            </HintSheet>
           </>
         )}
 
@@ -302,7 +376,7 @@ function ResultPageContent() {
               >
                 The answer
               </p>
-              <p style={bodyTextStyle()}>{REVEAL_ANSWER}</p>
+              <p style={bodyTextStyle()}>{term.correctAnswer}</p>
             </div>
             <div style={{ flex: 1 }} />
             <Button variant="Tertiary" size="M" cta="Skip for now" onClick={handleSkip} />
@@ -329,7 +403,13 @@ function ResultPageContent() {
             <MascotSlot size="XL" expression="standby" />
             <p style={{ ...bodyTextStyle(), textAlign: 'center' }}>Skipped. Let&apos;s keep going.</p>
             <div style={{ flex: 1 }} />
-            <Button variant="Primary" size="L" cta="Next" onClick={goToNextTermOrSummary} style={{ width: '100%' }} />
+            <Button
+              variant="Primary"
+              size="L"
+              cta="Next"
+              onClick={() => (isLastTerm ? router.push('/recall/summary') : (advanceTerm(), router.push('/recall/answer')))}
+              style={{ width: '100%' }}
+            />
           </>
         )}
       </div>
