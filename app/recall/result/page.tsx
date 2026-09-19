@@ -403,13 +403,7 @@ function ResultPageContent() {
             <MascotSlot size="XL" expression="standby" />
             <p style={{ ...bodyTextStyle(), textAlign: 'center' }}>Skipped. Let&apos;s keep going.</p>
             <div style={{ flex: 1 }} />
-            <Button
-              variant="Primary"
-              size="L"
-              cta="Next"
-              onClick={() => (isLastTerm ? router.push('/recall/summary') : (advanceTerm(), router.push('/recall/answer')))}
-              style={{ width: '100%' }}
-            />
+            <Button variant="Primary" size="L" cta="Next" onClick={handleContinueFromSkipped} style={{ width: '100%' }} />
           </>
         )}
       </div>

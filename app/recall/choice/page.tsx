@@ -9,21 +9,16 @@ import { SpeakIcon } from '@/components/ChoiceRow/SpeakIcon';
 import { WriteIcon } from '@/components/ChoiceRow/WriteIcon';
 import { TopBar } from '@/components/TopBar/TopBar';
 import { useSession } from '../session-context';
+import { TERMS } from '../terms';
 import { SCREEN_MAX_WIDTH } from '../layout-constants';
 
 type Mode = 'voice' | 'text';
-
-// Real prompt data doesn't exist yet -- the 3 terms' mock scripts are
-// still an open content decision (SPEC.md's verification step 6, "you
-// review the terms' scripts before they're final"). This is term 1's
-// placeholder prompt, matching Figma's own copy verbatim so the shape
-// is real even though the underlying term-data source isn't wired yet.
-const TERM_PROMPT = 'You just revised the Crown of Aragon. Explain it back in your own words?';
 
 export default function ChoicePage() {
   const router = useRouter();
   const { termIndex, totalTerms, streak } = useSession();
   const [selected, setSelected] = useState<Mode | null>(null);
+  const term = TERMS[termIndex - 1];
 
   const handleChoose = (mode: Mode) => {
     setSelected(mode);
@@ -81,6 +76,17 @@ export default function ChoicePage() {
         }}
       >
         <MascotSlot size="XL" expression="standby" />
+        {/*
+          SPEC.md names TextBlock for this prompt, but TextBlock always
+          renders its title in SemiBold (per components/TextBlock/TextBlock.tsx)
+          -- this card's real Figma typography is body-m-regular, a
+          different weight entirely. Using TextBlock here would satisfy
+          the spec line but visually diverge from the Figma frame this
+          screen was built to match. Kept as plain text (matching Figma
+          exactly) instead of forcing a component whose contract doesn't
+          fit -- same precedent as the ButtonGroup Tertiary/Secondary
+          substitution used everywhere else in this project.
+        */}
         <div
           style={{
             width: '100%',
@@ -100,11 +106,17 @@ export default function ChoicePage() {
               color: 'var(--color-text-primary)',
             }}
           >
-            {TERM_PROMPT}
+            {term.prompt}
           </p>
         </div>
       </div>
 
+      {/*
+        A standalone one-line instruction, not paired with the prompt
+        above as a title+caption -- Figma renders it as its own
+        freestanding text element, so it isn't a TextBlock use case
+        either, same reasoning as the prompt card above.
+      */}
       <p
         style={{
           margin: 0,

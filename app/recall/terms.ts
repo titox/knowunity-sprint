@@ -25,6 +25,9 @@ export type ResultVerdict = 'pass' | 'partial' | 'fail1' | 'fail2' | 'revealed';
 export type TermOutcome = 'unaided' | 'hinted' | 'revealed' | 'skipped';
 
 export interface TermData {
+  /** Short name for Summary's per-term rows -- the full `prompt`
+   * sentence is too long for StatusRow/SummaryCard's row label. */
+  label: string;
   prompt: string;
   correctAnswer: string;
   hint1: string;
@@ -37,6 +40,7 @@ export interface TermData {
 
 export const TERMS: TermData[] = [
   {
+    label: 'The Crown of Aragon',
     prompt: 'You just revised the Crown of Aragon. Explain it back in your own words?',
     correctAnswer: "That's the one. Both were staged conquests, each locked in with its own fueros.",
     hint1: "You had the timeline. You didn't say why the two conquests were connected.",
@@ -44,6 +48,7 @@ export const TERMS: TermData[] = [
     script: ['pass'],
   },
   {
+    label: 'Mallorca and Valencia',
     prompt: 'Now go one step deeper. What did the campaigns in Mallorca (1229) and Valencia (1238) have in common?',
     correctAnswer: 'Both were sea campaigns that ended in new kingdoms, each organised under its own fueros.',
     hint1: "You had the timeline. You didn't say why the two conquests were connected.",
@@ -51,6 +56,7 @@ export const TERMS: TermData[] = [
     script: ['partial', 'fail1', 'fail2'],
   },
   {
+    label: 'The fueros',
     prompt: 'What made the fueros important to how the Crown of Aragon actually worked?',
     correctAnswer: 'They let each territory keep its own laws and institutions under one shared crown.',
     hint1: 'Think about what stayed different between Aragon, Valencia, and Mallorca after they joined.',

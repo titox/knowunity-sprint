@@ -9,19 +9,18 @@ import { Button } from '@/components/Button/Button';
 import { RecordingControls } from '@/components/MicButton/RecordingControls';
 import { TopBar } from '@/components/TopBar/TopBar';
 import { useSession } from '../session-context';
+import { TERMS } from '../terms';
 import { SCREEN_MAX_WIDTH } from '../layout-constants';
 
-// Text mode's prompt (Figma "10 Switch to typing any time"). Voice
-// mode's own Figma source ("2 Answers by voice or text") actually
-// shows a later-term moment -- a "Correct" acknowledgment chip for the
-// PREVIOUS term glued onto the NEXT term's prompt. That chip is
-// Result's job, not Answer's (SPEC.md doesn't give Answer any
-// acknowledgment content, and Answer can't know the previous verdict
-// in isolation) -- dropped here, kept only the actual next-prompt text.
-// Real per-term mock scripts are still an open content decision
-// (SPEC.md verification step 6).
-const TEXT_PROMPT = 'Both ended in new kingdoms, each under its own fueros.';
-const VOICE_PROMPT = 'Now go one step deeper. What did the campaigns in Mallorca (1229) and Valencia (1238) have in common?';
+// Prompt now comes from the current term (app/recall/terms.ts) instead
+// of a fixed string -- closes the gap the spec-reviewer found: this
+// used to show the same 2 hardcoded prompts regardless of which of
+// the 3 terms was actually active. Voice mode's own Figma source ("2
+// Answers by voice or text") shows a later-term moment with a
+// "Correct" acknowledgment chip for the PREVIOUS term glued onto the
+// NEXT term's prompt -- that chip is Result's job, not Answer's
+// (Answer can't know the previous verdict in isolation), so it's
+// dropped here regardless of which term is showing.
 
 // Fallback used when the Web Speech API is unavailable or errors --
 // per this project's own decision ("test it first... if it's broken/
@@ -115,17 +114,18 @@ function bottomAreaStyle(): React.CSSProperties {
 function TextAnswer() {
   const router = useRouter();
   const { termIndex, totalTerms, streak } = useSession();
+  const term = TERMS[termIndex - 1];
   const [value, setValue] = useState('');
 
   // TextField exposes no onFocus/onBlur -- its "Focused" variant can't
   // be driven by a real focus event here, only by whether there's text.
-  // Not something to fake by hand (design-system.md rule 9); flagged in
-  // the closing report as a real component gap, not silently worked around.
+  // Not something to fake by hand (design-system.md rule 9); logged in
+  // component-gaps.md as a real component gap, not silently worked around.
   const variant = value ? 'Filled' : 'Default';
 
   const handleSend = () => {
     if (!value.trim()) return; // ButtonGroup exposes no per-button
-    // Disabled state (see closing report) -- guard in the handler
+    // Disabled state (logged in component-gaps.md) -- guard in the handler
     // instead of faking a disabled look by hand (design-system.md rule 9).
     router.push(`/recall/processing?transcript=${encodeURIComponent(value)}`);
   };
@@ -144,7 +144,7 @@ function TextAnswer() {
       <div style={contentTopStyle()}>
         <MascotSlot size="XL" expression="standby" />
         <div style={promptCardStyle()}>
-          <p style={promptTextStyle()}>{TEXT_PROMPT}</p>
+          <p style={promptTextStyle()}>{term.prompt}</p>
         </div>
 
         {/*
@@ -214,6 +214,7 @@ function getSpeechRecognitionCtor(): (new () => SpeechRecognitionLike) | null {
 function VoiceAnswer() {
   const router = useRouter();
   const { termIndex, totalTerms, streak } = useSession();
+  const term = TERMS[termIndex - 1];
   const [micState, setMicState] = useState<'Default' | 'Listening'>('Default');
   const [transcript, setTranscript] = useState('');
   const recognitionRef = useRef<SpeechRecognitionLike | null>(null);
@@ -291,7 +292,7 @@ function VoiceAnswer() {
       <div style={contentTopStyle()}>
         <MascotSlot size="XL" expression="standby" />
         <div style={promptCardStyle()}>
-          <p style={promptTextStyle()}>{VOICE_PROMPT}</p>
+          <p style={promptTextStyle()}>{term.prompt}</p>
         </div>
       </div>
 

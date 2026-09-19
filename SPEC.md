@@ -53,7 +53,7 @@ State shared across all of these lives in one session-level store (a reducer/con
 ### 5. Answer — text mode — `app/recall/answer/page.tsx`
 *Built before voice mode on purpose: `TextField` has no external dependency, unlike voice's Web Speech API question (see Open). Get the screen's shell, skip logic, and submit-to-Processing flow working on the simpler mode first.*
 - **States:** `Default` → focused/typing (`TextField`'s own Focused/Filled) → submit.
-- **Components:** `TextField` (Default/Focused/Filled), `Chips` (term counter), `MascotSlot`, `Button` (Tertiary, "Skip for now"), a "switch to speaking" text link (per `sprint-context.md`'s locked mid-loop label).
+- **Components:** `TextField` (Default/Focused/Filled), `MascotSlot`, `Button` (Tertiary, "Skip for now"), a "switch to speaking" text link (per `sprint-context.md`'s locked mid-loop label). ~~`Chips` (term counter)~~ — corrected: node `15686:7972`'s real Figma frame has no chip instance at all; this line was inaccurate, not a missed requirement (caught during a spec-reviewer pass).
 - **What the student can do:** type and send; switch to voice mode mid-term; skip the term.
 - **Leads to:** Processing (on send), Answer — voice mode (on switch), Result (Skipped) (on skip).
 - **Figma:** node `15686:7972`, "10 Switch to typing any time."
@@ -61,7 +61,7 @@ State shared across all of these lives in one session-level store (a reducer/con
 ### 6. Answer — voice mode — same route, `Listening` state
 *Same route as screen 5, added once the shell is proven. This is where the Web Speech API spike result (Open) actually gets consumed — build this after the spike, not before.*
 - **States:** `Default` (idle, mic ready) → `Listening` → submit.
-- **Components:** `RecordingControls` (components/MicButton/RecordingControls.tsx — pairs `MicButton` with a Tertiary `ButtonIcon` cancel action), `Chips`, `MascotSlot`, `Button` (Tertiary, "Skip for now"), "switch to typing" link.
+- **Components:** `RecordingControls` (components/MicButton/RecordingControls.tsx — pairs `MicButton` with a Tertiary `ButtonIcon` cancel action), `MascotSlot`, `Button` (Tertiary, "Skip for now"), "switch to typing" link. ~~`Chips`~~ — corrected: the only chip in node `15686:7676`'s real frame is a previous-term acknowledgment badge (already excluded from this screen's build, since that's Result's job, not Answer's), not a term counter. Same inaccuracy as screen 5's line above.
 - **What the student can do:** record and send; cancel and re-record (free — doesn't consume a hint-ladder attempt, per this session's decision); switch to text mode; skip the term.
 - **Leads to:** Processing (on send), Answer — text mode (on switch), Result (Skipped) (on skip).
 - **Figma:** nodes `15686:7676` ("2 Answers by voice or text") and `15686:7936` ("9 Say it back..." reuses the same pattern).
