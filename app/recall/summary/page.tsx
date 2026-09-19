@@ -7,7 +7,7 @@ import { ButtonGroup } from '@/components/ButtonGroup/ButtonGroup';
 import { TopBar } from '@/components/TopBar/TopBar';
 import { useSession } from '../session-context';
 import { TERMS, type TermOutcome } from '../terms';
-import { SCREEN_MAX_WIDTH } from '../layout-constants';
+import { RecallScreenShell } from '../RecallScreenShell';
 
 // StatusRow's documented vocabulary (its own Storybook docs):
 // Green=Unaided, Blue=Hinted, Coral=Revealed, Neutral=Skipped.
@@ -41,20 +41,7 @@ export default function SummaryPage() {
   const allUnaided = outcomes.every((o) => o === 'unaided');
 
   return (
-    <div
-      style={{
-        minHeight: '100vh',
-        width: '100%',
-        maxWidth: SCREEN_MAX_WIDTH,
-        margin: '0 auto',
-        background: 'var(--color-background-page)',
-        colorScheme: 'dark',
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'center',
-        boxSizing: 'border-box',
-      }}
-    >
+    <RecallScreenShell>
       <TopBar termIndex={termIndex} totalTerms={totalTerms} streak={streak} />
       <div
         style={{
@@ -144,7 +131,7 @@ export default function SummaryPage() {
             justifyContent: 'flex-end',
             width: '100%',
             paddingTop: 'var(--dimension-space-400)',
-            paddingBottom: 'var(--dimension-space-1200)',
+            paddingBottom: 'calc(var(--dimension-space-1600) + env(safe-area-inset-bottom))',
           }}
         >
           {/*
@@ -166,6 +153,6 @@ export default function SummaryPage() {
           />
         </div>
       </div>
-    </div>
+    </RecallScreenShell>
   );
 }

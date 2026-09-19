@@ -7,7 +7,7 @@ import { SkeletonLines } from '@/components/SkeletonLines/SkeletonLines';
 import { TopBar } from '@/components/TopBar/TopBar';
 import { useSession } from '../session-context';
 import { verdictForAttempt } from '../terms';
-import { SCREEN_MAX_WIDTH } from '../layout-constants';
+import { RecallScreenShell, RecallBottomActions } from '../RecallScreenShell';
 
 // Fixed delay, not randomized or tied to input length -- per this
 // prototype's mocked-recall decision (SPEC.md "How the mocked recall
@@ -49,21 +49,7 @@ function ProcessingPageContent() {
   }, []);
 
   return (
-    <div
-      style={{
-        minHeight: '100vh',
-        width: '100%',
-        maxWidth: SCREEN_MAX_WIDTH,
-        margin: '0 auto',
-        background: 'var(--color-background-page)',
-        colorScheme: 'dark',
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'center',
-        gap: 'var(--dimension-space-300)',
-        boxSizing: 'border-box',
-      }}
-    >
+    <RecallScreenShell gap="var(--dimension-space-300)">
       <TopBar termIndex={termIndex} totalTerms={totalTerms} streak={streak} />
       <div
         style={{
@@ -95,21 +81,7 @@ function ProcessingPageContent() {
         </p>
       </div>
 
-      <div
-        style={{
-          flex: 1,
-          minHeight: 0,
-          display: 'flex',
-          flexDirection: 'column',
-          justifyContent: 'flex-end',
-          alignItems: 'center',
-          paddingInline: 'var(--dimension-space-400)',
-          paddingTop: 'var(--dimension-space-400)',
-          paddingBottom: 'var(--dimension-space-1200)',
-          boxSizing: 'border-box',
-          width: '100%',
-        }}
-      >
+      <RecallBottomActions>
         <p
           style={{
             margin: 0,
@@ -124,7 +96,7 @@ function ProcessingPageContent() {
         >
           This only takes a second
         </p>
-      </div>
-    </div>
+      </RecallBottomActions>
+    </RecallScreenShell>
   );
 }

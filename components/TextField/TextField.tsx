@@ -1,4 +1,4 @@
-import type { ChangeEvent, ReactNode } from 'react';
+import { useState, type ChangeEvent, type ReactNode } from 'react';
 import { IconSlot } from '../IconSlot/IconSlot';
 import { ButtonIcon } from '../ButtonIcon/ButtonIcon';
 
@@ -66,7 +66,14 @@ export function TextField({
 }: TextFieldProps) {
   const isDisabled = variant === 'Disabled';
   const isError = variant === 'Error';
-  const isFocused = variant === 'Focused';
+  // A real focus/blur listener on the input, not just the external
+  // `variant="Focused"` flag -- previously that flag was the only way
+  // to reach this visual state, so no consumer could ever show it from
+  // an actual focus event. `variant="Focused"` is kept as an explicit
+  // override (used by this component's own Storybook story, which has
+  // no live focus to react to).
+  const [isNativelyFocused, setIsNativelyFocused] = useState(false);
+  const isFocused = variant === 'Focused' || (isNativelyFocused && !isError && !isDisabled);
 
   const borderColor = isError
     ? 'var(--color-border-error)'
@@ -110,6 +117,8 @@ export function TextField({
               type="text"
               value={value}
               onChange={onChange}
+              onFocus={() => setIsNativelyFocused(true)}
+              onBlur={() => setIsNativelyFocused(false)}
               placeholder={placeholder}
               disabled={isDisabled}
               style={{

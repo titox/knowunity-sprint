@@ -7,7 +7,7 @@ import { Button } from '@/components/Button/Button';
 import { RecordingControls } from '@/components/MicButton/RecordingControls';
 import { TopBar } from '@/components/TopBar/TopBar';
 import { useSession } from '../session-context';
-import { SCREEN_MAX_WIDTH } from '../layout-constants';
+import { RecallScreenShell, RecallBottomActions } from '../RecallScreenShell';
 
 // Same term-result content as Answer's frames -- real per-term mock
 // scripts are still an open content decision (SPEC.md verification
@@ -113,21 +113,7 @@ export default function SayItBackPage() {
   };
 
   return (
-    <div
-      style={{
-        minHeight: '100vh',
-        width: '100%',
-        maxWidth: SCREEN_MAX_WIDTH,
-        margin: '0 auto',
-        background: 'var(--color-background-page)',
-        colorScheme: 'dark',
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'center',
-        gap: 'var(--dimension-space-300)',
-        boxSizing: 'border-box',
-      }}
-    >
+    <RecallScreenShell gap="var(--dimension-space-300)">
       <TopBar termIndex={termIndex} totalTerms={totalTerms} streak={streak} />
       <div
         style={{
@@ -184,22 +170,7 @@ export default function SayItBackPage() {
         {INSTRUCTION}
       </p>
 
-      <div
-        style={{
-          flex: 1,
-          minHeight: 0,
-          display: 'flex',
-          flexDirection: 'column',
-          justifyContent: 'flex-end',
-          alignItems: 'center',
-          gap: 'var(--dimension-space-300)',
-          paddingInline: 'var(--dimension-space-400)',
-          paddingTop: 'var(--dimension-space-400)',
-          paddingBottom: 'var(--dimension-space-1200)',
-          boxSizing: 'border-box',
-          width: '100%',
-        }}
-      >
+      <RecallBottomActions gap="var(--dimension-space-300)">
         <RecordingControls
           state={micState}
           aria-label={micState === 'Listening' ? 'Stop speaking' : 'Speak'}
@@ -208,8 +179,8 @@ export default function SayItBackPage() {
           onCancel={handleCancel}
         />
         <Button variant="Tertiary" size="L" cta="Skip for now" onClick={handleDecline} />
+      </RecallBottomActions>
       </div>
-      </div>
-    </div>
+    </RecallScreenShell>
   );
 }

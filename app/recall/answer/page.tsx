@@ -10,7 +10,7 @@ import { RecordingControls } from '@/components/MicButton/RecordingControls';
 import { TopBar } from '@/components/TopBar/TopBar';
 import { useSession } from '../session-context';
 import { TERMS } from '../terms';
-import { SCREEN_MAX_WIDTH } from '../layout-constants';
+import { RecallScreenShell, RecallBottomActions } from '../RecallScreenShell';
 
 // Prompt now comes from the current term (app/recall/terms.ts) instead
 // of a fixed string -- closes the gap the spec-reviewer found: this
@@ -42,22 +42,6 @@ function AnswerPageContent() {
 
   if (mode === 'voice') return <VoiceAnswer />;
   return <TextAnswer />;
-}
-
-function shellStyle(): React.CSSProperties {
-  return {
-    minHeight: '100vh',
-    width: '100%',
-    maxWidth: SCREEN_MAX_WIDTH,
-    margin: '0 auto',
-    background: 'var(--color-background-page)',
-    colorScheme: 'dark',
-    display: 'flex',
-    flexDirection: 'column',
-    alignItems: 'center',
-    gap: 'var(--dimension-space-300)',
-    boxSizing: 'border-box',
-  };
 }
 
 function contentTopStyle(): React.CSSProperties {
@@ -94,39 +78,33 @@ function promptTextStyle(): React.CSSProperties {
   };
 }
 
-function bottomAreaStyle(): React.CSSProperties {
-  return {
-    flex: 1,
-    minHeight: 0,
-    display: 'flex',
-    flexDirection: 'column',
-    justifyContent: 'flex-end',
-    alignItems: 'center',
-    gap: 'var(--dimension-space-300)',
-    paddingInline: 'var(--dimension-space-400)',
-    paddingTop: 'var(--dimension-space-400)',
-    paddingBottom: 'var(--dimension-space-1200)',
-    boxSizing: 'border-box',
-    width: '100%',
-  };
-}
-
 function TextAnswer() {
   const router = useRouter();
   const { termIndex, totalTerms, streak } = useSession();
   const term = TERMS[termIndex - 1];
   const [value, setValue] = useState('');
+  const [showEmptyError, setShowEmptyError] = useState(false);
 
-  // TextField exposes no onFocus/onBlur -- its "Focused" variant can't
-  // be driven by a real focus event here, only by whether there's text.
-  // Not something to fake by hand (design-system.md rule 9); logged in
-  // component-gaps.md as a real component gap, not silently worked around.
-  const variant = value ? 'Filled' : 'Default';
+  // Focus is now handled inside TextField itself via a native
+  // onFocus/onBlur listener -- this only needs to pick between the
+  // states that depend on this screen's own data (whether there's an
+  // error, whether there's text).
+  const variant = showEmptyError ? 'Error' : value ? 'Filled' : 'Default';
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setValue(e.target.value);
+    if (showEmptyError) setShowEmptyError(false);
+  };
 
   const handleSend = () => {
-    if (!value.trim()) return; // ButtonGroup exposes no per-button
-    // Disabled state (logged in component-gaps.md) -- guard in the handler
-    // instead of faking a disabled look by hand (design-system.md rule 9).
+    if (!value.trim()) {
+      // ButtonGroup exposes no per-button Disabled state (logged in
+      // component-gaps.md) -- a real TextField Error state (verified via
+      // Storybook docs: variant="Error" + showHelperText + errorCaption)
+      // instead of the previous silent no-op.
+      setShowEmptyError(true);
+      return;
+    }
     router.push(`/recall/processing?transcript=${encodeURIComponent(value)}`);
   };
 
@@ -139,7 +117,7 @@ function TextAnswer() {
   };
 
   return (
-    <div style={shellStyle()}>
+    <RecallScreenShell gap="var(--dimension-space-300)">
       <TopBar termIndex={termIndex} totalTerms={totalTerms} streak={streak} />
       <div style={contentTopStyle()}>
         <MascotSlot size="XL" expression="standby" />
@@ -161,11 +139,13 @@ function TextAnswer() {
           showLeadingIcon={false}
           placeholder="Type your answer"
           value={value}
-          onChange={(e) => setValue(e.target.value)}
+          onChange={handleChange}
+          showHelperText={showEmptyError}
+          errorCaption="Say what you know before you send it"
         />
       </div>
 
-      <div style={bottomAreaStyle()}>
+      <RecallBottomActions gap="var(--dimension-space-300)">
         {/*
           sprint-context.md: "Skip available at every term, because no
           required action may trap the student" -- a locked, must-have
@@ -186,8 +166,8 @@ function TextAnswer() {
           onPrimaryClick={handleSend}
           onSecondaryClick={handleSwitchToSpeaking}
         />
-      </div>
-    </div>
+      </RecallBottomActions>
+    </RecallScreenShell>
   );
 }
 
@@ -287,7 +267,7 @@ function VoiceAnswer() {
   };
 
   return (
-    <div style={shellStyle()}>
+    <RecallScreenShell gap="var(--dimension-space-300)">
       <TopBar termIndex={termIndex} totalTerms={totalTerms} streak={streak} />
       <div style={contentTopStyle()}>
         <MascotSlot size="XL" expression="standby" />
@@ -296,7 +276,7 @@ function VoiceAnswer() {
         </div>
       </div>
 
-      <div style={bottomAreaStyle()}>
+      <RecallBottomActions gap="var(--dimension-space-300)">
         <RecordingControls
           state={micState}
           aria-label={micState === 'Listening' ? 'Stop speaking' : 'Speak'}
@@ -329,7 +309,7 @@ function VoiceAnswer() {
           </button>
           <Button variant="Tertiary" size="L" cta="Skip for now" onClick={handleSkip} />
         </div>
-      </div>
-    </div>
+      </RecallBottomActions>
+    </RecallScreenShell>
   );
 }

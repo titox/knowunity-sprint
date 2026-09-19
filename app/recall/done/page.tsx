@@ -1,3 +1,5 @@
+import { RecallScreenShell } from '../RecallScreenShell';
+
 // Per SPEC.md's decision: "Continue routes to a placeholder 'exam
 // plan' screen (Continue, dead-end per this session's decision) --
 // since app/page.tsx is still the stock starter and this prototype
@@ -6,23 +8,10 @@
 // what's out of scope rather than building a fake destination."
 export default function DonePage() {
   return (
-    <div
-      style={{
-        minHeight: '100vh',
-        width: '100%',
-        maxWidth: 390,
-        margin: '0 auto',
-        background: 'var(--color-background-page)',
-        colorScheme: 'dark',
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'center',
-        justifyContent: 'center',
-        gap: 'var(--dimension-space-200)',
-        paddingInline: 'var(--dimension-space-400)',
-        boxSizing: 'border-box',
-        textAlign: 'center',
-      }}
+    <RecallScreenShell
+      gap="var(--dimension-space-200)"
+      justifyContent="center"
+      style={{ paddingInline: 'var(--dimension-space-400)', textAlign: 'center' }}
     >
       <p
         style={{
@@ -48,6 +37,6 @@ export default function DonePage() {
       >
         In the real app, this would return to the exam plan.
       </p>
-    </div>
+    </RecallScreenShell>
   );
 }

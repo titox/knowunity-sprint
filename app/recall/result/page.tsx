@@ -10,7 +10,7 @@ import { ThumbsDownIcon, ThumbsUpIcon } from '@/components/Result/ThumbsIcons';
 import { TopBar } from '@/components/TopBar/TopBar';
 import { useSession } from '../session-context';
 import { TERMS, type TermOutcome } from '../terms';
-import { SCREEN_MAX_WIDTH } from '../layout-constants';
+import { RecallScreenShell } from '../RecallScreenShell';
 
 // SPEC.md names 5 states: Pass, Partial, Fail (1st miss -> hint 1),
 // Fail (2nd miss -> hint 2), Revealed -- fail1/fail2 were previously
@@ -31,21 +31,11 @@ function parseState(raw: string | null): ResultState {
   return 'pass';
 }
 
-function shellStyle(): React.CSSProperties {
-  return {
-    minHeight: '100vh',
-    width: '100%',
-    maxWidth: SCREEN_MAX_WIDTH,
-    margin: '0 auto',
-    background: 'var(--color-background-page)',
-    colorScheme: 'dark',
-    display: 'flex',
-    flexDirection: 'column',
-    alignItems: 'center',
-    boxSizing: 'border-box',
-  };
-}
-
+// No separate bottom-actions wrapper on this screen (a spacer div pushes
+// the buttons down within this one flex column instead), so this can't
+// reuse RecallBottomActions directly -- but it needs the same
+// safe-area-aware bottom padding, since its buttons sit flush against
+// the container's bottom edge with no other padding protecting them.
 function bodyStyle(): React.CSSProperties {
   return {
     flex: 1,
@@ -57,6 +47,7 @@ function bodyStyle(): React.CSSProperties {
     width: '100%',
     paddingInline: 'var(--dimension-space-400)',
     paddingTop: 'var(--dimension-space-600)',
+    paddingBottom: 'calc(var(--dimension-space-1600) + env(safe-area-inset-bottom))',
     boxSizing: 'border-box',
   };
 }
@@ -279,7 +270,7 @@ function ResultPageContent() {
   };
 
   return (
-    <div style={shellStyle()}>
+    <RecallScreenShell>
       <TopBar termIndex={termIndex} totalTerms={totalTerms} streak={streak} />
       <div style={bodyStyle()}>
         {state === 'pass' && (
@@ -407,6 +398,6 @@ function ResultPageContent() {
           </>
         )}
       </div>
-    </div>
+    </RecallScreenShell>
   );
 }
