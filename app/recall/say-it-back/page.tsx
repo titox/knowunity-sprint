@@ -1,18 +1,14 @@
 'use client';
 
-import { useRef, useState } from 'react';
-import { useRouter } from 'next/navigation';
+import { Suspense, useRef, useState } from 'react';
+import { useRouter, useSearchParams } from 'next/navigation';
 import { MascotSlot } from '@/components/MascotSlot/MascotSlot';
 import { Button } from '@/components/Button/Button';
 import { RecordingControls } from '@/components/MicButton/RecordingControls';
 import { TopBar } from '@/components/TopBar/TopBar';
 import { useSession } from '../session-context';
+import { TERMS } from '../terms';
 import { RecallScreenShell, RecallBottomActions } from '../RecallScreenShell';
-
-// Same term-result content as Answer's frames -- real per-term mock
-// scripts are still an open content decision (SPEC.md verification
-// step 6).
-const PROMPT = 'Both ended in new kingdoms, each under its own fueros.';
 
 // sprint-context.md locks this exact phrase: "'Repeat it and it
 // becomes a pass' is locked copy, because without it say-it-back reads
@@ -45,8 +41,26 @@ function getSpeechRecognitionCtor(): (new () => SpeechRecognitionLike) | null {
 }
 
 export default function SayItBackPage() {
+  return (
+    <Suspense fallback={null}>
+      <SayItBackPageContent />
+    </Suspense>
+  );
+}
+
+function SayItBackPageContent() {
   const router = useRouter();
+  const searchParams = useSearchParams();
+  // Where a decline should return to -- the actual prior verdict, not a
+  // hardcoded 'revealed' (scorecard-01.md #1: declining after an
+  // already-earned hinted pass was silently erasing it). Only 'pass'
+  // and 'revealed' ever link here; default matches the one prior
+  // hardcoded behavior for a direct/manual load with no origin.
+  const from = searchParams.get('from') === 'pass' ? 'pass' : 'revealed';
+  const fromAttemptIndex = searchParams.get('attemptIndex');
+  const fromTranscript = searchParams.get('transcript');
   const { termIndex, totalTerms, streak } = useSession();
+  const term = TERMS[termIndex - 1];
   const [micState, setMicState] = useState<'Default' | 'Listening'>('Default');
   const [transcript, setTranscript] = useState('');
   const recognitionRef = useRef<SpeechRecognitionLike | null>(null);
@@ -107,16 +121,21 @@ export default function SayItBackPage() {
 
   const handleDecline = () => {
     // "decline and move on" (SPEC.md) -- the prior result stands
-    // unchanged, no upgrade attempt made.
+    // unchanged, no upgrade attempt made. Routes back to the actual
+    // prior verdict (see `from` above), not a hardcoded state.
     recognitionRef.current?.stop();
-    router.push('/recall/result?state=unchanged');
+    const attemptIndexParam = fromAttemptIndex !== null ? `&attemptIndex=${fromAttemptIndex}` : '';
+    const transcriptParam = fromTranscript ? `&transcript=${encodeURIComponent(fromTranscript)}` : '';
+    router.push(`/recall/result?state=${from}${attemptIndexParam}${transcriptParam}`);
   };
 
   return (
     <RecallScreenShell gap="var(--dimension-space-300)">
-      <TopBar termIndex={termIndex} totalTerms={totalTerms} streak={streak} />
+      <TopBar termIndex={termIndex} totalTerms={totalTerms} streak={streak} onClose={() => router.push('/recall/done')} />
       <div
         style={{
+          flex: 1,
+          minHeight: 0,
           display: 'flex',
           flexDirection: 'column',
           alignItems: 'center',
@@ -150,7 +169,7 @@ export default function SayItBackPage() {
               color: 'var(--color-text-primary)',
             }}
           >
-            {PROMPT}
+            {term.prompt}
           </p>
         </div>
       </div>
@@ -178,7 +197,12 @@ export default function SayItBackPage() {
           onClick={handleMicClick}
           onCancel={handleCancel}
         />
-        <Button variant="Tertiary" size="L" cta="Skip for now" onClick={handleDecline} />
+        {/* "Not now" -- matches permission's own decline-an-offer copy
+            (app/recall/permission/page.tsx). Distinct from Choice/
+            Answer's "Skip for now" (skips the whole term, 0 XP) -- this
+            declines only the bonus repeat and keeps the prior verdict
+            (scorecard-01.md #11: same label meant two different things). */}
+        <Button variant="Tertiary" size="L" cta="Not now" onClick={handleDecline} />
       </RecallBottomActions>
       </div>
     </RecallScreenShell>

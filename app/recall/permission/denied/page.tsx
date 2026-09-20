@@ -24,7 +24,7 @@ export default function PermissionDeniedPage() {
 
   return (
     <RecallScreenShell gap="var(--dimension-space-300)">
-      <TopBar termIndex={termIndex} totalTerms={totalTerms} streak={streak} />
+      <TopBar termIndex={termIndex} totalTerms={totalTerms} streak={streak} onClose={() => router.push('/recall/done')} />
       <div
         style={{
           display: 'flex',
@@ -88,7 +88,7 @@ export default function PermissionDeniedPage() {
           variant="Vertical"
           size="L"
           primaryCta="Continue by typing"
-          secondaryCta="Open Settings"
+          secondaryCta="How to turn it back on"
           onPrimaryClick={handleContinueByTyping}
           onSecondaryClick={() => setShowSettingsHelp((v) => !v)}
         />

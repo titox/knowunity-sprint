@@ -39,9 +39,11 @@ export default function ChoicePage() {
 
   return (
     <RecallScreenShell gap="var(--dimension-space-300)">
-      <TopBar termIndex={termIndex} totalTerms={totalTerms} streak={streak} />
+      <TopBar termIndex={termIndex} totalTerms={totalTerms} streak={streak} onClose={() => router.push('/recall/done')} />
       <div
         style={{
+          flex: 1,
+          minHeight: 0,
           display: 'flex',
           flexDirection: 'column',
           alignItems: 'center',

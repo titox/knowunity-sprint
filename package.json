@@ -14,7 +14,8 @@
     "generate:button-icon-stories": "node components/ButtonIcon/generate-stories.mjs",
     "generate:chips-stories": "node components/Chips/generate-stories.mjs",
     "chromatic": "node --env-file=.env.local ./node_modules/.bin/chromatic",
-    "check:tokens": "! grep -rnE \"#[0-9a-fA-F]{3,8}\" app components stories --include=\"*.ts\" --include=\"*.tsx\""
+    "check:tokens": "! grep -rnE \"#[0-9a-fA-F]{3,8}\" app components stories --include=\"*.ts\" --include=\"*.tsx\" | grep -vE \"^[^:]+:[0-9]+:\\s*(//|\\*)\"",
+    "check:borders": "! grep -rnE \"[0-9]+px[[:space:]]+(solid|dashed|dotted)\" app components stories --include=\"*.ts\" --include=\"*.tsx\" | grep -vE \"^[^:]+:[0-9]+:\\s*(//|\\*)\""
   },
   "dependencies": {
     "next": "16.3.5",

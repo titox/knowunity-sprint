@@ -32,7 +32,9 @@ export interface TextFieldProps {
 // not any Greed typography token -- a real inconsistency in the source
 // file (everything else in the system is Greed). Per direction, bound to
 // the nearest Greed tokens instead: Body S Regular for input text/title,
-// Caption S Regular for helper/error text.
+// Caption M Regular for helper/error text -- Caption S Regular renders
+// at 9px (measured via getComputedStyle), too small for text a student
+// needs to read to recover from a blocked action (scorecard-01.md #6).
 const FIELD_TEXT = {
   fontFamily: 'var(--font-family-typography-body-s-regular-font-family)',
   fontWeight: 'var(--font-weight-typography-body-s-regular-font-weight)',
@@ -40,10 +42,10 @@ const FIELD_TEXT = {
   lineHeight: 'var(--dimension-typography-body-s-regular-line-height)',
 };
 const HELPER_TEXT = {
-  fontFamily: 'var(--font-family-typography-caption-s-regular-font-family)',
-  fontWeight: 'var(--font-weight-typography-caption-s-regular-font-weight)',
-  fontSize: 'var(--dimension-typography-caption-s-regular-font-size)',
-  lineHeight: 'var(--dimension-typography-caption-s-regular-line-height)',
+  fontFamily: 'var(--font-family-typography-caption-m-regular-font-family)',
+  fontWeight: 'var(--font-weight-typography-caption-m-regular-font-weight)',
+  fontSize: 'var(--dimension-typography-caption-m-regular-font-size)',
+  lineHeight: 'var(--dimension-typography-caption-m-regular-line-height)',
 };
 
 export function TextField({
@@ -112,25 +114,30 @@ export function TextField({
               <IconSlot size="300">{leadingIcon}</IconSlot>
             </span>
           )}
-          <div style={{ flex: 1, minWidth: 0, paddingBlock: 'var(--dimension-space-300)' }}>
-            <input
-              type="text"
-              value={value}
-              onChange={onChange}
-              onFocus={() => setIsNativelyFocused(true)}
-              onBlur={() => setIsNativelyFocused(false)}
-              placeholder={placeholder}
-              disabled={isDisabled}
-              style={{
-                ...FIELD_TEXT,
-                color: inputTextColor,
-                background: 'transparent',
-                border: 'none',
-                outline: 'none',
-                width: '100%',
-              }}
-            />
-          </div>
+          <input
+            type="text"
+            value={value}
+            onChange={onChange}
+            onFocus={() => setIsNativelyFocused(true)}
+            onBlur={() => setIsNativelyFocused(false)}
+            placeholder={placeholder}
+            disabled={isDisabled}
+            style={{
+              ...FIELD_TEXT,
+              color: inputTextColor,
+              background: 'transparent',
+              border: 'none',
+              outline: 'none',
+              // Padding lives on the input itself, not a wrapper div --
+              // it previously sat on a non-input wrapper, so the real
+              // hit area was only the text's line-height (~20px) even
+              // though the field visually looked ~47px tall (a measured
+              // touch-target hard-gate failure, critic-ux + critic-craft).
+              paddingBlock: 'var(--dimension-space-300)',
+              flex: 1,
+              minWidth: 0,
+            }}
+          />
           {showTrailingAction && (
             <ButtonIcon
               variant="Tertiary"

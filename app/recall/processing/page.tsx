@@ -36,9 +36,15 @@ function ProcessingPageContent() {
       // this route used to send nothing, so Partial/Fail/Revealed were
       // only reachable by hand-editing the URL, never through real play.
       const verdict = verdictForAttempt(termIndex, attemptIndex);
+      // Captured before recordAttempt() increments it, and carried through
+      // the URL -- Result must never read attemptIndex back off session
+      // state, since this call has already mutated it by the time Result
+      // mounts (that's what made every real first-try pass misclassify as
+      // hinted; see app/recall/result/page.tsx).
+      const attemptParam = `&attemptIndex=${attemptIndex}`;
       recordAttempt();
       const transcriptParam = transcript ? `&transcript=${encodeURIComponent(transcript)}` : '';
-      router.push(`/recall/result?state=${verdict}${transcriptParam}`);
+      router.push(`/recall/result?state=${verdict}${attemptParam}${transcriptParam}`);
     }, PROCESSING_DELAY_MS);
     return () => clearTimeout(timer);
     // Intentionally mount-once: snapshots termIndex/attemptIndex/transcript
@@ -50,7 +56,7 @@ function ProcessingPageContent() {
 
   return (
     <RecallScreenShell gap="var(--dimension-space-300)">
-      <TopBar termIndex={termIndex} totalTerms={totalTerms} streak={streak} />
+      <TopBar termIndex={termIndex} totalTerms={totalTerms} streak={streak} onClose={() => router.push('/recall/done')} />
       <div
         style={{
           display: 'flex',

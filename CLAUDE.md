@@ -16,6 +16,7 @@ See `sprint-context.md` "What this is".
 - Voice-UX principles (system status, push-to-talk, permissions, generous judging, non-voice fallback, latency): `03_Voice_UX_Reference_4fe62791470982779c32813df9bbf0c5.md`.
 - Existing Knowunity app screens (for context on where this feature sits): `app-inventory.md`, screenshots in `reference/`.
 - `npm run check:tokens` catches raw hex colors in `app/`/`components/`/`stories/` — run it after building or editing anything, every time, so this never gets forgotten.
+- `npm run check:borders` catches raw `NNpx solid`/`dashed`/`dotted` border-width literals in the same directories — run it alongside `check:tokens`. It currently fails on real, pre-existing violations (no border-width token exists in `tokens/tokens.json` yet) — that failure is expected and disclosed, not a regression to silently fix; adding the token is a design decision, not an automatic one.
 
 ## Never
 

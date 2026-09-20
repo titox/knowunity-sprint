@@ -20,6 +20,13 @@ interface SessionState {
   attemptIndex: number;
   recordAttempt: () => void;
 
+  /** Last mode the student explicitly chose (Speak/Write on Choice, or a
+   * mid-flow switch). Defaults to 'text'. Screens that navigate to Answer
+   * without an explicit ?mode= param (Result's "Next", retry) carry this
+   * forward instead of silently resetting to text. */
+  mode: 'voice' | 'text';
+  setMode: (mode: 'voice' | 'text') => void;
+
   /** Real per-term outcome history -- closes the gap the spec-reviewer
    * found: Summary was reading 100% hardcoded placeholder rows instead
    * of anything the student actually did. Index 0 = term 1. null until
@@ -34,6 +41,7 @@ export function SessionProvider({ children }: { children: ReactNode }) {
   const [termIndex, setTermIndex] = useState(1);
   const [streak, setStreak] = useState(0);
   const [attemptIndex, setAttemptIndex] = useState(0);
+  const [mode, setMode] = useState<'voice' | 'text'>('text');
   const [history, setHistory] = useState<(TermOutcome | null)[]>(Array(TOTAL_TERMS).fill(null));
 
   const value: SessionState = {
@@ -53,6 +61,8 @@ export function SessionProvider({ children }: { children: ReactNode }) {
     },
     attemptIndex,
     recordAttempt: () => setAttemptIndex((a) => a + 1),
+    mode,
+    setMode,
     history,
     recordOutcome: (i, outcome) =>
       setHistory((h) => {

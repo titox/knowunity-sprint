@@ -35,7 +35,7 @@ export default function MicPermissionPrimerPage() {
 
   return (
     <RecallScreenShell gap="var(--dimension-space-300)">
-      <TopBar termIndex={termIndex} totalTerms={totalTerms} streak={streak} />
+      <TopBar termIndex={termIndex} totalTerms={totalTerms} streak={streak} onClose={() => router.push('/recall/done')} />
       <div
         style={{
           display: 'flex',

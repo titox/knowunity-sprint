@@ -146,7 +146,7 @@ function HintSheet({
         borderTopRightRadius: 'var(--dimension-radius-900)',
         paddingInline: 'var(--dimension-space-700)',
         paddingTop: 'var(--dimension-space-300)',
-        paddingBottom: 'var(--dimension-space-700)',
+        paddingBottom: 'calc(var(--dimension-space-700) + env(safe-area-inset-bottom))',
         boxSizing: 'border-box',
         display: 'flex',
         flexDirection: 'column',
@@ -196,16 +196,33 @@ function ResultPageContent() {
   const rawState = searchParams.get('state');
   const state = parseState(rawState);
   const transcript = searchParams.get('transcript');
-  const { termIndex, totalTerms, streak, attemptIndex, advanceTerm, addStreak, recordOutcome } = useSession();
+  const { termIndex, totalTerms, streak, mode, advanceTerm, addStreak, recordOutcome } = useSession();
+  // Read from the URL, not session -- Processing's recordAttempt() has
+  // already incremented session's attemptIndex by the time this screen
+  // mounts, so reading it from session here always saw a stale,
+  // post-increment value (every real first-try pass misclassified as
+  // hinted). Processing passes the pre-increment value it actually used
+  // to compute the verdict; missing means a direct/manual load, which
+  // should read as a clean, unhinted pass.
+  const attemptIndexParam = searchParams.get('attemptIndex');
+  const attemptIndex = attemptIndexParam !== null ? Number(attemptIndexParam) : 0;
 
   const term = TERMS[termIndex - 1];
   const isLastTerm = termIndex >= totalTerms;
   // A pass reached after at least one real attempt was hinted, not
   // unaided -- unless it got here via Say-it-back's own upgrade
-  // (rawState === 'upgraded'), which SPEC.md says should count as
-  // unaided ("repeat it and it becomes a pass"). Closes the "missing
-  // hinted-pass -> offer Say it back" gap the spec-reviewer found.
+  // (rawState === 'upgraded'), which offers its own distinct treatment
+  // below (isEarnedPass) rather than folding into either bucket.
   const isHintedPass = state === 'pass' && attemptIndex > 0 && rawState !== 'upgraded';
+  // Reached only via Say-it-back's repeat-it-back flow, which itself is
+  // only reachable after a hinted-pass offer or a full reveal -- the
+  // actual "earned moment" sprint-context.md calls "the point of the
+  // feature." Was previously indistinguishable from a genuine clean
+  // pass (same mascot/badge/copy/button, and recorded as 'unaided') --
+  // a hard-gate violation the render/diff pass and critic-craft both
+  // caught independently. Gets its own copy/mascot below and records
+  // as 'hinted', since it required help to get there either way.
+  const isEarnedPass = rawState === 'upgraded';
 
   const finishTerm = (outcome: TermOutcome, xp: number) => {
     recordOutcome(termIndex, outcome);
@@ -214,27 +231,18 @@ function ResultPageContent() {
       router.push('/recall/summary');
     } else {
       advanceTerm();
-      router.push('/recall/answer');
+      router.push(`/recall/answer?mode=${mode}`);
     }
   };
 
   const goToNextTermOrSummary = () => {
     // Flat XP per term attempted, plus a bonus for a clean unaided
-    // pass, per this project's decided XP model.
-    if (state === 'pass') finishTerm(isHintedPass ? 'hinted' : 'unaided', isHintedPass ? 1 : 2);
+    // pass, per this project's decided XP model. An earned (upgraded)
+    // pass required a reveal to get there, so it records as 'hinted'
+    // like any other assisted pass, not 'unaided'.
+    if (state === 'pass') finishTerm(isHintedPass || isEarnedPass ? 'hinted' : 'unaided', isHintedPass || isEarnedPass ? 1 : 2);
     else if (state === 'partial') finishTerm('hinted', 1);
     else finishTerm('revealed', 1); // reached from 'revealed'
-  };
-
-  const handleSkip = () => {
-    // Skip earns zero XP, per this project's decided XP model.
-    recordOutcome(termIndex, 'skipped');
-    if (isLastTerm) {
-      router.push('/recall/summary');
-    } else {
-      advanceTerm();
-      router.push('/recall/answer');
-    }
   };
 
   // Choice/Answer's own Skip action routes straight here with
@@ -247,12 +255,12 @@ function ResultPageContent() {
       router.push('/recall/summary');
     } else {
       advanceTerm();
-      router.push('/recall/answer');
+      router.push(`/recall/answer?mode=${mode}`);
     }
   };
 
   const handleReRecord = () => {
-    router.push('/recall/answer?mode=voice');
+    router.push(`/recall/answer?mode=${mode}`);
   };
 
   const handleShowSecondHint = () => {
@@ -266,22 +274,43 @@ function ResultPageContent() {
   };
 
   const handleSayItBack = () => {
-    router.push('/recall/say-it-back');
+    // Carries the state say-it-back needs to return to if the student
+    // declines the repeat, so a decline restores the actual prior
+    // verdict (pass or revealed) instead of always landing on
+    // 'revealed' -- the hard-gate bug where declining after an already
+    // -earned hinted pass silently erased it (scorecard-01.md #1).
+    const transcriptParam = transcript ? `&transcript=${encodeURIComponent(transcript)}` : '';
+    router.push(`/recall/say-it-back?from=${state}&attemptIndex=${attemptIndex}${transcriptParam}`);
   };
 
   return (
     <RecallScreenShell>
-      <TopBar termIndex={termIndex} totalTerms={totalTerms} streak={streak} />
+      <TopBar termIndex={termIndex} totalTerms={totalTerms} streak={streak} onClose={() => router.push('/recall/done')} />
       <div style={bodyStyle()}>
         {state === 'pass' && (
           <>
-            <MascotSlot size="XL" expression="excited" />
+            {/* 2XL, not XL -- at XL (40px on-screen) excited.svg and
+                approving.svg were visually indistinguishable, so the
+                clean/earned distinction the copy makes wasn't legible in
+                the mascot at all (scorecard-01.md #7). */}
+            <MascotSlot size="2XL" expression={isEarnedPass ? 'approving' : 'excited'} />
             <div style={cardStyle()}>
               <PassBadge />
+              {isEarnedPass && (
+                <p
+                  style={{
+                    ...bodyTextStyle(),
+                    fontFamily: 'var(--font-family-typography-body-m-bold-font-family)',
+                    fontWeight: 'var(--font-weight-typography-body-m-bold-font-weight)',
+                    color: 'var(--color-text-secondary)',
+                  }}
+                >
+                  You got there.
+                </p>
+              )}
               <p style={bodyTextStyle()}>{term.correctAnswer}</p>
             </div>
             <div style={{ flex: 1 }} />
-            <Button variant="Tertiary" size="M" cta="Skip for now" onClick={handleSkip} />
             {isHintedPass ? (
               <ButtonGroup
                 variant="Vertical"
@@ -370,7 +399,6 @@ function ResultPageContent() {
               <p style={bodyTextStyle()}>{term.correctAnswer}</p>
             </div>
             <div style={{ flex: 1 }} />
-            <Button variant="Tertiary" size="M" cta="Skip for now" onClick={handleSkip} />
             <ButtonGroup
               variant="Vertical"
               size="L"

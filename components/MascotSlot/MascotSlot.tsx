@@ -79,6 +79,11 @@ export function MascotSlot({ size = 'XL', expression = 'standby', className }: M
         alt={`Knowie, ${expression}`}
         width={px}
         height={px}
+        // Mascot is always above the fold on every screen that uses it,
+        // and some assets are large (approving.svg is 378KB) -- without
+        // this, real client-side navigation showed the slot blank for
+        // ~100-600ms after a route change (scorecard-01.md #8).
+        priority
         style={{ width: '100%', height: '100%', objectFit: 'contain' }}
       />
     </div>

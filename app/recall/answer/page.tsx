@@ -1,6 +1,6 @@
 'use client';
 
-import { Suspense, useRef, useState } from 'react';
+import { Suspense, useEffect, useRef, useState } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { MascotSlot } from '@/components/MascotSlot/MascotSlot';
 import { TextField } from '@/components/TextField/TextField';
@@ -38,7 +38,19 @@ export default function AnswerPage() {
 
 function AnswerPageContent() {
   const searchParams = useSearchParams();
-  const mode = searchParams.get('mode') === 'voice' ? 'voice' : 'text';
+  const { mode: sessionMode, setMode } = useSession();
+  const paramMode = searchParams.get('mode');
+  // Explicit ?mode= wins (Choice's own Speak/Write pick, or an in-page
+  // switch); otherwise fall back to the last mode the student chose, so
+  // navigating here with no param (Result's "Next", retry) doesn't
+  // silently reset a voice session back to text.
+  const mode = paramMode === 'voice' ? 'voice' : paramMode === 'text' ? 'text' : sessionMode;
+
+  useEffect(() => {
+    if (paramMode === 'voice' || paramMode === 'text') {
+      setMode(paramMode);
+    }
+  }, [paramMode, setMode]);
 
   if (mode === 'voice') return <VoiceAnswer />;
   return <TextAnswer />;
@@ -118,7 +130,7 @@ function TextAnswer() {
 
   return (
     <RecallScreenShell gap="var(--dimension-space-300)">
-      <TopBar termIndex={termIndex} totalTerms={totalTerms} streak={streak} />
+      <TopBar termIndex={termIndex} totalTerms={totalTerms} streak={streak} onClose={() => router.push('/recall/done')} />
       <div style={contentTopStyle()}>
         <MascotSlot size="XL" expression="standby" />
         <div style={promptCardStyle()}>
@@ -268,7 +280,7 @@ function VoiceAnswer() {
 
   return (
     <RecallScreenShell gap="var(--dimension-space-300)">
-      <TopBar termIndex={termIndex} totalTerms={totalTerms} streak={streak} />
+      <TopBar termIndex={termIndex} totalTerms={totalTerms} streak={streak} onClose={() => router.push('/recall/done')} />
       <div style={contentTopStyle()}>
         <MascotSlot size="XL" expression="standby" />
         <div style={promptCardStyle()}>
@@ -289,24 +301,13 @@ function VoiceAnswer() {
             Figma's literal label here is "Type instead" -- overridden
             by sprint-context.md's locked mid-loop copy, "switch to
             typing", which takes precedence over one frame's wording.
+            Was a hand-rolled <button> with no height floor (measured
+            126x24px, well under the 44pt hard gate, next to a correctly
+            sized Button one line below on the same screen -- critic-ux
+            + critic-craft). A real Tertiary Button gives it the same
+            48px tap target for free.
           */}
-          <button
-            type="button"
-            onClick={handleSwitchToTyping}
-            style={{
-              background: 'none',
-              border: 'none',
-              padding: 0,
-              cursor: 'pointer',
-              fontFamily: 'var(--font-family-typography-body-m-bold-font-family)',
-              fontWeight: 'var(--font-weight-typography-body-m-bold-font-weight)',
-              fontSize: 'var(--dimension-typography-body-m-bold-font-size)',
-              lineHeight: 'var(--dimension-typography-body-m-bold-line-height)',
-              color: 'var(--color-text-link)',
-            }}
-          >
-            Switch to typing
-          </button>
+          <Button variant="Tertiary" size="M" cta="Switch to typing" onClick={handleSwitchToTyping} />
           <Button variant="Tertiary" size="L" cta="Skip for now" onClick={handleSkip} />
         </div>
       </RecallBottomActions>
