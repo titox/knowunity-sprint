@@ -1,18 +1,6 @@
 @import "../build/css/tokens.css";
 @import "../styles/fonts.css";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
-}
-
 html {
   height: 100%;
 }
@@ -27,8 +15,14 @@ body {
   min-height: 100%;
   display: flex;
   flex-direction: column;
-  color: var(--foreground);
-  background: var(--background);
+  /* Real tokens, not the stock create-next-app --background/--foreground
+     pair -- those resolved to raw hex (#0a0a0a/#ededed) that traced to no
+     token in tokens/tokens.json and didn't match the real ones
+     (background.page/text.primary), even though RecallScreenShell's own
+     div painted over them on every screen so it never showed up in a
+     screenshot. */
+  color: var(--color-text-primary);
+  background: var(--color-background-page);
   font-family: "Greed Standard-TRIAL", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
     "Helvetica Neue", Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
@@ -66,4 +60,15 @@ a {
   .skeleton-pulse {
     animation: skeleton-pulse 1.2s ease-in-out infinite;
   }
+}
+
+/* TextField's input never styled ::placeholder, so it fell back to the
+   browser's UA-default grey -- measured at 3.68:1 against the real input
+   background, below the 4.5:1 hard gate. ::placeholder can't be reached
+   from an inline style object, hence the one global rule.
+   text-tertiary (used for helper/error text below the field) composites
+   to only ~4.52:1 against background-input -- too close to the gate to
+   trust; text-secondary computes to ~7.7:1 against the same background. */
+.textfield-input::placeholder {
+  color: var(--color-text-secondary);
 }

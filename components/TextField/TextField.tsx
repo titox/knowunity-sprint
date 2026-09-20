@@ -116,6 +116,9 @@ export function TextField({
           )}
           <input
             type="text"
+            // Targets the ::placeholder rule in app/globals.css -- that
+            // pseudo-element can't be reached from an inline style object.
+            className="textfield-input"
             value={value}
             onChange={onChange}
             onFocus={() => setIsNativelyFocused(true)}

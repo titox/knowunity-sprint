@@ -15,7 +15,12 @@ export interface ChoiceRowProps {
 
 export function ChoiceRow({ title = 'Speak', caption = 'Explain it loud', icon, showSelected = false, onClick, className }: ChoiceRowProps) {
   return (
-    <div
+    // A real <button>, not a <div onClick> -- the div had no role/tabIndex/
+    // keydown handler, so it was never reachable by keyboard or a switch
+    // control (a student on this screen could only ever hit Skip). Matches
+    // the pattern already used correctly by Button/ButtonIcon/MicButton.
+    <button
+      type="button"
       className={className}
       onClick={onClick}
       style={{
@@ -26,9 +31,12 @@ export function ChoiceRow({ title = 'Speak', caption = 'Explain it loud', icon, 
         padding: 'var(--dimension-space-400)',
         borderRadius: 'var(--dimension-radius-600)',
         background: 'var(--color-background-stacking)',
+        border: 'none',
         width: '100%',
         boxSizing: 'border-box',
         cursor: onClick ? 'pointer' : undefined,
+        font: 'inherit',
+        textAlign: 'left',
       }}
     >
       {showSelected && (
@@ -77,6 +85,6 @@ export function ChoiceRow({ title = 'Speak', caption = 'Explain it loud', icon, 
           <CheckIcon />
         </span>
       )}
-    </div>
+    </button>
   );
 }

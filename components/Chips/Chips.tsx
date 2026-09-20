@@ -80,8 +80,12 @@ interface ColorSpec {
 
 // Neutral has no dedicated accent group in tokens.json, so unlike the
 // other colors its background doesn't change on active -- only the text
-// color signals the state (text.tertiary -> text.primary). That's real
-// Figma data, not an oversight: Neutral's whole point is "no color signal".
+// color signals the state. That's real Figma data, not an oversight:
+// Neutral's whole point is "no color signal". The inactive text token
+// itself changed from text.tertiary to text.secondary: measured live,
+// text.tertiary composited to ~3.9:1 against background.floating (below
+// the 4.5:1 hard gate) on StatusRow, the one place Neutral only ever
+// renders inactive -- text.secondary clears it comfortably.
 const COLOR: Record<ChipsColor, { inactive: ColorSpec; active: ColorSpec }> = {
   Primary: {
     inactive: { bg: 'var(--color-background-surface)', text: 'var(--color-text-primary)' },
@@ -104,7 +108,7 @@ const COLOR: Record<ChipsColor, { inactive: ColorSpec; active: ColorSpec }> = {
     active: { bg: 'var(--color-accent-green-bold)', text: 'var(--color-accent-green-on-bold)' },
   },
   Neutral: {
-    inactive: { bg: 'var(--color-background-floating)', text: 'var(--color-text-tertiary)' },
+    inactive: { bg: 'var(--color-background-floating)', text: 'var(--color-text-secondary)' },
     active: { bg: 'var(--color-background-floating)', text: 'var(--color-text-primary)' },
   },
 };
