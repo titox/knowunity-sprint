@@ -9,6 +9,11 @@ export interface TopBarProps {
   termIndex: number;
   totalTerms: number;
   streak: number;
+  /** Overrides the term-based calculation -- Summary passes "100" since
+   * termIndex caps at totalTerms and reading a finished session through
+   * the same formula as an in-progress one always landed on 75%, never
+   * 100%, even once every term was done (scorecard-3.md #6). */
+  progress?: '0' | '25' | '50' | '75' | '100';
   onClose?: () => void;
   className?: string;
 }
@@ -34,7 +39,7 @@ function snapProgress(termIndex: number, totalTerms: number): ProgressStep {
 // icon asset for the streak count, since no equivalent exists in this
 // project's icon set either (same as Figma's own streakCounter note:
 // "hand-drawn artwork, not a library icon").
-export function TopBar({ termIndex, totalTerms, streak, onClose, className }: TopBarProps) {
+export function TopBar({ termIndex, totalTerms, streak, progress, onClose, className }: TopBarProps) {
   return (
     <div
       className={className}
@@ -51,7 +56,7 @@ export function TopBar({ termIndex, totalTerms, streak, onClose, className }: To
     >
       <ButtonIcon variant="Tertiary" size="M" icon={<XCloseIcon />} aria-label="Close" onClick={onClose} />
       <div style={{ flex: 1, minWidth: 0 }}>
-        <ProgressIndicator variant="Primary" thickness="16" progress={snapProgress(termIndex, totalTerms)} />
+        <ProgressIndicator variant="Primary" thickness="16" progress={progress ?? snapProgress(termIndex, totalTerms)} />
       </div>
       <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--dimension-space-100)' }}>
         <IconSlot size="250">

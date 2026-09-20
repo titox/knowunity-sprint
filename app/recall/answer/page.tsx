@@ -165,7 +165,11 @@ function TextAnswer() {
           shows Send + the voice-switch button); added anyway since the
           rule isn't conditional on one frame's export.
         */}
-        <Button variant="Tertiary" size="M" cta="Skip for now" onClick={handleSkip} />
+        {/* Was size="M" here, size="L" on voice mode and on Choice --
+            same action, same screen family, rendering at two different
+            sizes/weights depending on which mode you're in
+            (scorecard-3.md #5, flagged three rounds running). */}
+        <Button variant="Tertiary" size="L" cta="Skip for now" onClick={handleSkip} />
         <ButtonGroup
           variant="Vertical"
           size="L"

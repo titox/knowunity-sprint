@@ -308,6 +308,31 @@ function ResultPageContent() {
                   You got there.
                 </p>
               )}
+              {/* Clean pass and hinted pass rendered identically apart from
+                  which button group showed below -- a near-miss on the
+                  identical-render hard gate, and the exact pair the rubric's
+                  own craft-9 anchor names (scorecard-3.md #1). This line is
+                  the only thing that now distinguishes them in the card
+                  itself, not just in the buttons underneath. */}
+              {isHintedPass && (
+                <p
+                  style={{
+                    ...bodyTextStyle(),
+                    fontFamily: 'var(--font-family-typography-body-m-bold-font-family)',
+                    fontWeight: 'var(--font-weight-typography-body-m-bold-font-weight)',
+                    color: 'var(--color-text-secondary)',
+                  }}
+                >
+                  Needed a hint.
+                </p>
+              )}
+              {/* Pass never showed what the student actually said, only the
+                  pre-written answer -- a Voice UX Principle 4 violation
+                  (critic-ux, scorecard-3.md #3) since partial/fail1/fail2
+                  already show it but the majority-traffic states didn't. */}
+              {transcript && (
+                <p style={{ ...bodyTextStyle(), color: 'var(--color-text-secondary)' }}>You said: {transcript}</p>
+              )}
               <p style={bodyTextStyle()}>{term.correctAnswer}</p>
             </div>
             <div style={{ flex: 1 }} />
@@ -386,6 +411,11 @@ function ResultPageContent() {
           <>
             <MascotSlot size="XL" expression="standby" />
             <div style={cardStyle()}>
+              {/* Same gap as the pass state above -- revealed never showed
+                  what the student actually said either. */}
+              {transcript && (
+                <p style={{ ...bodyTextStyle(), color: 'var(--color-text-secondary)' }}>You said: {transcript}</p>
+              )}
               <p
                 style={{
                   ...bodyTextStyle(),

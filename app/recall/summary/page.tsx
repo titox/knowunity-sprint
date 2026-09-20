@@ -42,7 +42,7 @@ export default function SummaryPage() {
 
   return (
     <RecallScreenShell>
-      <TopBar termIndex={termIndex} totalTerms={totalTerms} streak={streak} onClose={() => router.push('/recall/done')} />
+      <TopBar termIndex={termIndex} totalTerms={totalTerms} streak={streak} progress="100" onClose={() => router.push('/recall/done')} />
       <div
         style={{
           flex: 1,
